@@ -13,6 +13,7 @@
     </head>
     <body>
         <div id="app">
+        hello world
         </div>
         @vite('resources/js/app.js')
     </body>
