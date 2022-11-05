@@ -1,6 +1,6 @@
 <template>
-    <div class="background">
-        <div class="login">
+    <div class="background" @click="goHome($event)">
+        <div class="login" >
             <div class="login-cover">
                 <img class="login-img" src="../../assets/login-background.png">
                 <div class="cover-text">
@@ -32,8 +32,8 @@
                         placeholder="Enter your Password"
                         v-model="login.password"
                     >
-                    <p>  {{ msg }}</p>
                     <input type="submit"    name="submit"    value="Login"  @click.prevent="checkUser">
+                    <p>  {{ msg }}</p>
                 </form>
             </div>
 
@@ -47,6 +47,7 @@ export default {
   name: 'LoginComp',
   data() {
     return {
+        box: null,
         login: {
                 username: '',
                 password: ''
@@ -56,9 +57,15 @@ export default {
   },
 
   mounted() {
+    this.box = document.querySelector('.login');
     },
 
     methods: {
+        goHome(e) {
+            if(!this.box.contains(e.target)){
+                this.$router.push('/')
+            }
+        },
         checkUser() {
 
 
@@ -81,18 +88,6 @@ export default {
     },
 }
 
- // axios
-            // .get('http://localhost:8000/api/students')
-            // .then(response => {
-            //     const datas = response.data;
-            //     datas.forEach(element => {
-            //         if (element['UserName_Etud'] == this.login.username) {
-            //             if(element['PassWord_Etud'] == this.login.password){
-            //                 alert('welcome');
-            //             }
-            //         }
-            //     });
-            // })
 </script>
 
 
@@ -213,18 +208,18 @@ input[type = submit] {
     height: 40px;
     font-size: 20px;
     font-weight: 700;
-    background: linear-gradient(-70deg, rgb(44,78, 180), rgb(44,78, 180), rgb(0,136, 40));
+    background: linear-gradient(-70deg, rgb(44,78, 180), #2c4eb4, #008828);
     border: 1px solid;
     border-radius: 20px;
     color: #fff;
     box-shadow: 5px 5px 10px black;
-    margin: auto;
-    position: absolute;
-    bottom: 18%;
+    margin: 40px auto;
 }
 
 form p {
     color: #ff0000;
+    text-align: center;
+    margin: auto;
 }
 
 
