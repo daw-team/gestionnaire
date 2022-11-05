@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Etudiant;
+use App\Models\enseignant;
+use App\Models\Administrateur;
+
 
 class loginController extends Controller
 {
@@ -35,22 +38,49 @@ class loginController extends Controller
      */
     public function checkUser(Request $request)
     {
-        $user = Etudiant::where('UserName_Etud', $request->username)->get();
-        if (count($user) == 0) {
+        $userEtud = Etudiant::where('UserName_Etud', $request->username)->get();
+        $userEns = enseignant::where('UserName_Etud', $request->username)->get();
+        $userAdm = Administrateur::where('UserName_Etud', $request->username)->get();
+        if (count($userEtud) == 0 && count($userEns) == 0 && count($userAdm) == 0) {
+            
             return response()->json([
                 'msg' => 'please enter a valid email',
             ]);
         }
         else {
-            if($user[0]['PassWord_Etud'] == strval($request->password)) {
-                return response()->json([
-                    'msg' => 'welcome',
-                ]);
-            }
-            else {
-                return response()->json([
-                    'msg' => 'wrong password',
-                ]);
+            if (count($userEtud) != 0) {
+                if($userEtud[0]['PassWord_Etud'] === strval($request->password)) {
+                    return response()->json([
+                        'msg' => 'welcome',
+                    ]);
+                }
+                else {
+                    return response()->json([
+                        'msg' => 'wrong password',
+                    ]);
+                }
+            }elseif (count($userEns)!= 0) {
+                if($userEns[0]['PassWord_Etud'] === strval($request->password)) {
+                    return response()->json([
+                        'msg' => 'welcome',
+                    ]);
+                }
+                else {
+                    return response()->json([
+                        'msg' => 'wrong password',
+                    ]);
+                }
+            }else{
+                if($userAdm[0]['PassWord_Etud'] === strval($request->password)) {
+                    return response()->json([
+                        'msg' => 'welcome',
+                    ]);
+                }
+                else {
+                    return response()->json([
+                        'msg' => 'wrong password',
+                    ]);
+                }
             }
         }
 
