@@ -73,6 +73,7 @@ export default {
             axios
                 .post('http://localhost:8000/api/login', this.login)
                 .then(response => {
+                    console.log(response.data);
                     if(response.data.msg == 'welcome') {
                         this.$router.push('/student')
                     }
