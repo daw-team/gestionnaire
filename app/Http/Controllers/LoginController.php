@@ -39,8 +39,8 @@ class loginController extends Controller
     public function checkUser(Request $request)
     {
         $userEtud = Etudiant::where('UserName_Etud', $request->username)->get();
-        $userEns = enseignant::where('UserName_Etud', $request->username)->get();
-        $userAdm = Administrateur::where('UserName_Etud', $request->username)->get();
+        $userEns = enseignant::where('UserName_Ens', $request->username)->get();
+        $userAdm = Administrateur::where('UserName_Adm', $request->username)->get();
         if (count($userEtud) == 0 && count($userEns) == 0 && count($userAdm) == 0) {
             
             return response()->json([
@@ -51,7 +51,9 @@ class loginController extends Controller
             if (count($userEtud) != 0) {
                 if($userEtud[0]['PassWord_Etud'] === strval($request->password)) {
                     return response()->json([
-                        'msg' => 'welcome',
+                        'msg' => 'Etudiant',
+                        'name' => $userEtud[0]['Prenom_Etud']
+
                     ]);
                 }
                 else {
@@ -60,9 +62,10 @@ class loginController extends Controller
                     ]);
                 }
             }elseif (count($userEns)!= 0) {
-                if($userEns[0]['PassWord_Etud'] === strval($request->password)) {
+                if($userEns[0]['PassWord_Ens'] === strval($request->password)) {
                     return response()->json([
-                        'msg' => 'welcome',
+                        'msg' => 'Enseignant',
+                        'name' => $userEns[0]['Prenom_Ens']
                     ]);
                 }
                 else {
@@ -71,14 +74,18 @@ class loginController extends Controller
                     ]);
                 }
             }else{
-                if($userAdm[0]['PassWord_Etud'] === strval($request->password)) {
+                if($userAdm[0]['PassWord_Adm'] === strval($request->password)) {
                     return response()->json([
-                        'msg' => 'welcome',
+                        'msg' => 'Administarteur',
+                        'name' => $userAdm[0]['Prenom_Adm']
+
                     ]);
                 }
                 else {
                     return response()->json([
                         'msg' => 'wrong password',
+                        "passDB" => $userAdm[0]['PassWord_Adm'],
+                        "inputPass" => strval($request->password),
                     ]);
                 }
             }
