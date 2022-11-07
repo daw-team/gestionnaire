@@ -1,17 +1,18 @@
 <template>
-    <div class="home">
+    <div class="dashboard">
         <StSideBar></StSideBar>
-        <div    class="background">
-            hi
-        </div>
+        <StHome></StHome>
     </div>
 </template>
 
 <script>
 import StSideBar from './StSideBar.vue'
+import StHome from './StHome.vue'
+
 export default {
     components:{
-        StSideBar
+        StSideBar,
+        StHome
     }
 }
 
@@ -19,13 +20,9 @@ export default {
 
 <style scoped>
 
-.home{
+.dashboard{
     height: 100vh;
-    width: 70%;
-}
-.background{
     width: 100%;
-    height: 40%;
-    background-color: #2c4eb4;
 }
+
 </style>

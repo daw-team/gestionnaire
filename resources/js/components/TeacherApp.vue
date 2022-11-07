@@ -1,16 +1,17 @@
 <template>
     <div>
-        hi from teacher
+        <router-view></router-view>
     </div>
 </template>
 
 
 <script>
-export default {
+import TcLandingPage from './Teacher/TcLandingPage.vue'
 
+export default {
+    components: {
+        TcLandingPage,
+    },
 }
 </script>
 
-<style scoped>
-
-</style>

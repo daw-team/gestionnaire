@@ -74,10 +74,16 @@ export default {
                 .post('http://localhost:8000/api/login', this.login)
                 .then(response => {
                     console.log(response.data);
-                    if(response.data.msg == 'welcome') {
+                    if(response.data.msg == 'Etudiant') {
                         this.$router.push('/student')
                     }
-                    else{
+                    else if (response.data.msg == 'Enseignant') {
+                        this.$router.push('/teacher')
+                    }
+                    else if (response.data.msg == 'Administarteur') {
+                        this.$router.push('/admin')
+                    }
+                    {
                         this.msg = response.data.msg
                         this.login.username = ''
                         this.login.password = ''

@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import bus from '../../EventBus'
+
 export default {
   name: "StSideBar",
   components: {},
@@ -50,7 +52,7 @@ export default {
         { title: "My absences", icon: "clipboard", active: false },
         { title: "My modules", icon: "albums", active: false },
       ],
-      menuActive: true,
+      menuActive: false,
       activeTitle: '',
     };
   },
@@ -58,6 +60,7 @@ export default {
   methods: {
     toggleMenu() {
         this.menuActive = !this.menuActive
+        bus.$emit('changeMenu', this.menuActive);
     },
 
     changelist(i) {
@@ -94,9 +97,9 @@ export default {
   width: 260px;
   height: 100vh;
   padding: 30px 0 30px 20px;
-  /* background: linear-gradient(-90deg, #2c4eb4,#2c4eb4, #008828); */
-  background-color: #3E7E3F;
-  position: absolute;
+  background: linear-gradient(180deg, #2c4eb4, #305748, #305748,#305748,  #305748);
+  /* background-color: #3E7E3F; */
+  position: fixed;
   top: 0;
   left: 0;
   color: #fff;
@@ -111,7 +114,7 @@ export default {
 
 .menu-title{
     padding-left: 30px;
-    height: 80px;
+    height: 120px;
   font-size: 15px;
   text-align: center;
   font-weight: 700;
@@ -150,7 +153,7 @@ li::before{
     width: 100%;
     height: 15px;
     /* background: linear-gradient(-90deg, #2c4eb4, #2c4eb4,  #3E7E3F); */
-  background-color: #3E7E3F;
+  background-color: #305748;
 
     border-bottom-right-radius: 15px;
 }
@@ -160,7 +163,7 @@ li::after{
     width: 100%;
     height: 15px;
     /* background: linear-gradient(-90deg, #2c4eb4,#2c4eb4, #3E7E3F); */
-  background-color: #3E7E3F;
+  background-color: #305748;
 
     border-top-right-radius: 15px;
 
