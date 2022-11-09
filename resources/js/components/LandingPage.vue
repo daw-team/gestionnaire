@@ -106,7 +106,7 @@ button {
 button:hover {
   box-shadow: none;
   border: 1px solid #ffffff83;
-  background: rgb(44,78, 180);
+  background: #2c4eb4;
   transition: all ease .5s;
 }
 </style>
