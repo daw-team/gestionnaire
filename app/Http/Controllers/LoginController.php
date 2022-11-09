@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Models\Etudiant;
 use App\Models\enseignant;
 use App\Models\Administrateur;
@@ -13,17 +14,28 @@ class loginController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse;
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Etudiant::orderBy('Num_Etud', 'ASC')->get();
+      //return Etudiant::orderBy('Num_Etud', 'ASC')->get();
+      //check for an existing session:::
+	if ($request->session()->has('sessUser')) {
+    	return response()->json([
+                        'msg' => 'session exist',
+                        'session' => $request->session()->get('sessUser'),
+                    ]);
+}else {
+return response()->json([
+                        'msg' => 'no sessions',
+                    ]);	
+                    }
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse;
      */
     public function create()
     {
@@ -34,26 +46,36 @@ class loginController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse;
      */
     public function checkUser(Request $request)
-    {
+    {	
+        // we can use sql queries here instead of this: 
         $userEtud = Etudiant::where('UserName_Etud', $request->username)->get();
         $userEns = enseignant::where('UserName_Ens', $request->username)->get();
         $userAdm = Administrateur::where('UserName_Adm', $request->username)->get();
+
+
+        // check if email exist in all the database
         if (count($userEtud) == 0 && count($userEns) == 0 && count($userAdm) == 0) {
             
             return response()->json([
                 'msg' => 'please enter a valid email',
             ]);
         }
+
+        //password check
         else {
+            //student password check
             if (count($userEtud) != 0) {
                 if($userEtud[0]['PassWord_Etud'] === strval($request->password)) {
+                    // creating a session (session user)
+                	$request->session()->put('sessUser', $userEtud[0]['Num_Etud']);
+                	$sesUser = $request->session()->get('sessUser');
                     return response()->json([
                         'msg' => 'Etudiant',
-                        'name' => $userEtud[0]['Prenom_Etud']
-
+                        'id' => $userEtud[0]['Num_Etud'],
+			            'sessUser' => $sesUser,
                     ]);
                 }
                 else {
@@ -61,11 +83,17 @@ class loginController extends Controller
                         'msg' => 'wrong password',
                     ]);
                 }
+            //teacher password check    
             }elseif (count($userEns)!= 0) {
                 if($userEns[0]['PassWord_Ens'] === strval($request->password)) {
+                    // creating a session (session user)
+                    $request->session()->put('sessUser', $userEns[0]['Num_Ens']);
+                    $sesUser = $request->session()->get('sessUser');
                     return response()->json([
                         'msg' => 'Enseignant',
-                        'name' => $userEns[0]['Prenom_Ens']
+                        'id' => $userEns[0]['Num_Ens'],
+                        'sessUser' => $sesUser
+                        
                     ]);
                 }
                 else {
@@ -73,19 +101,22 @@ class loginController extends Controller
                         'msg' => 'wrong password',
                     ]);
                 }
+            //Admin password check
             }else{
                 if($userAdm[0]['PassWord_Adm'] === strval($request->password)) {
+                    // creating a session (session user)
+                    $request->session()->put('sessUser', $userAdm[0]['Num_Adm']);
+                    $sesUser = $request->session()->get('sessUser');
                     return response()->json([
                         'msg' => 'Administarteur',
-                        'name' => $userAdm[0]['Prenom_Adm']
+                        'id' => $userAdm[0]['Num_Adm'],
+                        'sessUser' => $sesUser
 
                     ]);
                 }
                 else {
                     return response()->json([
                         'msg' => 'wrong password',
-                        "passDB" => $userAdm[0]['PassWord_Adm'],
-                        "inputPass" => strval($request->password),
                     ]);
                 }
             }
@@ -94,7 +125,15 @@ class loginController extends Controller
 
 
     }
+   
+    
+     public function logout(Request $request){
+    
+    $request->session()->flush();
+    
+ return  redirect('/login');
 
+}
     /**
      * Display the specified resource.
      *

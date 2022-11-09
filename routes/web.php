@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Http\Request;
+use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +19,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/logout', [LoginController::class, 'logout']);
+//Route::get('/student', [LoginController::class, 'index']);
 
 
 Route::get('/{any}', function () {
