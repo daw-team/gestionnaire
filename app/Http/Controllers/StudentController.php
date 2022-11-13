@@ -37,6 +37,7 @@ class StudentController extends Controller
                         ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
                         ->select('MODULE.Abrv_mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs', 'ABSENCE.Num_Abs')
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
+                        ->where('ABSENCE.Just_Abs', '=',NULL )
                         ->get();
     }
 

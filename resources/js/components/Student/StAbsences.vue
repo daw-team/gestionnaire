@@ -2,7 +2,7 @@
     <div>
         <div class="title">
             <h1>Abcenses</h1>
-            <p>You can find all the abcenses on this list </p>
+            <p>You can find all your abcenses on this list </p>
             <input type="text"  placeholder="Search for a student">
         </div>
         <div
