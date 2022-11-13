@@ -12,6 +12,23 @@ use App\Models\absence;
 
 class StudentController extends Controller
 {
+    public function index(Request $request)
+    {
+
+        if ($request->session()->has('sessUser')) {
+            return response()->json([
+                            'msg' => 'session exist',
+                            'session' => $request->session()->get('sessUser'),
+                        ]);
+        }
+        else {
+        return response()->json([
+                            'msg' => 'no sessions',
+                        ]);
+        }
+    }
+
+
     public function getAbsences(request $request) {
         return DB::table('ABSENCE')
                         ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
@@ -24,7 +41,5 @@ class StudentController extends Controller
         $imagePath = $request->file('image')->store('images', 'public');
         return Absence::->where('Abs_Num', $request->num)
                             ->update(['Just_Abs' => "../../../storage/app/public/$imagePath"]);
-        // where('Abs_Num', $request->num)->get();
-        // return $imagePath;
     }
 }
