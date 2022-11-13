@@ -24,7 +24,7 @@ import TcLandingPage from './components/Teacher/TcLandingPage.vue'
 import TcDashboard from './components/Teacher/TcDashboard.vue'
 import TcHome from './components/Teacher/TcHome.vue'
 import TcNotifications from './components/Teacher/TcNotifications.vue'
-import TcProfile from './components/Teacher/tcProfile.vue'
+import TcProfile from './components/Teacher/TcProfile.vue'
 import TcAbsences from './components/Teacher/TcAbsences.vue'
 
 

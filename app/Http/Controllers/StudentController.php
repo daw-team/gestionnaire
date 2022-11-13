@@ -36,10 +36,42 @@ class StudentController extends Controller
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
                         ->get();
     }
-
-    public function storeImage(request $request) {
-        $imagePath = $request->file('image')->store('images', 'public');
-        return Absence::->where('Abs_Num', $request->num)
-                            ->update(['Just_Abs' => "../../../storage/app/public/$imagePath"]);
+    public function getTotalAbsNbr() {
+    	return DB::table('ABSENCE')
+    			->where('ABSENCE.Num_Etud', '=',$request->id )
+    			->count();
+    			
     }
-}
+    
+    
+    
+    
+public function getJustifiedAbsNbr() {
+    	return DB::table('ABSENCE')
+    			->where('ABSENCE.Num_Etud', '=',$request->id )
+    			->where('ABSENCE.Type_Abs', '=','justifié' )
+    			->count();
+    			
+    }
+    
+    
+    
+    
+    public function getNonJustifiedAbsNbr() {
+    	return DB::table('ABSENCE')
+    			->where('ABSENCE.Num_Etud', '=',$request->id )
+    			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+    			->where('ABSENCE.Just_Abs', '=',NULL )
+    			->count();
+    			
+    }
+    public function getTotalPendJus() {
+    	return DB::table('ABSENCE')
+    			->where('ABSENCE.Num_Etud', '=',$request->id )
+    			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+    			->where('ABSENCE.Just_Abs', '=!',NULL )
+    			->count();
+    			
+    }
+    
+    
