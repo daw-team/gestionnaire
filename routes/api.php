@@ -6,6 +6,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\StudentController;
 
 
 /*
@@ -27,12 +28,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/logout', [LoginController::class, 'logout']);
 
 
-
-
-
-Route::get('/student', [LoginController::class, 'index']);
+Route::get('/student', [StudentController::class, 'index']);
 
 Route::post('/login', [LoginController::class, 'checkUser']);
+Route::post('/absences', [StudentController::class, 'getAbsences']);
+Route::post('/uploadImage', [StudentController::class, 'storeImage']);
+
+
 
 
 

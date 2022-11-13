@@ -11,26 +11,13 @@ use App\Models\Administrateur;
 
 class loginController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
      * @return Illuminate\Http\JsonResponse;
      */
-    public function index(Request $request)
-    {
-      //return Etudiant::orderBy('Num_Etud', 'ASC')->get();
-      //check for an existing session:::
-	if ($request->session()->has('sessUser')) {
-    	return response()->json([
-                        'msg' => 'session exist',
-                        'session' => $request->session()->get('sessUser'),
-                    ]);
-}else {
-return response()->json([
-                        'msg' => 'no sessions',
-                    ]);	
-                    }
-    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -49,8 +36,8 @@ return response()->json([
      * @return Illuminate\Http\JsonResponse;
      */
     public function checkUser(Request $request)
-    {	
-        // we can use sql queries here instead of this: 
+    {
+        // we can use sql queries here instead of this:
         $userEtud = Etudiant::where('UserName_Etud', $request->username)->get();
         $userEns = enseignant::where('UserName_Ens', $request->username)->get();
         $userAdm = Administrateur::where('UserName_Adm', $request->username)->get();
@@ -58,7 +45,7 @@ return response()->json([
 
         // check if email exist in all the database
         if (count($userEtud) == 0 && count($userEns) == 0 && count($userAdm) == 0) {
-            
+
             return response()->json([
                 'msg' => 'please enter a valid email',
             ]);
@@ -83,7 +70,7 @@ return response()->json([
                         'msg' => 'wrong password',
                     ]);
                 }
-            //teacher password check    
+            //teacher password check
             }elseif (count($userEns)!= 0) {
                 if($userEns[0]['PassWord_Ens'] === strval($request->password)) {
                     // creating a session (session user)
@@ -93,7 +80,7 @@ return response()->json([
                         'msg' => 'Enseignant',
                         'id' => $userEns[0]['Num_Ens'],
                         'sessUser' => $sesUser
-                        
+
                     ]);
                 }
                 else {
@@ -125,12 +112,12 @@ return response()->json([
 
 
     }
-   
-    
+
+
      public function logout(Request $request){
-    
+
     $request->session()->flush();
-    
+
  return  redirect('/login');
 
 }

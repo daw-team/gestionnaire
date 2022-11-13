@@ -48,16 +48,15 @@ export default {
       list: "",
       userId: this.$route.params.id,
       menu: [
-        { title: "Home", icon: "home", link: `/student=${this.$route.params.id}/dashboard/home`, active: false, name: 'StHome' },
-        { title: "Notifications", icon: "notifications", link: `/student=${this.$route.params.id}/dashboard/notifications`, active: false, name: 'StNotifications' },
-        { title: "My profile", icon: "person", link: `/student=${this.$route.params.id}/dashboard/profile`, active: false, name: 'StProfile' },
-        { title: "My absences", icon: "clipboard", link: `/student=${this.$route.params.id}/dashboard/absences`, active: false, name: 'StAbsences' },
-        { title: "My modules", icon: "albums", link: `/student=${this.$route.params.id}/dashboard/modules`, active: false, name: 'StModules' },
+        { title: "Home", icon: "home", link: `/teacher=${this.$route.params.id}/dashboard/home`, active: false, name: 'TcHome' },
+        { title: "Notifications", icon: "notifications", link: `/teacher=${this.$route.params.id}/dashboard/notifications`, active: false, name: 'TcNotifications' },
+        { title: "My profile", icon: "person", link: `/teacher=${this.$route.params.id}/dashboard/profile`, active: false, name: 'TcProfile' },
+        { title: "Abcenses", icon: "clipboard", link: `/teacher=${this.$route.params.id}/dashboard/absences`, active: false, name: 'TcAbsences' },
       ],
       links:[
 
       ],
-      menuActive: false,
+      menuActive: true,
       activeTitle: '',
     };
   },
@@ -76,7 +75,6 @@ export default {
         if (element.name === name) {
             element.active = true
             this.activeTitle = element.title
-            console.log('enterd');
         }
         else    element.active = false;
       });
@@ -89,7 +87,6 @@ export default {
     hr.style.margin = '20px 20px'
     this.list = document.querySelector("#menu-list");
     this.list.children[1].after(hr);
-    console.log(this.$route.name);
     this.changelist(this.$route.name);
   },
 };

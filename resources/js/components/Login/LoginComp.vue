@@ -75,13 +75,13 @@ export default {
                 .then(response => {
                     console.log(response.data);
                     if(response.data.msg == 'Etudiant') {
-                        this.$router.push('/student')
+                        this.$router.push('/student=' + response.data.id)
                     }
                     else if (response.data.msg == 'Enseignant') {
-                        this.$router.push('/teacher')
+                        this.$router.push('/teacher=' + response.data.id)
                     }
                     else if (response.data.msg == 'Administarteur') {
-                        this.$router.push('/admin')
+                        this.$router.push('/admin=' + response.data.id)
                     }
                     {
                         this.msg = response.data.msg
@@ -92,13 +92,13 @@ export default {
 
 
         },
-        
-        
+
+
         },
-        
-       
+
+
         }
-    
+
 
 
 </script>

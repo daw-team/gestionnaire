@@ -21,9 +21,17 @@
 <script>
 
 export default {
+    data() {
+        return {
+            userId: this.$route.params.id
+        }
+    },
+
+
     methods:{
+
         goToDashboard() {
-            this.$router.push('student_dashboard')
+            this.$router.push('/teacher=' + this.userId + '/dashboard/home')
         }
     }
 

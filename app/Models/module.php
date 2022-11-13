@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class module extends Model
 {
     use HasFactory;
+    protected $table = 'MODULE';
+    public const CREATED_AT = null;
+    public const UPDATED_AT = null;
+    public $timestamps = false;
+    protected $primaryKey = 'Num_Mod';
 }

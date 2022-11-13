@@ -25,20 +25,17 @@
 export default {
     components: {
     },
-    beforeCreate(){
-		axios	
-		        .get('http://localhost:8000/api/student')
-		        .then(response => {console.log(response.data);
-		        if(response.data.msg == 'no sessions') {
-                        this.$router.push('/login')
-                    }})
+    data() {
+        return {
+            userId: this.$route.params.id
+        }
+    },
 
-},
     methods:{
         goToDashboard() {
-            this.$router.push('/student/dashboard')
+            this.$router.push('/student=' + this.userId + '/dashboard/home')
         }
-    }
+    },
 
 }
 </script>

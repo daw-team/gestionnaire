@@ -166,7 +166,7 @@ export default {
     min-height: 300px;
     padding-bottom: 40px;
     overflow: hidden;
-    transition: all ease .4s;
+    transition: all ease .5s;
 }
 
 .small-home {

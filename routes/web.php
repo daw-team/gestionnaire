@@ -31,3 +31,7 @@ Route::get('/{any}', function () {
 Route::get('/student/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
+
+Route::get('/teacher/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');
