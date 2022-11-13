@@ -47,8 +47,8 @@ export default {
         uploadImage() {
             const formData = new FormData
             formData.set('image', this.image)
-            // formData.set('num', this.$route.params.absNum)
-
+            formData.append('num', this.$route.params.absNum)
+            console.log(formData)
             axios
                 .post('http://localhost:8000/api/uploadImage', formData)
         }

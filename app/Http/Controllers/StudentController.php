@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
+
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Storage;
+// use Illuminate\Http\UploadedFile::extention;
 
 
 
@@ -38,8 +41,11 @@ class StudentController extends Controller
     }
 
     public function storeImage(request $request) {
-        $imagePath = $request->file('image')->store('images', 'public');
-        return Absence::->where('Abs_Num', $request->num)
-                            ->update(['Just_Abs' => "../../../storage/app/public/$imagePath"]);
+        $file = $request->file('image');
+        $fileExt = $file->extension();
+        $newFile = time() .'.'.$fileExt;
+        $filePath = $file->storeAs('public/justifications', $newFile);
+        return Absence::where('Num_Abs', 1000)
+                            ->update(['Just_Abs' => "../../../storage/app/public/$filePath"]);
     }
 }
