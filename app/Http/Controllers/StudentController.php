@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
+
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Storage;
+// use Illuminate\Http\UploadedFile::extention;
 
 
 
@@ -34,16 +37,26 @@ class StudentController extends Controller
                         ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
                         ->select('MODULE.Abrv_mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs', 'ABSENCE.Num_Abs')
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
+                        ->where('ABSENCE.Just_Abs', '=',NULL )
                         ->get();
     }
+
     public function getTotalAbsNbr() {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->count();
     			
+
     }
     
-    
+      public function storeImage(request $request) {
+        $file = $request->file('image');
+        $fileExt = $file->extension();
+        $newFile = time() .'.'.$fileExt;
+        $filePath = $file->storeAs('public/justifications', $newFile);
+        return Absence::where('Num_Abs', $request->num)
+                            ->update(['Just_Abs' => "../../../storage/app/public/$filePath"]);
+                            }
     
     
 public function getJustifiedAbsNbr() {

@@ -76,7 +76,6 @@ export default {
         if (element.name === name) {
             element.active = true
             this.activeTitle = element.title
-            console.log('enterd');
         }
         else    element.active = false;
       });
@@ -89,7 +88,6 @@ export default {
     hr.style.margin = '20px 20px'
     this.list = document.querySelector("#menu-list");
     this.list.children[1].after(hr);
-    console.log(this.$route.name);
     this.changelist(this.$route.name);
   },
 };
