@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 use App\Models\absence;
+use App\Models\Etudiant;
+use App\Models\enseignant;
+use App\Models\Administrateur;
+
 
 class StudentController extends Controller
 {
@@ -41,6 +45,15 @@ class StudentController extends Controller
                         ->get();
     }
 
+
+public function getStudentInfo(request $request) {
+        return DB::table('ETUDIANT')
+                        ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud')
+                        ->where('ETUDIANT.Num_Etud', '=',202031030632 )
+                        ->get();
+    }
+    
+    
     public function getTotalAbsNbr() {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
@@ -87,4 +100,4 @@ public function getJustifiedAbsNbr() {
     			
     }
     
-    
+    }
