@@ -49,12 +49,12 @@ class StudentController extends Controller
 public function getStudentInfo(request $request) {
         return DB::table('ETUDIANT')
                         ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud')
-                        ->where('ETUDIANT.Num_Etud', '=',202031030632 )
+                        ->where('ETUDIANT.Num_Etud', '=',$request->id )
                         ->get();
     }
     
     
-    public function getTotalAbsNbr() {
+    public function getTotalAbsNbr(request $request) {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->count();
@@ -72,7 +72,7 @@ public function getStudentInfo(request $request) {
                             }
     
     
-public function getJustifiedAbsNbr() {
+public function getJustifiedAbsNbr(request $request) {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->where('ABSENCE.Type_Abs', '=','justifié' )
@@ -83,7 +83,7 @@ public function getJustifiedAbsNbr() {
     
     
     
-    public function getNonJustifiedAbsNbr() {
+    public function getNonJustifiedAbsNbr(request $request ) {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
@@ -91,7 +91,7 @@ public function getJustifiedAbsNbr() {
     			->count();
     			
     }
-    public function getTotalPendJus() {
+    public function getTotalPendJus(request $request) {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
