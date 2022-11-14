@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StudentController;
-
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,9 @@ Route::post('/totalAbsNbr', [StudentController::class, 'getTotalAbsNbr']);
 Route::post('/totalJustAbsNbr', [StudentController::class, 'getJustifiedAbsNbr']);
 Route::post('/totalNonJustAbsNbr', [StudentController::class, 'getNonJustifiedAbsNbr']);
 Route::post('/totalPendJus', [StudentController::class, 'getTotalPendJus']);
-
+Route::post('/StudentInfo', [StudentController::class, 'getStudentInfo']);
+Route::post('/TeacherInfo', [TeacherController::class, 'getTeacherInfo']);
+Route::post('/AdminInfo', [AdminController::class, 'getAdminInfo']);
 
 
 
