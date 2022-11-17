@@ -31,8 +31,16 @@
                 </transition>
             </div>
         </li>
-    </router-link>
-
+        </router-link>
+        <a  href="/logout"  class="logout-btn" v-if="menuActive">
+            <li>
+                <ion-icon name="log-out-outline">
+                </ion-icon>
+                <transition name="appear">
+                    <span  >Logout</span>
+                </transition>
+            </li>
+        </a>
     </ul>
   </div>
 </template>
@@ -49,7 +57,6 @@ export default {
       userId: this.$route.params.id,
       menu: [
         { title: "Home", icon: "home", link: `/student=${this.$route.params.id}/dashboard/home`, active: false, name: 'StHome' },
-        { title: "Notifications", icon: "notifications", link: `/student=${this.$route.params.id}/dashboard/notifications`, active: false, name: 'StNotifications' },
         { title: "My profile", icon: "person", link: `/student=${this.$route.params.id}/dashboard/profile`, active: false, name: 'StProfile' },
         { title: "My absences", icon: "clipboard", link: `/student=${this.$route.params.id}/dashboard/absences`, active: false, name: 'StAbsences' },
         { title: "My modules", icon: "albums", link: `/student=${this.$route.params.id}/dashboard/modules`, active: false, name: 'StModules' },
@@ -113,7 +120,6 @@ export default {
   height: 100vh;
   padding: 30px 0 30px 0;
   background: linear-gradient(180deg, #008828, #305748, #305748,#305748,  #305748, #305748, #008828);
-  /* background-color: #3E7E3F; */
   position: fixed;
   top: 0;
   left: 0;
@@ -203,8 +209,6 @@ li span {
   background-color: #fff;
   color: #2c4eb4;
   border-radius: 50px 0 0 50px;
-  /* background: linear-gradient(-90deg, #fff, #fff, #fff,#fff, #3E7E3F); */
-
 }
 
 .activeIcon {
@@ -217,5 +221,21 @@ ion-icon {
   color: #fff;
   visibility: visible;
   min-width: 40px;
+}
+
+.logout-btn{
+    margin: 1px;
+}
+
+.logout-btn li::after{
+    content: none;
+    width: 0;
+    height: 0;
+}
+
+.logout-btn li::before{
+    content: none;
+    width: 0;
+    height: 0;
 }
 </style>

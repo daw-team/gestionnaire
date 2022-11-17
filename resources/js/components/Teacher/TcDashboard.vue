@@ -8,7 +8,6 @@
 <script>
 import TcSideBar from './TcSideBar.vue'
 import TcHome from './TcHome.vue'
-import TcNotifications from './TcNotifications.vue'
 import TcProfile from './TcProfile.vue'
 import TcAbsences from './TcAbsences.vue'
 
@@ -16,7 +15,6 @@ export default {
     components:{
         TcSideBar,
         TcHome,
-        TcNotifications,
         TcProfile,
         TcAbsences,
     }

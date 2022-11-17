@@ -8,7 +8,6 @@
 <script>
 import StSideBar from './StSideBar.vue'
 import StHome from './StHome.vue'
-import StNotifications from './StNotifications.vue'
 import StProfile from './StProfile.vue'
 import StAbsences from './StAbsences.vue'
 import StModules from './StModules.vue'
@@ -17,7 +16,6 @@ export default {
     components:{
         StSideBar,
         StHome,
-        StNotifications,
         StProfile,
         StAbsences,
         StModules,

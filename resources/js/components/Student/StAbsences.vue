@@ -1,50 +1,77 @@
 <template>
-    <div>
+    <div class="container">
         <div class="title">
-            <h1>Abcenses</h1>
-            <p>You can find all your abcenses on this list </p>
-            <input type="text"  placeholder="Search for a student">
+            <div>
+                <h1>Abcenses</h1>
+                <p>You can find all your abcenses on this list </p>
+                <input type="text"  placeholder="Search for a student">
+            </div>
+            <img v-if="compToRender == 'NonJusAbsences'" src="../../assets/pending-title.png" alt="">
+            <img v-if="compToRender == 'JustifiedAbsences'" src="../../assets/justified-title.png" alt="">
+            <img v-if="compToRender == 'AccAbsences'" src="../../assets/accepted-title.png" alt="">
         </div>
-        <div
-            v-for="(absence, index) in absences"
-            :key="index"
-            class="absences">
-            <p>{{ absence.Abrv_mod }}</p>
-            <p>{{ absence.Date_Abs }}</p>
-            <button @click="showForm(absence.Num_Abs)">Justify</button>
+
+        <div class="drawer">
+            <ul
+                v-for="(item , index) in drawerList"
+                :key="index"
+            >
+                <li
+                    @click="switchContent(index)"
+                    :class="{'list-active': item.active}"
+                >
+                    {{ item.title }}
+                </li>
+            </ul>
+            <div></div>
         </div>
+
+
+        <component :is="compToRender"></component>
+
         <router-view></router-view>
     </div>
 </template>
 
 <script>
 import JustifyForm from './AbsencesComps/JustifyForm.vue'
+import JustifiedAbsences from './AbsencesComps/JustifiedAbsences.vue'
+import NonJusAbsences from './AbsencesComps/NonJusAbsences.vue'
+import AccAbsences from './AbsencesComps/AccAbsences.vue'
 
 export default {
     components:{
         JustifyForm,
+        JustifiedAbsences,
+        NonJusAbsences,
+        AccAbsences,
     },
     data() {
-        return {
-            log: { id: this.$route.params.id},
-            absences:[]
+        return{
+            comps:[ 'NonJusAbsences', 'JustifiedAbsences', 'AccAbsences'],
+            compToRender: 'NonJusAbsences',
+            drawerList: [
+                {title: 'Not Justified', active: false},
+                {title: 'Justified', active: false},
+                {title: 'Accepted', active: false},
+            ]
         }
     },
 
     mounted() {
-
-        axios
-            .post('http://localhost:8000/api/absences', this.log)
-            .then(response => {
-                console.log(response.data);
-                this.absences = response.data ;
-            })
+        this.switchContent(0);
     },
 
     methods: {
         showForm(num) {
-            console.log(this.$route.fullPath);
             this.$router.push(this.$route.fullPath + '/num=' + num)
+        },
+        switchContent(i){
+            this.drawerList.forEach(element => {
+                element.active = false
+            });
+            this.compToRender = this.comps[i]
+            this.drawerList[i].active = true
         }
     },
 }
@@ -52,16 +79,34 @@ export default {
 
 
 <style scoped>
+.container{
+    margin: 0 17vw;
+}
+
+
+h2{
+    margin: 20px;
+}
 
 .title {
-    margin: 50px 0 50px 120px;
-    height: 150px;
+    margin: 50px 0;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.title div{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .title p{
+    margin-bottom: auto;
+}
+
+.title div input{
     margin-bottom: auto;
 }
 
@@ -71,40 +116,44 @@ export default {
     padding: 10px 20px;
     border: #00000079 solid 1px;
     border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.174);
+    background-color: rgb(201 201 201 / 29%);
     font-size: 14px;
 }
 
-.absences{
-    padding: 5px 15px;
-    margin: auto;
-    width: 60%;
-    height: 70px;
+ul{
+    display: inline-flex
+}
+
+.drawer{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #0000000e;
 }
 
-button{
-    border-left: none;
-    border-top: none;
-    width: 100px;
-    height: 30px;
-    background: #fff;
-    box-shadow: 1px 1px 3px #000;
-    color: #305748;
-    font-weight: 600;
+.drawer div{
+    flex-grow: 1;
+    border-bottom: #000 solid 1px;
+
+}
+
+li{
+    width: auto;
+    list-style: none;
+    font-size: 18px;
+    font-weight: 800;
+    border-bottom: #000 solid 1px;
+    padding: 5px 20px;
     cursor: pointer;
-    text-align: center;
-    font-size: 15px;
 }
 
-button:hover{
-    border: 1px;
-    box-shadow: none;
-    transition: ease all .4s;
+.list-active{
+    border-top: #000 solid 1px;
+    border-right: #000 solid 1px;
+    border-left: #000 solid 1px;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0 ;
+    box-shadow: #000 1px 1px 8px;
+    margin-bottom: 1px;
 }
+
 
 </style>

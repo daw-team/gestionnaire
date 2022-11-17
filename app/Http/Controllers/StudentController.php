@@ -52,44 +52,44 @@ public function getStudentInfo(request $request) {
                         ->where('ETUDIANT.Num_Etud', '=',$request->id )
                         ->get();
     }
-    
-    
+
+
     public function getTotalAbsNbr(request $request) {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->count();
-    			
+
 
     }
-    
-      public function storeImage(request $request) {
+
+    public function storeImage(request $request) {
         $file = $request->file('image');
         $fileExt = $file->extension();
         $newFile = time() .'.'.$fileExt;
         $filePath = $file->storeAs('public/justifications', $newFile);
         return Absence::where('Num_Abs', $request->num)
                             ->update(['Just_Abs' => "../../../storage/app/public/$filePath"]);
-                            }
-    
-    
+}
+
+
 public function getJustifiedAbsNbr(request $request) {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->where('ABSENCE.Type_Abs', '=','justifié' )
     			->count();
-    			
+
     }
-    
-    
-    
-    
+
+
+
+
     public function getNonJustifiedAbsNbr(request $request ) {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
     			->where('ABSENCE.Just_Abs', '=',NULL )
     			->count();
-    			
+
     }
     public function getTotalPendJus(request $request) {
     	return DB::table('ABSENCE')
@@ -97,7 +97,7 @@ public function getJustifiedAbsNbr(request $request) {
     			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
     			->where('ABSENCE.Just_Abs', '=!',NULL )
     			->count();
-    			
+
     }
-    
+
     }

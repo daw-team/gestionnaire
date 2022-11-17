@@ -2,7 +2,7 @@
     <div    class="student">
         <div class="container">
             <div class="welcome">
-                <h1>Welcome Mr</h1>
+                <h1>Welcome {{ user.prenom }}</h1>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
                     tempora quibusdam voluptatibus laborum, veritatis eaque veniam modi,
                     natus rerum aliquam laudantium praesentium perferendis,
@@ -27,7 +27,11 @@ export default {
     },
     data() {
         return {
-            userId: this.$route.params.id
+            userId: this.$route.params.id,
+            user: {
+                nom:'',
+                prenom: '',
+            }
         }
     },
 
@@ -35,6 +39,16 @@ export default {
         goToDashboard() {
             this.$router.push('/student=' + this.userId + '/dashboard/home')
         }
+    },
+
+    mounted() {
+        axios
+            .post('http://localhost:8000/api/StudentInfo', {id:this.$route.params.id})
+            .then( res => {
+                console.log(res.data)
+                this.user.nom = res.data[0].Nom_Etud
+                this.user.prenom = res.data[0].Prenom_Etud
+            })
     },
 
 }

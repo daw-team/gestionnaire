@@ -11,7 +11,7 @@
                 <div class="right">
                     <ion-icon name="notifications-outline"></ion-icon>
                     <img src="../../assets/user.png" alt="" @click="showProfileCard = !showProfileCard">
-                    <h3>John Snow</h3>
+                    <h3>{{ user.prenom }} {{ user.nom }}</h3>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
             v-if="showProfileCard"
         >
             <img src="../../assets/user.png" alt="">
-            <h3>John Snow</h3>
+            <h3>{{ user.prenom }} {{ user.nom }}</h3>
             <div class="info">
 
             </div>
@@ -144,7 +144,11 @@ export default {
                 {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
                 {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
                 {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-            ]
+            ],
+            user: {
+                nom:'',
+                prenom: '',
+            }
         }
     },
 
@@ -152,7 +156,17 @@ export default {
         bus.$on('changeMenu', (value) => {
             this.menuChange = value;
         })
-    }
+    },
+
+    mounted() {
+        axios
+            .post('http://localhost:8000/api/TeacherInfo', {id:this.$route.params.id})
+            .then( res => {
+                console.log(res.data)
+                this.user.nom = res.data[0].Nom_Ens
+                this.user.prenom = res.data[0].Prenom_Ens
+            })
+    },
 }
 
 
@@ -166,7 +180,7 @@ export default {
     min-height: 300px;
     padding-bottom: 40px;
     overflow: hidden;
-    transition: all ease .5s;
+    transition: all ease .4s;
 }
 
 .small-home {
