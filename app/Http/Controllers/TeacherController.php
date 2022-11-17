@@ -26,7 +26,11 @@ public function getTeacherInfo(request $request) {
                         ->where('ENSEIGNANT.Num_Ens', '=',$request->id )
                         ->get();
     }
-
+public function getAllStudents(request $request){
+    return DB::table('Etudiant')
+                        ->select('Etudiant.Nom_Etud','Etudiant.Prenom_Etud','Etudiant.Num_Etud','Etudiant.Group_Etud','Etudiant.UserName_Etud','Etudiant.Photo_Etud')
+                        ->get();
+}
 
 
 }
