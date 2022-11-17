@@ -62,6 +62,7 @@ class loginController extends Controller
                     return response()->json([
                         'msg' => 'Etudiant',
                         'id' => $userEtud[0]['Num_Etud'],
+                        'email'=> $userEtud[0]['UserName_Etud'],
 			            'sessUser' => $sesUser,
                     ]);
                 }
@@ -79,8 +80,8 @@ class loginController extends Controller
                     return response()->json([
                         'msg' => 'Enseignant',
                         'id' => $userEns[0]['Num_Ens'],
+                        'email'=> $userEns[0]['UserName_Ens'],
                         'sessUser' => $sesUser
-
                     ]);
                 }
                 else {
@@ -97,6 +98,7 @@ class loginController extends Controller
                     return response()->json([
                         'msg' => 'Administarteur',
                         'id' => $userAdm[0]['Num_Adm'],
+                        'email'=> $userAdm[0]['UserName_Adm'],
                         'sessUser' => $sesUser
 
                     ]);
