@@ -29,8 +29,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/logout', [LoginController::class, 'logout']);
 
 
-Route::get('/student', [StudentController::class, 'index']);
 Route::post('/login', [LoginController::class, 'checkUser']);
+//Student Functions
+Route::get('/student', [StudentController::class, 'index']);
 Route::post('/absences', [StudentController::class, 'getAbsences']);
 Route::post('/uploadImage', [StudentController::class, 'storeImage']);
 Route::post('/totalAbsNbr', [StudentController::class, 'getTotalAbsNbr']);
@@ -38,8 +39,17 @@ Route::post('/totalJustAbsNbr', [StudentController::class, 'getJustifiedAbsNbr']
 Route::post('/totalNonJustAbsNbr', [StudentController::class, 'getNonJustifiedAbsNbr']);
 Route::post('/totalPendJus', [StudentController::class, 'getTotalPendJus']);
 Route::post('/StudentInfo', [StudentController::class, 'getStudentInfo']);
+
+//Teacher Functions
 Route::post('/TeacherInfo', [TeacherController::class, 'getTeacherInfo']);
+//Get the list of all students
+Route::get('/AllStudents', [TeacherController::class, 'getAllStudents']);
+
+
+
+//Admin Functions
 Route::post('/AdminInfo', [AdminController::class, 'getAdminInfo']);
+
 
 
 
