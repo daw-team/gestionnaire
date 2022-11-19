@@ -22,7 +22,7 @@ class TeacherController extends Controller
 
 public function getTeacherInfo(request $request) {
         return DB::table('ENSEIGNANT')
-                        ->select('ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens')
+                        ->select('ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens','ENSEIGNANT.UserName_Ens','ENSEIGNANT.Num_Mod','ENSEIGNANT.Photo_Ens')
                         ->where('ENSEIGNANT.Num_Ens', '=',$request->id )
                         ->get();
     }
