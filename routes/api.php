@@ -39,6 +39,7 @@ Route::post('/totalJustAbsNbr', [StudentController::class, 'getJustifiedAbsNbr']
 Route::post('/totalNonJustAbsNbr', [StudentController::class, 'getNonJustifiedAbsNbr']);
 Route::post('/totalPendJus', [StudentController::class, 'getTotalPendJus']);
 Route::post('/StudentInfo', [StudentController::class, 'getStudentInfo']);
+Route::post('/changeStudentInfo', [StudentController::class, 'changeStudentInfo']);
 
 //Teacher Functions
 Route::post('/TeacherInfo', [TeacherController::class, 'getTeacherInfo']);
