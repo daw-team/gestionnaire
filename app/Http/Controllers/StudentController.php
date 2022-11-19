@@ -48,7 +48,7 @@ class StudentController extends Controller
 
 public function getStudentInfo(request $request) {
         return DB::table('ETUDIANT')
-                        ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud')
+                        ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud','ETUDIANT.Group_Etud','ETUDIANT.UserName_Etud','ETUDIANT.Photo_Etud')
                         ->where('ETUDIANT.Num_Etud', '=',$request->id )
                         ->get();
     }
