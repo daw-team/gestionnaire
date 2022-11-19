@@ -21,7 +21,7 @@ class AdminController extends Controller
 {
 public function getAdminInfo(request $request) {
         return DB::table('ADMINISTRATEUR')
-                        ->select('ADMINISTRATEUR.Nom_Adm','ADMINISTRATEUR.Prenom_Adm')
+                        ->select('ADMINISTRATEUR.Nom_Adm','ADMINISTRATEUR.Prenom_Adm','ADMINISTRATEUR.UserName_Adm','ADMINISTRATEUR.Photo_Adm')
                         ->where('ADMINISTRATEUR.Num_Adm', '=',$request->id )
                         ->get();
     }
