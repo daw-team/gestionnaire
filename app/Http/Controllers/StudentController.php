@@ -15,6 +15,7 @@ use App\Models\absence;
 use App\Models\Etudiant;
 use App\Models\enseignant;
 use App\Models\Administrateur;
+use App\Models\module;
 
 
 class StudentController extends Controller
@@ -118,5 +119,9 @@ public function getJustifiedAbsNbr(request $request) {
             'msg' => 'wrong password',
         ]);
     }
-
+    
+    
+	public function getAllModules() {
+	return DB::table('MODULE')->get();
+}
     }
