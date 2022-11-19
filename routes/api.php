@@ -43,7 +43,6 @@ Route::post('/changeStudentInfo', [StudentController::class, 'changeStudentInfo'
 Route::get('/AllModules', [StudentController::class, 'getAllModules']);
 
 
-Route::post('/roottry', [StudentController::class, 'ssss']);
 
 //Teacher Functions
 Route::post('/TeacherInfo', [TeacherController::class, 'getTeacherInfo']);

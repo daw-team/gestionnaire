@@ -133,12 +133,6 @@ export default {
     },
     methods: {
         sendInfo(){
-            if(this.changePasswordActive === true) {
-                if(this.changePassword.newPassword === this.changePassword.confirmNewPassword){
-                    this.user.newPassword = this.changePassword.newPassword
-                }
-            }
-
             this.user.imgSrc = '../../../../storage/app/public/profileImages/student' + this.$route.params.id + '.' + this.image.name.split('.')[1]
             const formData = new FormData
             formData.set('image', this.image)
@@ -148,7 +142,14 @@ export default {
             formData.append('username', this.user.username)
             formData.append('currentPassword', this.user.currentPassword)
             formData.append('imgSrc', this.user.imgSrc)
-            formData.append('newPassword', this.user.newPassword)
+
+            if(this.changePasswordActive === true) {
+                if(this.changePassword.newPassword === this.changePassword.confirmNewPassword){
+                    formData.append('newPassword', this.changePassword.newPassword)
+
+                }
+            }
+
             if(this.checkForEmptyFields()){
                 this.msg = `You can't leave empty fields`
             }

@@ -8,11 +8,11 @@
         <div class="container-right">
             <div class="account-container card">
                 <p>STUDENT</p>
-                <img src="../../assets/user.png" alt="" @click="showProfileCard = !showProfileCard">
+                <img :src="getImageUrl(user.imgSrc)" alt="" @click="showProfileCard = !showProfileCard">
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
                 <p>{{ user.username }}</p>
                 <button>View profile</button>
-                <button>Log out</button>
+                <a href="/logout"><button>Log out</button></a>
             </div>
 
                 <div class="card">
@@ -130,7 +130,7 @@ export default {
                 nom:'',
                 prenom: '',
                 username: '',
-                imgSrc: ''
+                imgSrc: '../../assets/user.png'
             },
             absencesInfo: {
                 totalAbsences: 0, pendingAbsences: 0, justifiedAbsences: 0
@@ -151,6 +151,9 @@ export default {
                 this.user.nom = res.data[0].Nom_Etud
                 this.user.prenom = res.data[0].Prenom_Etud
                 this.user.username = res.data[0].UserName_Etud
+                if(res.data[0].Photo_Etud !== null){
+                    this.user.imgSrc = res.data[0].Photo_Etud
+                }
             })
 
         axios
@@ -171,6 +174,13 @@ export default {
                 this.absencesInfo.pendingAbsences = res.data
             })
     },
+
+    setup() {
+    const getImageUrl = (name) => {
+        return new URL(name, import.meta.url).href
+    }
+    return { getImageUrl }
+    }
 }
 
 
@@ -315,13 +325,23 @@ input{
 }
 
 
-.account-container :nth-child(6) {
+.account-container a {
     width: 70%;
-    border: none;
-    border-radius: 10px;
     font-weight: 500;
     background: linear-gradient#fff;
 }
+
+.account-container a button{
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+}
+
+.account-container a button:hover{
+    box-shadow: #000 1px 1px 5px;
+    transition: all ease .4s;
+}
+
 
 
 .card{
@@ -367,7 +387,7 @@ input{
 
 .card img {
     height: 70px;
-    width: auto;
+    width: 70px;
 }
 
 h5 {
