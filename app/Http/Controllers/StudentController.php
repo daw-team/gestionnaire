@@ -102,15 +102,15 @@ public function getJustifiedAbsNbr(request $request) {
     }
 
     public function changeStudentInfo(request $request) {
-        $Etud = Etudiant::where('Num_Etud', $request->id)->get();
-        if($request->currentPassword == $Etud[0]['PassWord_Etud']){
+        $Etud = Etudiant::where('Num_Etud', $request->user->id)->get();
+        if($request->user->currentPassword == $Etud[0]['PassWord_Etud']){
         
     	Etudiant::where('Num_Etud',$request->id)
-                ->update(['Nom_Etud' => $request->nom ,'Prenom_Etud' => $request->prenom,'UserName_Etud' => $request->username,'Photo_Etud' => $request->imgSrc]);
+                ->update(['Nom_Etud' => $request->user->nom ,'Prenom_Etud' => $request->user->prenom,'UserName_Etud' => $request->user->username,'Photo_Etud' => $request->user->imgSrc]);
         
-    	if($request->newPassword != "" ){
-            Etudiant::where('Num_Etud',$request->id)
-                ->update(['PassWord_Etud' => $request->newPassword]);
+    	if($request->user->newPassword != "" ){
+            Etudiant::where('Num_Etud',$request->user->id)
+                ->update(['PassWord_Etud' => $request->user->newPassword]);
         }
         return response()->json([
                     'msg' => 'informations updated successfully',
