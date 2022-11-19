@@ -42,6 +42,8 @@ Route::post('/StudentInfo', [StudentController::class, 'getStudentInfo']);
 Route::post('/changeStudentInfo', [StudentController::class, 'changeStudentInfo']);
 Route::get('/AllModules', [StudentController::class, 'getAllModules']);
 
+
+
 //Teacher Functions
 Route::post('/TeacherInfo', [TeacherController::class, 'getTeacherInfo']);
 //Get the list of all students
