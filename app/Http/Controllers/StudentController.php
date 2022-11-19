@@ -104,13 +104,17 @@ public function getJustifiedAbsNbr(request $request) {
     public function changeStudentInfo(request $request) {
     $Etud = Etudiant::where('Num_Etud', $request->id)->get();
         if($request->currentPassword == $Etud[0]['PassWord_Etud']){
-        
-         $file = $request->file('image');
+        if ($request->hasFile('image')) {
+        $file = $request->file('image');
         $fileExt = $file->extension();
         $newFile = 'student'.$request->id.'.'.$fileExt;
         $file->storeAs('public/profileImages', $newFile);
+	Etudiant::where('Num_Etud',$request->id)
+		->update(['Photo_Etud' => $request->imgSrc]);
+}
+         
     	Etudiant::where('Num_Etud',$request->id)
-                ->update(['Nom_Etud' => $request->nom ,'Prenom_Etud' => $request->prenom,'UserName_Etud' => $request->username,'Photo_Etud' => $request->imgSrc]);
+                ->update(['Nom_Etud' => $request->nom ,'Prenom_Etud' => $request->prenom,'UserName_Etud' => $request->username]);
 
     	if($request->newPassword != "" ){
             Etudiant::where('Num_Etud',$request->id)
