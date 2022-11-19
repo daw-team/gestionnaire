@@ -105,7 +105,7 @@ public function getJustifiedAbsNbr(request $request) {
         if($request->currentPassword == $Etud[0]['PassWord_Etud']){
         
     	Etudiant::where('Num_Etud',$request->id)
-                ->update(['Nom_Etud' => $request->nom ,'Prenom_Etud' => $request->prenom,'UserName_Etud' => $request->username]);
+                ->update(['Nom_Etud' => $request->nom ,'Prenom_Etud' => $request->prenom,'UserName_Etud' => $request->username,'Photo_Etud' => $request->imgSrc]);
         
     	if($request->newPassword != "" ){
             Etudiant::where('Num_Etud',$request->id)
