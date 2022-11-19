@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 // use Illuminate\Http\UploadedFile::extention;
 
 
-
+use Illuminate\Http\UploadedFile;
 use Illuminate\Http\Request;
 use App\Models\absence;
 use App\Models\Etudiant;
@@ -40,7 +40,7 @@ class StudentController extends Controller
     public function getAbsences(request $request) {
         return DB::table('ABSENCE')
                         ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
-                        ->select('MODULE.Abrv_mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs', 'ABSENCE.Num_Abs')
+                        ->select('MODULE.Abrv_Mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs', 'ABSENCE.Num_Abs')
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
                         ->where('ABSENCE.Just_Abs', '=',NULL )
                         ->get();
@@ -104,6 +104,7 @@ public function getJustifiedAbsNbr(request $request) {
     public function changeStudentInfo(request $request) {
     $Etud = Etudiant::where('Num_Etud', $request->id)->get();
         if($request->currentPassword == $Etud[0]['PassWord_Etud']){
+        
          $file = $request->file('image');
         $fileExt = $file->extension();
         $newFile = 'student'.$request->id.'.'.$fileExt;
@@ -125,10 +126,17 @@ public function getJustifiedAbsNbr(request $request) {
 
 
 	public function getAllModules() {
-	return DB::table('MODULE')->get();
-    }
+	return DB::table('MODULE')
+				 ->join('ENSEIGNANT', 'ENSEIGNANT.Num_Mod', '=', 'MODULE.Num_Mod')
+				 ->select('MODULE.Abrv_mod', 'MODULE.Num_Mod', 'MODULE.Nom_Mod','MODULE.Coeff_Mod' ,'MODULE.Credit_Mod','ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens')
+				 ->get();
+				 }
 
-    public function ssss(request $request) {
-        return $request;
-    }
+    public function sendTeacherEmail(request $request) {
+        return DB::table('MODULE')
+				 ->join('ENSEIGNANT', 'ENSEIGNANT.Num_Mod', '=', 'MODULE.Num_Mod')
+				 ->select('MODULE.Abrv_mod','ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens','ENSEIGNANT.UserName_Ens')
+				 ->get();
+				 }
+    
 }

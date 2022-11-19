@@ -41,6 +41,7 @@ Route::post('/totalPendJus', [StudentController::class, 'getTotalPendJus']);
 Route::post('/StudentInfo', [StudentController::class, 'getStudentInfo']);
 Route::post('/changeStudentInfo', [StudentController::class, 'changeStudentInfo']);
 Route::get('/AllModules', [StudentController::class, 'getAllModules']);
+Route::get('/sendTeacherEmail', [StudentController::class, 'sendTeacherEmail']);
 
 
 
