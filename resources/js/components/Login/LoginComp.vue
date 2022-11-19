@@ -83,7 +83,7 @@ export default {
                     else if (response.data.msg == 'Administarteur') {
                         this.$router.push('/admin=' + response.data.id)
                     }
-                    {
+                    else{
                         this.msg = response.data.msg
                         this.login.username = ''
                         this.login.password = ''

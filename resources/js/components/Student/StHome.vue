@@ -10,7 +10,7 @@
                 <p>STUDENT</p>
                 <img src="../../assets/user.png" alt="" @click="showProfileCard = !showProfileCard">
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
-                <p>amine.baheddi@gmail.com</p>
+                <p>{{ user.username }}</p>
                 <button>View profile</button>
                 <button>Log out</button>
             </div>
@@ -34,7 +34,7 @@
                 <div class="card">
                         <div>
                             <h5>JUSTIFIED ABSENCES</h5>
-                            <span>{{ absencesInfo.acceptedAbsences }}</span>
+                            <span>{{ absencesInfo.justifiedAbsences }}</span>
                         </div>
                         <img src="../../assets/accepted.png" alt="">
                 </div>
@@ -129,9 +129,11 @@ export default {
             user:{
                 nom:'',
                 prenom: '',
+                username: '',
+                imgSrc: ''
             },
             absencesInfo: {
-                totalAbsences: 0, pendingAbsences: 0, acceptedAbsences: 0
+                totalAbsences: 0, pendingAbsences: 0, justifiedAbsences: 0
             }
         }
     },
@@ -146,9 +148,9 @@ export default {
         axios
             .post('http://localhost:8000/api/StudentInfo', {id:this.$route.params.id})
             .then( res => {
-                console.log(res.data)
                 this.user.nom = res.data[0].Nom_Etud
                 this.user.prenom = res.data[0].Prenom_Etud
+                this.user.username = res.data[0].UserName_Etud
             })
 
         axios
@@ -160,14 +162,12 @@ export default {
         axios
             .post('http://localhost:8000/api/totalJustAbsNbr', {id:this.$route.params.id})
             .then( res => {
-                console.log(res.data)
-                this.absencesInfo.acceptedAbsences = res.data
+                this.absencesInfo.justifiedAbsences = res.data
             })
 
             axios
             .post('http://localhost:8000/api/totalNonJustAbsNbr', {id:this.$route.params.id})
             .then( res => {
-                console.log(res.data)
                 this.absencesInfo.pendingAbsences = res.data
             })
     },
@@ -246,7 +246,7 @@ input{
     color: #e8e8e8;
     border-radius: 20px;
     font-size: 14px;
-    background: linear-gradient(6deg, #1f37824d, #02722442);
+    background: linear-gradient(6deg, #1f378233, #02722438);
 }
 
 .background{
@@ -268,6 +268,15 @@ input{
     align-items: center;
     justify-content: space-around !important;
 }
+
+.account-container::after{
+    content: none !important;
+}
+
+.account-container img{
+    border-radius: 50%;
+}
+
 
 .account-container :nth-child(4){
     margin-bottom: auto;
@@ -294,11 +303,23 @@ input{
 
 .account-container :nth-child(5) {
     width: 80%;
-    background: linear-gradient(-70deg, #1f3782, #027224);
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
 }
+
+.account-container :nth-child(5):hover {
+    background: linear-gradient(0deg, #1e4881, #106e3a);
+}
+
 
 .account-container :nth-child(6) {
     width: 70%;
+    border: none;
+    border-radius: 10px;
+    font-weight: 500;
     background: linear-gradient#fff;
 }
 
@@ -386,7 +407,7 @@ h5 {
     width: calc(100% - 40px);
     height: 80px;
     font-size: 20px;
-    background: linear-gradient(70deg, #1f3782, #027224);
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
     display: flex;
     flex-direction: row;
     align-items: center;

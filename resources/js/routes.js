@@ -27,6 +27,16 @@ import TcAbsences from './components/Teacher/TcAbsences.vue'
 
 
 import AdminApp from './components/AdminApp.vue'
+import AdLandingPage from './components/Admin/AdLandingPage.vue'
+import AdDashboard from './components/Admin/AdDashboard.vue'
+import AdHome from './components/Admin/AdHome.vue'
+import AdProfile from './components/Admin/AdProfile.vue'
+import AdTeachersList from './components/Admin/AdTeachersList.vue'
+import AdStudentsList from './components/Admin/AdStudentsList.vue'
+import AdAbsences from './components/Admin/AdAbsences.vue'
+import AdModulesList from './components/Admin/AdModulesList.vue'
+
+
 
 export const routes = [
     { path: '/', name:'home', component: LandingPage },
@@ -52,5 +62,15 @@ export const routes = [
             { path: 'absences', name:'TcAbsences', component: TcAbsences },
         ] },
     ] },
-    { path: '/admin=:id', name:'admin', component: AdminApp },
+    { path: '/admin=:id', name:'admin', component: AdminApp, children:[
+        { path: '/', name:'AdGetstarted', component: AdLandingPage },
+        { path: 'dashboard', name:'AdDashboard', component: AdDashboard, children:[
+            { path: 'home', name:'AdHome', component: AdHome },
+            { path: 'profile', name:'AdProfile', component: AdProfile },
+            { path: 'teachers', name:'AdTeachersList', component: AdTeachersList },
+            { path: 'students', name:'AdStudentsList', component: AdStudentsList},
+            { path: 'absences', name:'AdAbsences', component: AdAbsences},
+            { path: 'modules', name:'AdModulesList', component: AdModulesList },
+        ] },
+    ]}
 ]

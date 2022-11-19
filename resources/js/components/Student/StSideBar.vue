@@ -32,15 +32,15 @@
             </div>
         </li>
         </router-link>
-        <a  href="/logout"  class="logout-btn" v-if="menuActive">
-            <li>
-                <ion-icon name="log-out-outline">
-                </ion-icon>
-                <transition name="appear">
-                    <span  >Logout</span>
-                </transition>
-            </li>
-        </a>
+        <transition name="appear">
+            <a  href="/logout"  class="logout-btn" v-if="menuActive">
+                <li>
+                    <ion-icon name="log-out-outline">
+                    </ion-icon>
+                    <span  >Log out</span>
+                </li>
+            </a>
+        </transition>
     </ul>
   </div>
 </template>
@@ -116,15 +116,15 @@ export default {
 }
 
 .side-bar {
-  width: 260px;
-  height: 100vh;
-  padding: 30px 0 30px 0;
-  background: linear-gradient(180deg, #008828, #305748, #305748,#305748,  #305748, #305748, #008828);
-  position: fixed;
-  top: 0;
-  left: 0;
-  color: #fff;
-  transition: all ease .4s;
+    width: 260px;
+    height: 100vh;
+    padding: 30px 0 30px 0;
+    background: linear-gradient(180deg, #14a24d, #106e3a, #106e3a,#106e3a, #106e3a, #106e3a, #14a24d);
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: #fff;
+    transition: all ease .4s;
 }
 
 .desactivate-menu{
@@ -134,6 +134,7 @@ export default {
 
 a{
     text-decoration: none;
+    color:#fff;
 }
 
 a:visited{
@@ -182,7 +183,7 @@ li::before{
     width: 100%;
     height: 15px;
     /* background: linear-gradient(-90deg, #2c4eb4, #2c4eb4,  #3E7E3F); */
-  background-color: #305748;
+  background-color: #106e3a;
 
     border-bottom-right-radius: 15px;
 }
@@ -192,7 +193,7 @@ li::after{
     width: 100%;
     height: 15px;
     /* background: linear-gradient(-90deg, #2c4eb4,#2c4eb4, #3E7E3F); */
-  background-color: #305748;
+  background-color: #106e3a;
 
     border-top-right-radius: 15px;
 

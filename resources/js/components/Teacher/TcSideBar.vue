@@ -108,16 +108,15 @@ export default {
 }
 
 .side-bar {
-  width: 260px;
-  height: 100vh;
-  padding: 30px 0 30px 0;
-  background: linear-gradient(180deg, #008828, #305748, #305748,#305748,  #305748, #305748, #008828);
-  /* background-color: #3E7E3F; */
-  position: fixed;
-  top: 0;
-  left: 0;
-  color: #fff;
-  transition: all ease .4s;
+    width: 260px;
+    height: 100vh;
+    padding: 30px 0 30px 0;
+    background: linear-gradient(180deg, #14a24d, #106e3a, #106e3a,#106e3a, #106e3a, #106e3a, #14a24d);
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: #fff;
+    transition: all ease .4s;
 }
 
 .desactivate-menu{
@@ -127,6 +126,7 @@ export default {
 
 a{
     text-decoration: none;
+    color: #fff;
 }
 
 a:visited{
