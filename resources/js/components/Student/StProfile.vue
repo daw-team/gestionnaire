@@ -138,13 +138,16 @@ export default {
                     this.user.newPassword = this.changePassword.newPassword
                 }
             }
+            const formData = new FormData
+            formData.set('image', this.image)
+            formData.append('user', this.user)
             this.user.imgSrc = '../../../../storage/app/public/profileImages/student' + this.$route.params.id + '.' + this.image.name.split('.')[1]
             if(this.checkForEmptyFields()){
                 this.msg = `You can't leave empty fields`
             }
             else{
                 axios
-                .post('http://localhost:8000/api/changeStudentInfo', this.user)
+                .post('http://localhost:8000/api/changeStudentInfo', formData)
                 .then( res => {
                     this.EditModeActive = false
                     this.msg = this.res.data
