@@ -79,21 +79,24 @@
                 </div>
 
                 <div class="contact long-card"
-                    :class="{'.contact-2': menuChange}"
                 >
                     <h5>SEND EMAIL</h5>
                     <div    class="card-container">
-                        <div class="teacher"
-                        v-for="(contact, index) in contacts"
-                        :key="index"
+                        <a
+                            :href="`mailto:${contact.UserName_Ens}`"
+                            v-for="(contact, index) in contacts"
+                            :key="index"
                         >
-                            <div>
-                                <p>{{ contact.name }}</p>
-                                <span>{{ contact.module }}</span>
+                        <div class="teacher"
+                        >
+                                <div>
+                                    <p>{{ contact.Nom_Ens }} {{ contact.Prenom_Ens }}</p>
+                                    <span>{{ contact.Abrv_mod }}</span>
+                                </div>
+                                <p>{{ contact.UserName_Ens }}</p>
+                                <img src="../../assets/mailSend.png" alt="">
                             </div>
-                            <a :href="`mailto:${contact.email}`"><img src="../../assets/mailSend.png" alt=""></a>
-                        </div>
-                        <hr>
+                        </a>
                     </div>
                 </div>
 
@@ -120,12 +123,7 @@ export default {
                 {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: false},
                 {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: true},
             ],
-            contacts:[
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-            ],
+            contacts:[],
             user:{
                 nom:'',
                 prenom: '',
@@ -168,12 +166,19 @@ export default {
                 this.absencesInfo.justifiedAbsences = res.data
             })
 
-            axios
+        axios
             .post('http://localhost:8000/api/totalNonJustAbsNbr', {id:this.$route.params.id})
             .then( res => {
                 this.absencesInfo.pendingAbsences = res.data
             })
-    },
+
+        // teachers contacts
+        axios
+            .get('http://localhost:8000/api/sendTeacherEmail')
+            .then( res => {
+                this.contacts = res.data
+            })
+        },
 
     setup() {
     const getImageUrl = (name) => {
@@ -188,6 +193,14 @@ export default {
 
 
 <style scoped>
+a{
+    text-decoration: none;
+}
+
+a:visited{
+    text-decoration: none;
+}
+
 .home{
     width: calc(100% - 70px) ! important;
     padding-left: 70px;
