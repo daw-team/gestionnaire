@@ -32,5 +32,30 @@ public function getAllStudents(request $request){
                         ->get();
 }
 
+public function changeTeacherInfo(request $request) {
+    $Ens = enseignant::where('Num_Ens', $request->id)->get();
+        if($request->currentPassword === $Ens[0]['PassWord_Ens']){
+        if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $fileExt = $file->extension();
+        $newFile = 'teacher'.$request->id.'.'.$fileExt;
+        $file->storeAs('public/profileImages', $newFile);
+	enseignant::where('Num_Ens',$request->id)
+		->update(['Photo_Ens' => $request->imgSrc]);
+}
+    
+    	enseignant::where('Num_Ens',$request->id)
+                ->update(['Nom_Ens' => $request->nom ,'Prenom_Ens' => $request->prenom,'UserName_Ens' => $request->username]);
 
+    	if($request->newPassword != "" ){
+            enseignant::where('Num_Ens',$request->id)
+                ->update(['PassWord_Ens' => $request->newPassword]);
+        }
+        return response()->json([
+                    'msg' => 'informations updated successfully',
+                ]);
+        }else  return response()->json([
+            'msg' => 'wrong password',
+        ]);
+    }
 }
