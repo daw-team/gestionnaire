@@ -78,6 +78,7 @@ export default {
     background-color: rgb(201, 201, 201);
     color: #fff;
     font-weight: 900;
+    margin-bottom: 10px;
 }
 
 button{

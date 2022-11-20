@@ -74,6 +74,7 @@ export default {
     align-items: center;
     background-color: rgb(201, 201, 201);
     color: #fff;
+    margin-bottom: 10px;
     font-weight: 900;
 }
 

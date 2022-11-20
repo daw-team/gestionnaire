@@ -406,7 +406,6 @@ h5 {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin: 10px 25px;
 }
 
 .long-card{
@@ -415,7 +414,6 @@ h5 {
     height: auto;
     box-shadow: none;
     border-radius: 15px;
-    background-color: #fcfcfc;
     min-width: 200px;
     margin: 20px 10vw;
     flex-grow: 1;
@@ -430,8 +428,8 @@ h5 {
     background: linear-gradient(0deg, #2b5dbb, #14a24d);
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    justify-content: space-between;
     font-size: 20px;
 }
 
@@ -441,7 +439,6 @@ h5 {
     height: 200px;
     background: #fff;
     overflow-y: auto;
-    margin: 0 25px auto 25px;
 }
 
 .absence{
@@ -456,12 +453,24 @@ h5 {
     font-weight: 800;
     color: #fff;
     background: #c9c6c6;
+    position: relative;
+    transition: all ease .4s;
+
 }
 
 .absence:hover{
     box-shadow: 3px 3px 8px rgb(94, 94, 94);
-    border-radius: 0px;
     background: rgba(0, 0, 0, 0.1);
+    transition: all ease .4s;
+}
+
+.absence:hover::before{
+    position: absolute;
+    content: '';
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
+    width: 10px;
+    height: 100%;
+    left: 0;
     transition: all ease .4s;
 }
 

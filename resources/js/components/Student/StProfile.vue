@@ -115,8 +115,9 @@ export default {
             },
             pswMsg: '',
             msg: '',
-            updated:'',
-            image: ''
+            updated: false,
+            image: '',
+            imageupdated: false
         }
     },
     mounted() {
@@ -133,9 +134,13 @@ export default {
     },
     methods: {
         sendInfo(){
-            this.user.imgSrc = '../../../../storage/app/public/profileImages/student' + this.$route.params.id + '.' + this.image.name.split('.')[1]
             const formData = new FormData
-            formData.set('image', this.image)
+            if (this.imageupdated) {
+                let extention = this.image.name.split('.')
+                extention = extention[extention.length - 1]
+                this.user.imgSrc = '../../../../storage/app/public/profileImages/student' + this.$route.params.id + '.' + extention
+                formData.set('image', this.image)
+            }
             formData.append('id', this.user.id)
             formData.append('nom', this.user.nom)
             formData.append('prenom', this.user.prenom)
@@ -159,7 +164,8 @@ export default {
                 .then( res => {
                     console.log(res.data);
                     this.EditModeActive = false
-                    this.msg = this.res.data
+                    this.updated = true
+                    this.msg = res.data.msg
                 })
             }
         },
@@ -188,6 +194,7 @@ export default {
         saveImage(e) {
             this.image = e.target.files[0]
             this.user.imgSrc = URL.createObjectURL(e.target.files[0])
+            this.imageupdated = true
         },
     },
 
@@ -398,7 +405,7 @@ input[ type="file" ]{
 }
 
 .p-true {
-    color: #027224;
+    color: #027224 !important;
 }
 
 .profile-info > *{
