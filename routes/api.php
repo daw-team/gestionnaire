@@ -45,8 +45,11 @@ Route::get('/sendTeacherEmail', [StudentController::class, 'sendTeacherEmail']);
 
 
 
+
 //Teacher Functions
 Route::post('/TeacherInfo', [TeacherController::class, 'getTeacherInfo']);
+Route::post('/ChangeTeacherInfo', [TeacherController::class, 'changeTeacherInfo']);
+
 //Get the list of all students
 Route::get('/AllStudents', [TeacherController::class, 'getAllStudents']);
 
@@ -54,7 +57,7 @@ Route::get('/AllStudents', [TeacherController::class, 'getAllStudents']);
 
 //Admin Functions
 Route::post('/AdminInfo', [AdminController::class, 'getAdminInfo']);
-
+Route::post('/ChangeAdminInfo', [AdminController::class, 'changeAdminInfo']);
 
 
 
