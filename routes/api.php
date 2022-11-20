@@ -57,7 +57,7 @@ Route::get('/AllStudents', [TeacherController::class, 'getAllStudents']);
 
 //Admin Functions
 Route::post('/AdminInfo', [AdminController::class, 'getAdminInfo']);
-Route::post('/ChangeAdminInfo', [AdminController::class, 'ChangeAdminInfo']);
+Route::post('/ChangeAdminInfo', [AdminController::class, 'changeAdminInfo']);
 
 
 

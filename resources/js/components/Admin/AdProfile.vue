@@ -160,7 +160,7 @@ export default {
             }
             else{
                 axios
-                .post('http://localhost:8000/api/changeAdminInfo', formData)
+                .post('http://localhost:8000/api/ChangeAdminInfo', formData)
                 .then( res => {
                     this.EditModeActive = false
                     this.updated = true
