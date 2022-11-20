@@ -128,7 +128,7 @@ export default {
                 this.user.prenom = res.data[0].Prenom_Adm
                 this.user.username = res.data[0].UserName_Adm
                 if(res.data[0].Photo_Adm !== null ){
-                    this.user.imgSrc = res.data[0].Photo_Etud
+                    this.user.imgSrc = res.data[0].Photo_Adm
                 }
             })
     },
@@ -160,7 +160,7 @@ export default {
             }
             else{
                 axios
-                .post('http://localhost:8000/api/changeAdminInfo', formData)
+                .post('http://localhost:8000/api/ChangeAdminInfo', formData)
                 .then( res => {
                     this.EditModeActive = false
                     this.updated = true
