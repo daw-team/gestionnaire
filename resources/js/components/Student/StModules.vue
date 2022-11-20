@@ -7,17 +7,17 @@
             >
                 <div class="row-one">
                     <div class="left">
-                        <h1>{{ module.Abrv_Mod }}</h1>
+                        <h1>{{ module.Abrv_mod }}</h1>
                         <p>{{ module.Nom_Mod }}</p>
                     </div>
                     <div class="right">
-                        <img :src="getImageUrl(module.Abrv_Mod)" alt="">
+                        <img :src="getImageUrl(module.Abrv_mod)" alt="">
                     </div>
                 </div>
                 <div class="row-two">
-                    <p>Enseignant: {{ module.Ens_Nom }} {{ module.Ens_Prenom }}</p>
-                    <p>Coefficient: {{ module.Mod_Coef }}</p>
-                    <p>Credit: {{ module.Mod_Cred }}</p>
+                    <p>Enseignant: {{ module.Nom_Ens }} {{ module.Prenom_Ens }}</p>
+                    <p>Coefficient: {{ module.Coeff_Mod }}</p>
+                    <p>Credit: {{ module.Credit_Mod }}</p>
                 </div>
             </div>
         </div>
@@ -37,9 +37,18 @@ export default {
         }
     },
 
+    mounted() {
+        axios
+            .get('http://localhost:8000/api/AllModules')
+            .then( res => {
+                console.log(res.data);
+                this.modules = res.data
+            })
+    },
+
     setup() {
     const getImageUrl = (name) => {
-        name = `../../assets/` + name.toLowerCase() + ".png"
+        name = `../../assets/` + name + ".png"
         return new URL(name, import.meta.url).href
     }
     return { getImageUrl }

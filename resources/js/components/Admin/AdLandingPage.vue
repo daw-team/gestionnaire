@@ -11,7 +11,7 @@
                 <button class="get-started" @click="goToDashboard">Get started</button>
             </div>
             <div class="container-img">
-                <img src="../../assets/student.png" alt="">
+                <img src="../../assets/Admin.png" alt="">
             </div>
         </div>
     </div>

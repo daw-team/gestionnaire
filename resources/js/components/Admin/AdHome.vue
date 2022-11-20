@@ -10,7 +10,7 @@
                 <p>ADMIN</p>
                 <img :src="getImageUrl(user.imgSrc)" alt="" @click="showProfileCard = !showProfileCard">
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
-                <p>amine.baheddi@gmail.com</p>
+                <p>{{ user.username }}</p>
                 <button>View profile</button>
                 <button>Log out</button>
             </div>
@@ -83,17 +83,21 @@
                 >
                     <h5>SEND EMAIL</h5>
                     <div    class="card-container">
-                        <div class="teacher"
-                        v-for="(contact, index) in contacts"
-                        :key="index"
+                        <a
+                            :href="`mailto:${contact.UserName_Ens}`"
+                            v-for="(contact, index) in contacts"
+                            :key="index"
                         >
-                            <div>
-                                <p>{{ contact.name }}</p>
-                                <span>{{ contact.module }}</span>
+                        <div class="teacher"
+                        >
+                                <div>
+                                    <p>{{ contact.Nom_Ens }} {{ contact.Prenom_Ens }}</p>
+                                    <span>{{ contact.Abrv_mod }}</span>
+                                </div>
+                                <p>{{ contact.UserName_Ens }}</p>
+                                <img src="../../assets/mailSend.png" alt="">
                             </div>
-                            <a :href="`mailto:${contact.email}`"><img src="../../assets/mailSend.png" alt=""></a>
-                        </div>
-                        <hr>
+                        </a>
                     </div>
                 </div>
 
@@ -120,12 +124,7 @@ export default {
                 {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: false},
                 {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: true},
             ],
-            contacts:[
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-            ],
+            contacts:[],
             user:{
                 nom:'',
                 prenom: '',
@@ -151,30 +150,40 @@ export default {
                 this.user.nom = res.data[0].Nom_Adm
                 this.user.prenom = res.data[0].Prenom_Adm
                 this.user.username = res.data[0].UserName_Adm
+                if(res.data[0].Photo_Adm !== null ){
+                    this.user.imgSrc = res.data[0].Photo_Etud
+                }
             })
+
+        // axios
+        //     .post('http://localhost:8000/api/totalAbsNbr', {id:this.$route.params.id})
+        //     .then( res => {
+        //         this.homeInfo.teachers = res.data
+        //     })
+
+        // axios
+        //     .post('http://localhost:8000/api/totalJustAbsNbr', {id:this.$route.params.id})
+        //     .then( res => {
+        //         this.homeInfo.students = res.data
+        //     })
+
+        //     axios
+        //     .post('http://localhost:8000/api/totalNonJustAbsNbr', {id:this.$route.params.id})
+        //     .then( res => {
+        //         this.homeInfo.absences = res.data
+        //     })
+
+        //     .post('http://localhost:8000/api/totalNonJustAbsNbr', {id:this.$route.params.id})
+        //     .then( res => {
+        //         this.homeInfo.modules = res.data
+        //     })
 
         axios
-            .post('http://localhost:8000/api/totalAbsNbr', {id:this.$route.params.id})
+            .get('http://localhost:8000/api/sendTeacherEmail')
             .then( res => {
-                this.homeInfo.teachers = res.data
+                this.contacts = res.data
             })
 
-        axios
-            .post('http://localhost:8000/api/totalJustAbsNbr', {id:this.$route.params.id})
-            .then( res => {
-                this.homeInfo.students = res.data
-            })
-
-            axios
-            .post('http://localhost:8000/api/totalNonJustAbsNbr', {id:this.$route.params.id})
-            .then( res => {
-                this.homeInfo.absences = res.data
-            })
-
-            .post('http://localhost:8000/api/totalNonJustAbsNbr', {id:this.$route.params.id})
-            .then( res => {
-                this.homeInfo.modules = res.data
-            })
     },
 
     methods: {
@@ -394,10 +403,10 @@ h5 {
     height: auto;
     box-shadow: none;
     border-radius: 15px;
-    background-color: #fcfcfc;
     min-width: 200px;
     margin: 20px 10vw;
     flex-grow: 1;
+    overflow-x: visible;
 }
 
 .long-card h5{
@@ -409,8 +418,8 @@ h5 {
     background: linear-gradient(0deg, #2b5dbb, #14a24d);
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    justify-content: space-between;
     font-size: 20px;
 }
 
@@ -420,7 +429,8 @@ h5 {
     height: 200px;
     background: #fff;
     overflow-y: auto;
-    margin: 0 25px auto 25px;
+    overflow-x: visible;
+
 }
 
 .absence{
@@ -435,12 +445,23 @@ h5 {
     font-weight: 800;
     color: #fff;
     background: #c9c6c6;
+    position: relative;
 }
 
 .absence:hover{
     box-shadow: 3px 3px 8px rgb(94, 94, 94);
     border-radius: 0px;
     background: rgba(0, 0, 0, 0.1);
+    transition: all ease .4s;
+}
+
+.absence:hover::before{
+    position: absolute;
+    content: '';
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
+    width: 10px;
+    height: 100%;
+    left: 0;
     transition: all ease .4s;
 }
 
@@ -485,5 +506,13 @@ h5 {
     color: gray;
     font-weight: 900;
     font-size: 13px;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:visited{
+    text-decoration: none;
 }
 </style>

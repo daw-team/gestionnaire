@@ -10,6 +10,7 @@
 <script>
 import AdLandingPage from './Admin/AdLandingPage.vue'
 import AdDashboard from './Admin/AdDashboard.vue'
+
 export default {
     components:{
         AdLandingPage,
