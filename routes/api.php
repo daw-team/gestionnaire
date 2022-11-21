@@ -32,12 +32,23 @@ Route::get('/logout', [LoginController::class, 'logout']);
 Route::post('/login', [LoginController::class, 'checkUser']);
 //Student Functions
 Route::get('/student', [StudentController::class, 'index']);
-Route::post('/absences', [StudentController::class, 'getAbsences']);
-Route::post('/uploadImage', [StudentController::class, 'storeImage']);
+
 Route::post('/totalAbsNbr', [StudentController::class, 'getTotalAbsNbr']);
-Route::post('/totalJustAbsNbr', [StudentController::class, 'getJustifiedAbsNbr']);
+Route::post('/AllAbsences', [StudentController::class, 'getAllAbsences']);
+
+
+Route::post('/nonJusAbsences', [StudentController::class, 'getNonJusAbsences']);
 Route::post('/totalNonJustAbsNbr', [StudentController::class, 'getNonJustifiedAbsNbr']);
-Route::post('/totalPendJus', [StudentController::class, 'getTotalPendJus']);
+
+Route::post('/JustAbs', [StudentController::class, 'getJusAbsences']);
+Route::post('/totalJustAbsNbr', [StudentController::class, 'getJustifiedAbsNbr']);
+
+
+Route::post('/totalPendJus', [StudentController::class, 'getTotalPendJusNbr']);
+Route::post('/PendJus', [StudentController::class, 'getPenAbsences']);
+
+
+Route::post('/uploadImage', [StudentController::class, 'storeImage']);
 Route::post('/StudentInfo', [StudentController::class, 'getStudentInfo']);
 Route::post('/changeStudentInfo', [StudentController::class, 'changeStudentInfo']);
 Route::get('/AllModules', [StudentController::class, 'getAllModules']);
