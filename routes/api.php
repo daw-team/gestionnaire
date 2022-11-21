@@ -33,6 +33,7 @@ Route::post('/login', [LoginController::class, 'checkUser']);
 //Student Functions
 Route::get('/student', [StudentController::class, 'index']);
 
+//Route::get('/createAbs', [StudentController::class, 'createAbs']);
 Route::post('/totalAbsNbr', [StudentController::class, 'getTotalAbsNbr']);
 Route::post('/AllAbsences', [StudentController::class, 'getAllAbsences']);
 

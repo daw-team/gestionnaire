@@ -38,7 +38,15 @@ class StudentController extends Controller
     }
 
 
+//public function createAbs(request $request) {
+//    	 absence::create([
+//    'Num_Abs' => 333,'Num_Etud' => 202031030632 ,'Num_Ens' => 202031030666, 'Num_Mod' => 5,'Date_Abs' => "2022-11-13",'Hour_Abs' => "8:30 11:00",
+//]);
+//$data = absence::where('ABSENCE.Num_Abs', '=',333 )
+//    			->get();
+//    			print($data);
 
+//    }
 
 
 
