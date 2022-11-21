@@ -39,7 +39,7 @@ export default {
     mounted() {
 
         axios
-            .post('http://localhost:8000/api/absences', this.log)
+            .post('http://localhost:8000/api/nonJusAbsences', this.log)
             .then(response => {
                 this.absences = response.data ;
             })
