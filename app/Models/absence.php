@@ -13,4 +13,5 @@ class absence extends Model
     public const UPDATED_AT = null;
     public $timestamps = false;
     protected $primaryKey = 'Num_Abs';
+    protected $guarded = []; 
 }
