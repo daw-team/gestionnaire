@@ -153,7 +153,7 @@ public function moduleInformation(request $request) {
 public function updateTeacherInfo(request $request){
      $num_mod = DB::table('MODULE')
                ->select('Num_Mod')
-               ->where('MODULE.Abrv_Mod','=',$request->module_abrviation)
+               ->where('MODULE.Abrv_Mod','=',$request->module_abriviation)
                 ->get()->value('Num_Mod');
     
     Enseignant::where('Num_Ens',$request->id)
@@ -183,9 +183,9 @@ public function updateModuleInfo(request $request){
 public function CreateTeacher(request $request){
     $num_mod = DB::table('MODULE')
             ->select('Num_Mod')
-            ->where('MODULE.Abrv_Mod','=',$request->module_abrviation)
+            ->where('MODULE.Abrv_Mod','=',$request->module_abriviation)
             ->get()->value('Num_Mod');
-     Enseignant::insert(['Nom_Ens' => $request->firstname ,'Prenom_Ens' => $request->lastname,'UserName_Ens' => $request->email,'PassWord_Ens'=>$request->password,'Num_Mod'=> $num_mod]);
+     Enseignant::insert(['Nom_Ens' => $request->lastname ,'Prenom_Ens' => $request->firstname,'UserName_Ens' => $request->email,'PassWord_Ens'=>$request->password,'Num_Mod'=> $num_mod]);
      return response()->json([
                 'msg' => 'information inserted successfuly',
          ]); 
@@ -193,7 +193,7 @@ public function CreateTeacher(request $request){
     
     
 public function CreateStudent(Request $request) {
-    Etudiant::insert(['Nom_Etud'=>$request->fname,'Prenom_Etud' => $request->lname,'UserName_Etud' => $request->email,'PassWord_Etud'=>$request->password,'Group_Etud'=>$request->groupe]);
+    Etudiant::insert(['Nom_Etud'=>$request->lname,'Prenom_Etud' => $request->fname,'UserName_Etud' => $request->email,'PassWord_Etud'=>$request->password,'Group_Etud'=>$request->groupe]);
      return response()->json([
     'msg' => 'information inserted successfuly',
         ]);
