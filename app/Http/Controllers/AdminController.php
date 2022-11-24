@@ -15,6 +15,7 @@ use App\Models\absence;
 use App\Models\Etudiant;
 use App\Models\enseignant;
 use App\Models\Administrateur;
+use App\Models\module;
 
 
 class AdminController extends Controller
@@ -26,7 +27,7 @@ public function getAdminInfo(request $request) {
                         ->get();
     }
     
-    public function changeAdminInfo(request $request) {
+public function changeAdminInfo(request $request) {
     $Adm = Administrateur::where('Num_Adm', $request->id)->get();
         if($request->currentPassword === $Adm[0]['PassWord_Adm']){
         if ($request->hasFile('image')) {
@@ -38,19 +39,172 @@ public function getAdminInfo(request $request) {
 		->update(['Photo_Adm' => $request->imgSrc]);
 }
     
-    	Administrateur::where('Num_Adm',$request->id)
+    Administrateur::where('Num_Adm',$request->id)
                 ->update(['Nom_Adm' => $request->nom ,'Prenom_Adm' => $request->prenom,'UserName_Adm' => $request->username]);
 
-    	if($request->newPassword != "" ){
-            Administrateur::where('Num_Adm',$request->id)
+    if($request->newPassword != "" ){
+     Administrateur::where('Num_Adm',$request->id)
                 ->update(['PassWord_Adm' => $request->newPassword]);
-        }
-        return response()->json([
+     }
+     return response()->json([
                     'msg' => 'informations updated successfully',
                 ]);
-        }else  return response()->json([
+     }else  return response()->json([
             'msg' => 'wrong password',
-        ]);
+      ]);
+   }
+public function TotalStudentsNbr(request $request) {
+        return DB::table('ETUDIANT')
+               ->count();
+}
+public function TotalTeachersNbr(request $request) {
+        return DB::table('ENSEIGNANT')
+                ->count();
+}
+public function TotalModulesNbr(request $request) {
+        return DB::table('MODULE')
+                ->count();
+ }
+    
+public function TotalAbsencesNbr(request $request) {
+        return DB::table('ABSENCE')
+                ->count();
     }
+    
+public function studentsList(request $request) {
+        return DB::table('ETUDIANT')
+                 ->get();
+}
+public function teachersList(request $request) {
+        return DB::table('ENSEIGNANT')
+                 ->get();
+}
+public function modulesList(request $request) {
+        return DB::table('MODULE')
+                 ->get();
+}
+public function absencesList(request $request) {
+        return DB::table('ABSENCE')
+                 ->get();
+}
+    
+public function unjustifiedAbsences(request $request){
+        return DB::table('ABSENCE')
+                    ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                    ->where('ABSENCE.Just_Abs', '=',NULL )
+                    ->get();
+} 
+    
+public function pendingAbsences(request $request){
+        return DB::table('ABSENCE')
+                    ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                    ->where('ABSENCE.Just_Abs', '=!',NULL )
+                    ->get();
+}
+public function justifiedAbsences(request $request){
+        return DB::table('ABSENCE')
+                    ->where('ABSENCE.Type_Abs', '=','Justifié' )
+                    ->get();
+}
+public function deleteStudent(request $request){
+    Etudiant::where('Num_Etud',$request->id)
+              ->delete();
+    return response()->json([
+           'msg' => 'information deleted successfuly',
+       ]);         
+       
+ }
+public function deleteTeacher(request $request){
+    Enseignant::where('Num_Ens',$request->id)
+                ->delete();
+    return response()->json([
+     'msg' => 'information deleted successfuly',
+       ]);         
+}      
+    
+public function deleteModule(request $request){
+            
+        Module::where('Num_Mod',$request->id)
+                 ->delete();
+        return response()->json([
+           'msg' => 'information deleted successfuly',
+         ]) ;         
+       
+ }   
+       
+public function studentInformation(request $request) {
+    return DB::table('ETUDIANT')
+           ->where('ETUDIANT.Num_Etud','=',$request->id)
+           ->get(); 
+}
+    
+public function teacherInformation(request $request) {
+    return DB::table('ENSEIGNANT')
+            ->where('ENSEIGNANT.Num_Ens','=',$request->id)
+            ->get(); 
+ }
+    
+public function moduleInformation(request $request) {
+     return DB::table('MODULE')
+                ->where('MODULE.Num_Mod', '=',$request->id)
+                ->get(); 
+ }
+    
+public function updateTeacherInfo(request $request){
+     $num_mod = DB::table('MODULE')
+               ->select('Num_Mod')
+               ->where('MODULE.Abrv_Mod','=',$request->module_abrviation)
+                ->get()->value('Num_Mod');
+    
+    Enseignant::where('Num_Ens',$request->id)
+            ->update(['Nom_Ens' => $request->firstname ,'Prenom_Ens' => $request->lastname,'UserName_Ens' => $request->email,'PassWord_Ens'=>$request->password,'Num_Mod'=>$num_mod]);
+    return response()->json([
+            'msg' => 'information updated successfuly',
+        ]); 
+     }
+    
+public function updateStudentInfo(request $request){
+                
+   Etudiant::where('Num_Etud',$request->id)
+          ->update(['Nom_Etud' => $request->fname ,'Prenom_Etud' => $request->lname,'UserName_Etud' => $request->email,'PassWord_Etud'=>$request->password,'Group_Etud'=>$request->groupe]);
+    return response()->json([
+         'msg' => 'information updated successfuly',
+                   ]); 
+}
+    
+public function updateModuleInfo(request $request){
+    Module::where('Num_Mod',$request->id)
+         ->update(['Nom_Mod' => $request->name ,'Abrv_Mod' => $request-> abriviation,'Coeff_Mod' => $request->coefficient,'Credit_Mod'=>$request->credit]);
+    return response()->json([
+        'msg' => 'information updated successfuly',
+          ]); 
+}
+    
+public function CreateTeacher(request $request){
+    $num_mod = DB::table('MODULE')
+            ->select('Num_Mod')
+            ->where('MODULE.Abrv_Mod','=',$request->module_abrviation)
+            ->get()->value('Num_Mod');
+     Enseignant::insert(['Nom_Ens' => $request->firstname ,'Prenom_Ens' => $request->lastname,'UserName_Ens' => $request->email,'PassWord_Ens'=>$request->password,'Num_Mod'=> $num_mod]);
+     return response()->json([
+                'msg' => 'information inserted successfuly',
+         ]); 
+}
+    
+    
+public function CreateStudent(Request $request) {
+    Etudiant::insert(['Nom_Etud'=>$request->fname,'Prenom_Etud' => $request->lname,'UserName_Etud' => $request->email,'PassWord_Etud'=>$request->password,'Group_Etud'=>$request->groupe]);
+     return response()->json([
+    'msg' => 'information inserted successfuly',
+        ]);
+}
+    
+public function CreateModule(Request $request) {
+    Module::insert(['Nom_Mod' => $request->name ,'Abrv_Mod' => $request->abriviation,'Coeff_Mod' => $request->coefficient,'Credit_Mod'=>$request->credit]);
+    return response()->json([
+     'msg' => 'information inserted successfuly',
+        ]);
+}
+
 }
 
