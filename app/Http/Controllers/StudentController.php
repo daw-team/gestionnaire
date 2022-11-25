@@ -20,6 +20,7 @@ use App\Models\module;
 
 class StudentController extends Controller
 {
+//session checker
     public function index(Request $request)
     {
 
@@ -37,16 +38,137 @@ class StudentController extends Controller
     }
 
 
-    public function getAbsences(request $request) {
+//public function createAbs(request $request) {
+//    	 absence::create([
+//    'Num_Abs' => 333,'Num_Etud' => 202031030632 ,'Num_Ens' => 202031030666, 'Num_Mod' => 5,'Date_Abs' => "2022-11-13",'Hour_Abs' => "8:30 11:00",
+//]);
+//$data = absence::where('ABSENCE.Num_Abs', '=',333 )
+//    			->get();
+//    			print($data);
+
+//    }
+
+
+
+
+//all absences number
+public function getTotalAbsNbr(request $request) {
+    	return DB::table('ABSENCE')
+    			->where('ABSENCE.Num_Etud', '=',$request->id )
+    			->count();
+
+
+    }
+    //all absences
+    public function getAllAbsences(request $request) {
         return DB::table('ABSENCE')
                         ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
-                        ->select('MODULE.Abrv_Mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs', 'ABSENCE.Num_Abs')
+                        ->select('MODULE.Abrv_Mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs','ABSENCE.Hour_Abs', 'ABSENCE.Num_Abs' , 'ABSENCE.Just_Abs')
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
+                        ->get();
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+//non justified absences
+    public function getNonJusAbsences(request $request) {
+        return DB::table('ABSENCE')
+                        ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
+                        ->select('MODULE.Abrv_Mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs','ABSENCE.Hour_Abs', 'ABSENCE.Num_Abs')
+                        ->where('ABSENCE.Num_Etud', '=',$request->id )
+    			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                         ->where('ABSENCE.Just_Abs', '=',NULL )
                         ->get();
     }
+    
+    
+//non justified absences number
+public function getNonJustifiedAbsNbr(request $request ) {
+    	return DB::table('ABSENCE')
+    			->where('ABSENCE.Num_Etud', '=',$request->id )
+    			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+    			->where('ABSENCE.Just_Abs', '=',NULL )
+    			->count();
+
+    }
+    
 
 
+
+
+
+
+
+
+
+
+
+//justified absences
+	public function getJusAbsences(request $request) {
+        return DB::table('ABSENCE')
+                        ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
+                        ->select('MODULE.Abrv_Mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs','ABSENCE.Hour_Abs', 'ABSENCE.Num_Abs','ABSENCE.Just_Abs')
+                        ->where('ABSENCE.Num_Etud', '=',$request->id )
+                        ->where('ABSENCE.Type_Abs', '=','justifié' )
+                        ->get();
+    }
+    
+   //justified absences number
+public function getJustifiedAbsNbr(request $request) {
+    	return DB::table('ABSENCE')
+    			->where('ABSENCE.Num_Etud', '=',$request->id )
+    			->where('ABSENCE.Type_Abs', '=','justifié' )
+    			->count();
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//pending absences
+    public function getPenAbsences(request $request) {
+        return DB::table('ABSENCE')
+                        ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
+                        ->select('MODULE.Abrv_Mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs','ABSENCE.Hour_Abs', 'ABSENCE.Num_Abs','ABSENCE.Just_Abs')
+                        ->where('ABSENCE.Num_Etud', '=',$request->id )
+                        ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                        ->where('ABSENCE.Just_Abs', '!=',NULL )
+                        ->get();
+    }
+
+//pending absences number
+    public function getTotalPendJusNbr(request $request) {
+    	return DB::table('ABSENCE')
+    			->where('ABSENCE.Num_Etud', '=',$request->id )
+    			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+    			->where('ABSENCE.Just_Abs', '=!',NULL )
+    			->count();
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 public function getStudentInfo(request $request) {
         return DB::table('ETUDIANT')
                         ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud','ETUDIANT.Group_Etud','ETUDIANT.UserName_Etud','ETUDIANT.Photo_Etud')
@@ -55,13 +177,10 @@ public function getStudentInfo(request $request) {
     }
 
 
-    public function getTotalAbsNbr(request $request) {
-    	return DB::table('ABSENCE')
-    			->where('ABSENCE.Num_Etud', '=',$request->id )
-    			->count();
-
-
-    }
+    
+    
+    
+    
 
     public function storeImage(request $request) {
         $file = $request->file('image');
@@ -73,33 +192,15 @@ public function getStudentInfo(request $request) {
 }
 
 
-public function getJustifiedAbsNbr(request $request) {
-    	return DB::table('ABSENCE')
-    			->where('ABSENCE.Num_Etud', '=',$request->id )
-    			->where('ABSENCE.Type_Abs', '=','justifié' )
-    			->count();
-
-    }
 
 
 
 
-    public function getNonJustifiedAbsNbr(request $request ) {
-    	return DB::table('ABSENCE')
-    			->where('ABSENCE.Num_Etud', '=',$request->id )
-    			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
-    			->where('ABSENCE.Just_Abs', '=',NULL )
-    			->count();
-
-    }
-    public function getTotalPendJus(request $request) {
-    	return DB::table('ABSENCE')
-    			->where('ABSENCE.Num_Etud', '=',$request->id )
-    			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
-    			->where('ABSENCE.Just_Abs', '=!',NULL )
-    			->count();
-
-    }
+    
+    
+    
+    
+    
 
     public function changeStudentInfo(request $request) {
     $Etud = Etudiant::where('Num_Etud', $request->id)->get();
@@ -129,12 +230,24 @@ public function getJustifiedAbsNbr(request $request) {
     }
 
 
+
+
+
+
+
+
+
+
+
 	public function getAllModules() {
 	return DB::table('MODULE')
 				 ->join('ENSEIGNANT', 'ENSEIGNANT.Num_Mod', '=', 'MODULE.Num_Mod')
 				 ->select('MODULE.Abrv_mod', 'MODULE.Num_Mod', 'MODULE.Nom_Mod','MODULE.Coeff_Mod' ,'MODULE.Credit_Mod','ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens')
 				 ->get();
 				 }
+
+
+
 
     public function sendTeacherEmail(request $request) {
         return DB::table('MODULE')
