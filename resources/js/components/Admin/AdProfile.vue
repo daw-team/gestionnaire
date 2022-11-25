@@ -1,12 +1,10 @@
 <template>
-    <div class="student-profile-container">
+    <div
+        class="student-profile-container"
+        :class="{'small':menuChange}"
+    >
+        <HeaderComp></HeaderComp>
         <div class="header">
-            <div class="card">
-                    <img src="../../assets/logo.png" alt="">
-                    <h4>E-learning - Université Constantine 2</h4>
-                    <input type="text" name="search" value="Search ...">
-                    <img src="../../assets/notif.png" alt="">
-            </div>
             <div
                 class="profile-image"
             >
@@ -93,12 +91,19 @@
 </template>
 
 <script>
+import bus from '../../EventBus'
+import HeaderComp from '../Header.vue'
 
 
 export default {
 
+    components:{
+        HeaderComp
+    },
+
     data() {
         return {
+            menuChange: false,
             user: {
                 id: this.$route.params.id,
                 nom: '',
@@ -120,6 +125,13 @@ export default {
             imageupdated: false
         }
     },
+
+    created() {
+        bus.$on('changeMenu', (value) => {
+            this.menuChange = value;
+        })
+    },
+
     mounted() {
         axios
             .post('http://localhost:8000/api/AdminInfo', {id:this.$route.params.id})
@@ -164,6 +176,7 @@ export default {
                 .then( res => {
                     this.EditModeActive = false
                     this.updated = true
+                    this.currentPassword = ''
                     this.msg = res.data.msg
                 })
             }
@@ -210,11 +223,17 @@ export default {
 
 <style scoped>
 .student-profile-container{
-    margin-left: 70px;
+    padding-left: 70px;
     height: 100vh;
     width: calc(100% - 70px);
-
+    transition: all ease .4s;
 }
+
+.small {
+    width: calc(100% - 260px) ! important;
+    padding-left: 260px;
+}
+
 .header{
     width: 100%;
     height: auto;
@@ -237,39 +256,6 @@ export default {
 
 .header h2 {
     font-size: 35px;
-}
-
-.card{
-    padding: 0 20px;
-    width: calc(98% - 40px);
-    height: 60px;
-    margin: 10px 20px 40px 20px;
-    min-width: 200px;
-    background-color: #fcfcfc;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    z-index: -1;
-}
-
-.card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 15px;
-  border: 2px solid transparent;
-  background: linear-gradient(-70deg, #1f3782, #027224);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) padding-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
 }
 
 .profile-image{
@@ -308,32 +294,6 @@ input[ type="file" ]{
     display: none;
 }
 
-.card :nth-child(1){
-    width: 55px;
-    height: auto ;
-}
-
-.card :nth-child(4){
-    width: 35px ;
-    height: auto;
-    margin-left: 15px;
-}
-
-.card h4{
-    font-family: 'Audiowide', cursive;
-    margin-right: auto;
-    color: #02722476;
-}
-
-.card input{
-    width: 280px;
-    height: 20px;
-    padding: 10px 20px;
-    border: #ffffff79 solid 1px;
-    color: #e8e8e8;
-    border-radius: 20px;
-    font-size: 14px;
-    background: linear-gradient(6deg, #1f378233, #02722438);}
 
 .edit-container{
     width: 150px;
@@ -532,9 +492,4 @@ button:hover {
   transition: all ease .5s;
 }
 
-@media (max-width: 670px) {
-    .card h4{
-        display: none;
-    }
-}
 </style>

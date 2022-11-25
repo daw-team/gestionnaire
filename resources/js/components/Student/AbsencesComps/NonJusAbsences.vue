@@ -11,7 +11,7 @@
             v-for="(absence, index) in absences"
             :key="index"
             class="absences">
-            <p>{{ absence.Abrv_mod }}</p>
+            <p>{{ absence.Abrv_Mod }}</p>
             <p>{{ absence.Date_Abs }}</p>
             <button @click="showForm(absence.Num_Abs)">Justify</button>
         </div>
@@ -19,20 +19,13 @@
 </template>
 
 <script>
-import JustifyForm from './JustifyForm.vue'
 
 export default {
-    components:{
-        JustifyForm,
-    },
+
     data() {
         return {
             log: { id: this.$route.params.id},
-            absences:[
-                {Abrv_mod: 'DAW', Date_Abs: '2022-11-14 00:04:37', Num_Abs: ''},
-                {Abrv_mod: 'TEC', Date_Abs: '2022-11-14 00:04:37', Num_Abs: ''},
-                {Abrv_mod: 'ACS', Date_Abs: '2022-11-14 00:04:37', Num_Abs: ''},
-            ],
+            absences:[],
         }
     },
 
@@ -41,6 +34,7 @@ export default {
         axios
             .post('http://localhost:8000/api/absences', this.log)
             .then(response => {
+                console.log(response.data);
                 this.absences = response.data ;
             })
     },

@@ -122,14 +122,16 @@ export default {
 
 .side-bar {
     width: 260px;
-    height: 100vh;
+    height: calc(100% - 60px);
     padding: 30px 0 30px 0;
-    background: linear-gradient(180deg, #14a24d, #106e3a, #106e3a,#106e3a, #106e3a, #106e3a, #14a24d);
     position: fixed;
     top: 0;
     left: 0;
+    background: linear-gradient(181deg, #14a24d, #2b5dbb);
+    border-radius: 0 20px 20px 0;
     color: #fff;
     transition: all ease .4s;
+    z-index: 5;
 }
 
 .desactivate-menu{
@@ -165,15 +167,16 @@ a:visited{
 }
 
 li {
-  height: 80px;
-  font-size: 18px;
-  font-weight: 600;
-  width: 100%;
-  display: flex;
-  align-content: space-between;
-  cursor: pointer;
-  flex-direction: row;
-  flex-wrap: wrap;
+    height: 60px;
+    font-size: 18px;
+    font-weight: 600;
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+    margin: 20px 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: space-around;
 }
 
 li div {
@@ -183,22 +186,6 @@ li div {
     height: 30px;
 }
 
-li::before{
-    content: '';
-    width: 100%;
-    height: 15px;
-    background-color: #106e3a;
-    border-bottom-right-radius: 15px;
-}
-
-li::after{
-    content: '';
-    width: 100%;
-    height: 15px;
-    background-color: #106e3a;
-    border-top-right-radius: 15px;
-}
-
 li span {
   margin-left: 30px;
   opacity: 1;
@@ -206,9 +193,9 @@ li span {
 }
 
 .active {
-  background-color: #fff;
-  color: #2c4eb4;
-  border-radius: 40px 0 0 40px;
+    background-color: rgb(255 255 255 / 52%);
+    color: #ffffff;
+    border-radius: 50px 0 0 50px;
 }
 
 .activeIcon {
@@ -221,21 +208,5 @@ ion-icon {
   color: #fff;
   visibility: visible;
   min-width: 40px;
-}
-
-.logout-btn{
-    margin: 1px;
-}
-
-.logout-btn li::after{
-    content: none;
-    width: 0;
-    height: 0;
-}
-
-.logout-btn li::before{
-    content: none;
-    width: 0;
-    height: 0;
 }
 </style>

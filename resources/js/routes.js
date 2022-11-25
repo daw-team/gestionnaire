@@ -23,6 +23,7 @@ import TcDashboard from './components/Teacher/TcDashboard.vue'
 import TcHome from './components/Teacher/TcHome.vue'
 import TcProfile from './components/Teacher/TcProfile.vue'
 import TcAbsences from './components/Teacher/TcAbsences.vue'
+import TcStudentsList from './components/Teacher/TcStudentsList.vue'
 
 
 
@@ -35,6 +36,12 @@ import AdTeachersList from './components/Admin/AdTeachersList.vue'
 import AdStudentsList from './components/Admin/AdStudentsList.vue'
 import AdAbsences from './components/Admin/AdAbsences.vue'
 import AdModulesList from './components/Admin/AdModulesList.vue'
+import EditModule from './components/Admin/EditComps/EditModule.vue'
+import EditStudent from './components/Admin/EditComps/EditStudent.vue'
+import EditTeacher from './components/Admin/EditComps/EditTeacher.vue'
+import NewStudent from './components/Admin/NewStudent.vue'
+import NewModule from './components/Admin/NewModule.vue'
+import NewTeacher from './components/Admin/NewTeacher.vue'
 
 
 
@@ -59,6 +66,7 @@ export const routes = [
         { path: 'dashboard', name:'TcDashboard', component: TcDashboard, children:[
             { path: 'home', name:'TcHome', component: TcHome },
             { path: 'profile', name:'TcProfile', component: TcProfile },
+            { path: 'students', name:'TcStudentsList', component: TcStudentsList },
             { path: 'absences', name:'TcAbsences', component: TcAbsences },
         ] },
     ] },
@@ -67,10 +75,20 @@ export const routes = [
         { path: 'dashboard', name:'AdDashboard', component: AdDashboard, children:[
             { path: 'home', name:'AdHome', component: AdHome },
             { path: 'profile', name:'AdProfile', component: AdProfile },
-            { path: 'teachers', name:'AdTeachersList', component: AdTeachersList },
-            { path: 'students', name:'AdStudentsList', component: AdStudentsList},
+            { path: 'teachers', name:'AdTeachersList', component: AdTeachersList, children:[
+                { path: 'num=:ScNum', name:'EditTeacher', component: EditTeacher},
+                { path: 'new', name:'NewTeacher', component: NewTeacher},
+            ] },
+            { path: 'students', name:'AdStudentsList', component: AdStudentsList, children:[
+                { path: 'num=:StNum', name:'EditStudent', component: EditStudent},
+                { path: 'new', name:'NewStudent', component: NewStudent},
+            ]},
             { path: 'absences', name:'AdAbsences', component: AdAbsences},
-            { path: 'modules', name:'AdModulesList', component: AdModulesList },
+            { path: 'modules', name:'AdModulesList', component: AdModulesList, children:[
+                { path: 'num=:MdNum', name:'EditModule', component: EditModule},
+                { path: 'new', name:'NewModule', component: NewModule},
+
+            ] },
         ] },
     ]}
 ]

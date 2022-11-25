@@ -10,7 +10,7 @@ import AdSideBar from './AdSideBar.vue'
 import AdHome from './AdHome.vue'
 import AdProfile from './AdProfile.vue'
 import AdAbsences from './AdAbsences.vue'
-import AdModules from './AdModules.vue'
+import AdModulesList from './AdModulesList.vue'
 import AdStudentsList from './AdStudentsList.vue'
 import AdTeachersList from './AdTeachersList.vue'
 
@@ -20,7 +20,7 @@ export default {
         AdHome,
         AdProfile,
         AdAbsences,
-        AdModules,
+        AdModulesList,
         AdStudentsList,
         AdTeachersList
     }

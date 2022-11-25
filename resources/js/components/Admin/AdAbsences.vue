@@ -1,5 +1,9 @@
 <template>
-    <div class="container">
+    <div
+        class="container"
+        :class="{'small':menuChange}"
+    >
+        <HeaderComp></HeaderComp>
         <div class="title">
             <div>
                 <h1>Abcenses</h1>
@@ -26,7 +30,6 @@
             <div></div>
         </div>
 
-
         <!-- <component :is="compToRender"></component> -->
 
         <router-view></router-view>
@@ -34,20 +37,23 @@
 </template>
 
 <script>
-// import JustifyForm from './AbsencesComps/JustifyForm.vue'
 // import JustifiedAbsences from './AbsencesComps/JustifiedAbsences.vue'
 // import NonJusAbsences from './AbsencesComps/NonJusAbsences.vue'
 // import AccAbsences from './AbsencesComps/AccAbsences.vue'
+import HeaderComp from '../Header.vue'
+import bus from '../../EventBus'
+
 
 export default {
-    // components:{
-    //     JustifyForm,
+    components:{
     //     JustifiedAbsences,
     //     NonJusAbsences,
     //     AccAbsences,
-    // },
+        HeaderComp
+    },
     data() {
         return{
+            menuChange: false,
             comps:[ 'NonJusAbsences', 'JustifiedAbsences', 'AccAbsences'],
             compToRender: 'NonJusAbsences',
             drawerList: [
@@ -56,6 +62,12 @@ export default {
                 {title: 'Accepted', active: false},
             ]
         }
+    },
+
+    created() {
+        bus.$on('changeMenu', (value) => {
+            this.menuChange = value;
+        })
     },
 
     mounted() {
@@ -79,8 +91,16 @@ export default {
 
 
 <style scoped>
-.container{
-    margin: 0 17vw;
+.container {
+    padding-left: 70px;
+    width: calc(100% - 70px);
+    transition: all ease .4s;
+
+}
+
+.small {
+    width: calc(100% - 260px) !important;
+    padding-left: 260px !important;
 }
 
 
@@ -127,6 +147,7 @@ ul{
 .drawer{
     display: flex;
     flex-direction: row;
+    margin: 0 100px;
 }
 
 .drawer div{
@@ -150,9 +171,8 @@ li{
     border-right: #000 solid 1px;
     border-left: #000 solid 1px;
     border-bottom: none;
-    border-radius: 5px 5px 0 0 ;
-    box-shadow: #000 1px 1px 8px;
-    margin-bottom: 1px;
+    border-radius: 5px 5px 0 0;
+    background: linear-gradient(0deg, #14a24d, #2b5dbb);
 }
 
 

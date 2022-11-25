@@ -10,6 +10,7 @@ import TcSideBar from './TcSideBar.vue'
 import TcHome from './TcHome.vue'
 import TcProfile from './TcProfile.vue'
 import TcAbsences from './TcAbsences.vue'
+import TcStudentsList from './TcStudentsList.vue'
 
 export default {
     components:{
@@ -17,6 +18,7 @@ export default {
         TcHome,
         TcProfile,
         TcAbsences,
+        TcStudentsList,
     }
 }
 

@@ -1,7 +1,6 @@
 <template>
     <div
         class="home"
-        :class="{'small-home':menuChange}"
     >
         <div class="home-container">
 
@@ -109,12 +108,10 @@
 </template>
 
 <script>
-import bus from '../../EventBus'
 
 export default {
     data() {
         return {
-            menuChange: false,
             showProfileCard: false,
             absences:[
                 {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: false},
@@ -134,12 +131,6 @@ export default {
                 totalAbsences: 0, pendingAbsences: 0, justifiedAbsences: 0
             }
         }
-    },
-
-    created() {
-        bus.$on('changeMenu', (value) => {
-            this.menuChange = value;
-        })
     },
 
     mounted() {
@@ -202,18 +193,7 @@ a:visited{
 }
 
 .home{
-    width: calc(100% - 70px) ! important;
-    padding-left: 70px;
-    min-height: 300px;
-    padding-bottom: 40px;
-    overflow: hidden;
-    transition: all ease .4s;
-    background: #fff;
-}
-
-.small-home {
-    width: calc(100% - 260px) ! important;
-    padding-left: 260px;
+    width: 100%;
 }
 
 .home-container{
@@ -396,6 +376,12 @@ input{
     width: 100%;
     align-items: center;
     justify-content: space-around;
+}
+
+.account-container img {
+    height: 70px !important;
+    width: 70px !important;
+    border-radius: 50% !important;
 }
 
 .card img {

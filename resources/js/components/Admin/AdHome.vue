@@ -1,7 +1,6 @@
 <template>
     <div
         class="home"
-        :class="{'small-home':menuChange}"
     >
         <div class="home-container">
 
@@ -50,12 +49,8 @@
 
 
             <div class="container-left">
-                <div class="header card">
-                    <img src="../../assets/logo.png" alt="">
-                    <input type="text" name="search" value="Search ...">
-                    <img src="../../assets/notif.png" alt="">
-                </div>
 
+                <HeaderComp></HeaderComp>
                 <div class="absences long-card">
                         <h5>RECENT ABSENCES:</h5>
                     <div class="card-column-title">
@@ -111,8 +106,14 @@
 
 <script>
 import bus from '../../EventBus'
+import HeaderComp from '../Header.vue'
 
 export default {
+
+    components: {
+        HeaderComp,
+    },
+
     data() {
         return {
             menuChange: false,
@@ -151,7 +152,7 @@ export default {
                 this.user.prenom = res.data[0].Prenom_Adm
                 this.user.username = res.data[0].UserName_Adm
                 if(res.data[0].Photo_Adm !== null ){
-                    this.user.imgSrc = res.data[0].Photo_Etud
+                    this.user.imgSrc = res.data[0].Photo_Adm
                 }
             })
 
@@ -189,6 +190,8 @@ export default {
     methods: {
 
     },
+
+
     setup() {
     const getImageUrl = (name) => {
         return new URL(name, import.meta.url).href
@@ -203,18 +206,7 @@ export default {
 
 <style scoped>
 .home{
-    width: calc(100% - 70px) ! important;
-    padding-left: 70px;
-    min-height: 300px;
-    padding-bottom: 40px;
-    overflow: hidden;
-    transition: all ease .4s;
-    background: #fff;
-}
-
-.small-home {
-    width: calc(100% - 260px) ! important;
-    padding-left: 260px;
+    width:100%;
 }
 
 .home-container{
@@ -373,6 +365,12 @@ input{
     justify-content: space-around;
 }
 
+.account-container img {
+    height: 70px !important;
+    width: 70px !important;
+    border-radius: 50% !important;
+}
+
 .card img {
     height: 70px;
     width: auto;
@@ -430,7 +428,10 @@ h5 {
     background: #fff;
     overflow-y: auto;
     overflow-x: visible;
+}
 
+.card-container {
+    background: #fff;
 }
 
 .absence{
