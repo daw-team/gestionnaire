@@ -90,6 +90,8 @@ public function absencesList(request $request) {
     
 public function unjustifiedAbsences(request $request){
         return DB::table('ABSENCE')
+		    ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod')
+		    ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
                     ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                     ->where('ABSENCE.Just_Abs', '=',NULL )
                     ->get();
@@ -97,12 +99,16 @@ public function unjustifiedAbsences(request $request){
     
 public function pendingAbsences(request $request){
         return DB::table('ABSENCE')
+       		    ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod')
+		    ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
                     ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                     ->where('ABSENCE.Just_Abs', '=!',NULL )
                     ->get();
 }
 public function justifiedAbsences(request $request){
         return DB::table('ABSENCE')
+        	    ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod')
+		    ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
                     ->where('ABSENCE.Type_Abs', '=','Justifié' )
                     ->get();
 }
