@@ -155,18 +155,24 @@ public function updateTeacherInfo(request $request){
                ->select('Num_Mod')
                ->where('MODULE.Abrv_Mod','=',$request->module_abriviation)
                 ->get()->value('Num_Mod');
-    
+    if($request->password != "" ){
+            Enseignant::where('Num_Ens',$request->id)
+                ->update(['PassWord_Ens' => $request->password]);
+        }
     Enseignant::where('Num_Ens',$request->id)
-            ->update(['Nom_Ens' => $request->firstname ,'Prenom_Ens' => $request->lastname,'UserName_Ens' => $request->email,'PassWord_Ens'=>$request->password,'Num_Mod'=>$num_mod]);
+            ->update(['Nom_Ens' => $request->firstname ,'Prenom_Ens' => $request->lastname,'UserName_Ens' => $request->email,'Num_Mod'=>$num_mod]);
     return response()->json([
             'msg' => 'information updated successfuly',
         ]); 
      }
     
 public function updateStudentInfo(request $request){
-                
+               if($request->password != "" ){
+            Etudiant::where('Num_Etud',$request->id)
+                ->update(['PassWord_Etud' => $request->password]);
+        }
    Etudiant::where('Num_Etud',$request->id)
-          ->update(['Nom_Etud' => $request->fname ,'Prenom_Etud' => $request->lname,'UserName_Etud' => $request->email,'PassWord_Etud'=>$request->password,'Group_Etud'=>$request->groupe]);
+          ->update(['Nom_Etud' => $request->fname ,'Prenom_Etud' => $request->lname,'UserName_Etud' => $request->email,'Group_Etud'=>$request->groupe]);
     return response()->json([
          'msg' => 'information updated successfuly',
                    ]); 
