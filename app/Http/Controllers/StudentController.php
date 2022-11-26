@@ -252,7 +252,7 @@ public function getStudentInfo(request $request) {
 	public function getAllModules() {
 	return DB::table('MODULE')
 				 ->join('ENSEIGNANT', 'ENSEIGNANT.Num_Mod', '=', 'MODULE.Num_Mod')
-				 ->select('MODULE.Abrv_mod', 'MODULE.Num_Mod', 'MODULE.Nom_Mod','MODULE.Coeff_Mod' ,'MODULE.Credit_Mod','ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens')
+				 ->select('MODULE.Abrv_mod', 'MODULE.Num_Mod', 'MODULE.Nom_Mod','MODULE.Coeff_Mod' ,'MODULE.Credit_Mod','ENSEIGNANT.Num_Ens','ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens')
 				 ->get();
 				 }
 
