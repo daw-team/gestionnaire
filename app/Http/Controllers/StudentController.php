@@ -3,19 +3,16 @@
 namespace App\Http\Controllers;
 
 
-use Illuminate\Support\Facades\DB;
-
-use Illuminate\Support\Facades\Storage;
 // use Illuminate\Http\UploadedFile::extention;
-
-
-use Illuminate\Http\UploadedFile;
-use Illuminate\Http\Request;
 use App\Models\absence;
-use App\Models\Etudiant;
-use App\Models\enseignant;
 use App\Models\Administrateur;
+use App\Models\enseignant;
+use App\Models\Etudiant;
 use App\Models\module;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class StudentController extends Controller
@@ -36,6 +33,17 @@ class StudentController extends Controller
                         ]);
         }
     }
+
+//Student checker
+public function studentCheck(request $request){
+
+    $Etud = Etudiant::where('Num_Etud', $request->id)->get();
+    if (count($Etud) != 0){
+    if ($request->id == $request->session()->get('sessUser')) {
+        return 1;
+    }else { redirect('/login'); return 0;}
+}return 0;
+}
 
 
 //public function createAbs(request $request) {
@@ -203,6 +211,7 @@ public function getStudentInfo(request $request) {
     
 
     public function changeStudentInfo(request $request) {
+        if($this->studentCheck($request) == 1){
     $Etud = Etudiant::where('Num_Etud', $request->id)->get();
         if($request->currentPassword === $Etud[0]['PassWord_Etud']){
         if ($request->hasFile('image')) {
@@ -227,6 +236,7 @@ public function getStudentInfo(request $request) {
         }else  return response()->json([
             'msg' => 'wrong password',
         ]);
+        }else return 0;
     }
 
 
@@ -242,7 +252,7 @@ public function getStudentInfo(request $request) {
 	public function getAllModules() {
 	return DB::table('MODULE')
 				 ->join('ENSEIGNANT', 'ENSEIGNANT.Num_Mod', '=', 'MODULE.Num_Mod')
-				 ->select('MODULE.Abrv_mod', 'MODULE.Num_Mod', 'MODULE.Nom_Mod','MODULE.Coeff_Mod' ,'MODULE.Credit_Mod','ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens')
+				 ->select('MODULE.Abrv_mod', 'MODULE.Num_Mod', 'MODULE.Nom_Mod','MODULE.Coeff_Mod' ,'MODULE.Credit_Mod','ENSEIGNANT.Num_Ens','ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens')
 				 ->get();
 				 }
 
