@@ -91,6 +91,7 @@ Route::delete('/deleteModule', [AdminController::class, 'deleteModule']);
 Route::post('/studentInformation', [AdminController::class, 'studentInformation']);
 Route::post('/teacherInformation', [AdminController::class, 'teacherInformation']);
 Route::post('/moduleInformation', [AdminController::class, 'moduleInformation']);
+Route::post('/absenceInformation', [AdminController::class, 'getAbsenceInfo']);
 
 Route::post('/updateTeacherInfo', [AdminController::class, 'updateTeacherInfo']);
 Route::post('/updateStudentInfo', [AdminController::class, 'updateStudentInfo']);
