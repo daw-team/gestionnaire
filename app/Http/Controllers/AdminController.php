@@ -26,7 +26,7 @@ public function getAdminInfo(request $request) {
                         ->where('ADMINISTRATEUR.Num_Adm', '=',$request->id )
                         ->get();
     }
-    
+
 public function changeAdminInfo(request $request) {
     $Adm = Administrateur::where('Num_Adm', $request->id)->get();
         if($request->currentPassword === $Adm[0]['PassWord_Adm']){
@@ -38,7 +38,7 @@ public function changeAdminInfo(request $request) {
 	Administrateur::where('Num_Adm',$request->id)
 		->update(['Photo_Adm' => $request->imgSrc]);
 }
-    
+
     Administrateur::where('Num_Adm',$request->id)
                 ->update(['Nom_Adm' => $request->nom ,'Prenom_Adm' => $request->prenom,'UserName_Adm' => $request->username]);
 
@@ -65,12 +65,12 @@ public function TotalModulesNbr(request $request) {
         return DB::table('MODULE')
                 ->count();
  }
-    
+
 public function TotalAbsencesNbr(request $request) {
         return DB::table('ABSENCE')
                 ->count();
     }
-    
+
 public function studentsList(request $request) {
         return DB::table('ETUDIANT')
                  ->get();
@@ -87,7 +87,7 @@ public function absencesList(request $request) {
         return DB::table('ABSENCE')
                  ->get();
 }
-    
+
 public function unjustifiedAbsences(request $request){
         return DB::table('ABSENCE')
 		    ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod')
@@ -95,8 +95,8 @@ public function unjustifiedAbsences(request $request){
                     ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                     ->where('ABSENCE.Just_Abs', '=',NULL )
                     ->get();
-} 
-    
+}
+
 public function pendingAbsences(request $request){
         return DB::table('ABSENCE')
        		    ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod')
@@ -117,45 +117,45 @@ public function deleteStudent(request $request){
               ->delete();
     return response()->json([
            'msg' => 'information deleted successfuly',
-       ]);         
-       
+       ]);
+
  }
 public function deleteTeacher(request $request){
     Enseignant::where('Num_Ens',$request->id)
                 ->delete();
     return response()->json([
      'msg' => 'information deleted successfuly',
-       ]);         
-}      
-    
+       ]);
+}
+
 public function deleteModule(request $request){
-            
+
         Module::where('Num_Mod',$request->id)
                  ->delete();
         return response()->json([
            'msg' => 'information deleted successfuly',
-         ]) ;         
-       
- }   
-       
+         ]) ;
+
+ }
+
 public function studentInformation(request $request) {
     return DB::table('ETUDIANT')
            ->where('ETUDIANT.Num_Etud','=',$request->id)
-           ->get(); 
+           ->get();
 }
-    
+
 public function teacherInformation(request $request) {
     return DB::table('ENSEIGNANT')
             ->where('ENSEIGNANT.Num_Ens','=',$request->id)
-            ->get(); 
+            ->get();
  }
-    
+
 public function moduleInformation(request $request) {
      return DB::table('MODULE')
                 ->where('MODULE.Num_Mod', '=',$request->id)
-                ->get(); 
+                ->get();
  }
-    
+
 public function updateTeacherInfo(request $request){
      $num_mod = DB::table('MODULE')
                ->select('Num_Mod')
@@ -169,9 +169,9 @@ public function updateTeacherInfo(request $request){
             ->update(['Nom_Ens' => $request->firstname ,'Prenom_Ens' => $request->lastname,'UserName_Ens' => $request->email,'Num_Mod'=>$num_mod]);
     return response()->json([
             'msg' => 'information updated successfuly',
-        ]); 
+        ]);
      }
-    
+
 public function updateStudentInfo(request $request){
                if($request->password != "" ){
             Etudiant::where('Num_Etud',$request->id)
@@ -181,17 +181,17 @@ public function updateStudentInfo(request $request){
           ->update(['Nom_Etud' => $request->fname ,'Prenom_Etud' => $request->lname,'UserName_Etud' => $request->email,'Group_Etud'=>$request->groupe]);
     return response()->json([
          'msg' => 'information updated successfuly',
-                   ]); 
+                   ]);
 }
-    
+
 public function updateModuleInfo(request $request){
     Module::where('Num_Mod',$request->id)
-         ->update(['Nom_Mod' => $request->name ,'Abrv_Mod' => $request-> abriviation,'Coeff_Mod' => $request->coefficient,'Credit_Mod'=>$request->credit]);
+         ->update(['Nom_Mod' => $request->name ,'Abrv_Mod' => $request->abriviation,'Coeff_Mod' => $request->coefficient,'Credit_Mod'=>$request->credit]);
     return response()->json([
         'msg' => 'information updated successfuly',
-          ]); 
+          ]);
 }
-    
+
 public function CreateTeacher(request $request){
     $num_mod = DB::table('MODULE')
             ->select('Num_Mod')
@@ -200,17 +200,17 @@ public function CreateTeacher(request $request){
      Enseignant::insert(['Nom_Ens' => $request->lastname ,'Prenom_Ens' => $request->firstname,'UserName_Ens' => $request->email,'PassWord_Ens'=>$request->password,'Num_Mod'=> $num_mod]);
      return response()->json([
                 'msg' => 'information inserted successfuly',
-         ]); 
+         ]);
 }
-    
-    
+
+
 public function CreateStudent(Request $request) {
     Etudiant::insert(['Nom_Etud'=>$request->lname,'Prenom_Etud' => $request->fname,'UserName_Etud' => $request->email,'PassWord_Etud'=>$request->password,'Group_Etud'=>$request->groupe]);
      return response()->json([
     'msg' => 'information inserted successfuly',
         ]);
 }
-    
+
 public function CreateModule(Request $request) {
     Module::insert(['Nom_Mod' => $request->name ,'Abrv_Mod' => $request->abriviation,'Coeff_Mod' => $request->coefficient,'Credit_Mod'=>$request->credit]);
     return response()->json([
@@ -220,7 +220,7 @@ public function CreateModule(Request $request) {
 public function getAbsenceInfo(request $request) {
     return DB::table('ABSENCE')
            ->where('ABSENCE.Num_Abs','=',$request->id)
-           ->get(); 
+           ->get();
 }
 
 }

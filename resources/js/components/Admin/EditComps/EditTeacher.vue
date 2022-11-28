@@ -104,7 +104,6 @@ export default {
                 this.modules.forEach( element => {
                     if( element.Num_Mod === res.data[0].Num_Mod) {
                         this.teacher.module_abriviation = element.Abrv_Mod
-                        console.log('enterd');
                     }
                 })
 
@@ -122,15 +121,17 @@ export default {
         checkForEmptyFields(){
             let check = false;
             Object.keys(this.teacher).forEach( element => {
-                if( this.teacher[`${element}`] === '' ) {
-                    check = true
+                if( !this.changePasswordActive && this.student[element] === '' ) {
+                    if(element !== 'password'){
+                        check = true
+                    }
                 }
             })
             return check
         },
 
         edit(){
-            if( this.changePasswordActive && this.checkForEmptyFields() ){
+            if( this.checkForEmptyFields() ){
                 this.msg = `You can't leave empty fields`
             }
             else if(this.teacher.password !== this.confirmPassword){

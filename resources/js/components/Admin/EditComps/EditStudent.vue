@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-
+            <p>{{ msg }}</p>
                 <div class="two">
                     <input type="reset"     name="reset"    value="Cancel"  @click.prevent="funcExit">
                     <input type="submit"    name="submit"    value="Submit"  @click.prevent="edit">
@@ -105,8 +105,10 @@ export default {
         checkForEmptyFields(){
             let check = false;
             Object.keys(this.student).forEach( element => {
-                if( this.student[element] === '' ) {
-                    check = true
+                if( !this.changePasswordActive && this.student[element] === '' ) {
+                    if(element !== 'password'){
+                        check = true
+                    }
                 }
             })
             return check

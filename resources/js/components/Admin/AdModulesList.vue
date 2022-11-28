@@ -33,8 +33,8 @@
 
                             <td>
                                 <div>
-                                    <img src="../../assets/edit.png" alt="" @click="goToEditPage()" >&nbsp;
-                                    <img src="../../assets/delete.png" alt="">
+                                    <img src="../../assets/edit.png" alt="" @click="editModule(module.Num_Mod)" >&nbsp;
+                                    <img src="../../assets/delete.png" alt="" @click="deleteModule(module.Num_Mod)">
                                 </div>
                             </td>
 
@@ -89,8 +89,8 @@ export default {
     },
 
     methods:{
-        goToEditPage(id){
-
+        editModule(id){
+            this.$router.push(this.$route.fullPath + '/num=' + id )
         },
 
         goToAddPage(){
