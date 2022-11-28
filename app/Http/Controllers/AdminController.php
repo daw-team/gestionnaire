@@ -185,8 +185,10 @@ public function updateStudentInfo(request $request){
 }
 
 public function updateModuleInfo(request $request){
+        $Coeff_Mod=intval($request->coefficient);
+        $Credit_Mod=intval($request->credit);
     Module::where('Num_Mod',$request->id)
-         ->update(['Nom_Mod' => $request->name ,'Abrv_Mod' => $request->abriviation,'Coeff_Mod' => $request->coefficient,'Credit_Mod'=>$request->credit]);
+         ->update(['Nom_Mod' => $request->name ,'Abrv_Mod' => $request-> abriviation,'Coeff_Mod' => $Coeff_Mod,'Credit_Mod'=>$Credit_Mod]);
     return response()->json([
         'msg' => 'information updated successfuly',
           ]);
