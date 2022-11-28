@@ -27,8 +27,8 @@ public function getTeacherInfo(request $request) {
                         ->get();
     }
 public function getAllStudents(request $request){
-    return DB::table('Etudiant')
-                        ->select('Etudiant.Nom_Etud','Etudiant.Prenom_Etud','Etudiant.Num_Etud','Etudiant.Group_Etud','Etudiant.UserName_Etud','Etudiant.Photo_Etud')
+    return DB::table('ETUDIANT')
+                        ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud','ETUDIANT.Num_Etud','ETUDIANT.Group_Etud','ETUDIANT.UserName_Etud','ETUDIANT.Photo_Etud')
                         ->get();
 }
 
