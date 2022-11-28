@@ -217,6 +217,11 @@ public function CreateModule(Request $request) {
      'msg' => 'information inserted successfuly',
         ]);
 }
+public function getAbsenceInfo(request $request) {
+    return DB::table('ABSENCE')
+           ->where('ABSENCE.Num_Abs','=',$request->id)
+           ->get(); 
+}
 
 }
 
