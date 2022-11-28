@@ -11,7 +11,9 @@
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
                 <p>{{ user.username }}</p>
                 <button>View profile</button>
-                <button>Log out</button>
+                <a href="/logout">
+                    <button>Log out</button>
+                </a>
             </div>
 
                 <div class="card">
@@ -319,7 +321,7 @@ input{
 .account-container a {
     width: 70%;
     font-weight: 500;
-    background: linear-gradient#fff;
+    background: #fff;
 }
 
 .account-container a button{

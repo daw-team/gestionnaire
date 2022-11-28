@@ -44,6 +44,7 @@ export default {
     return {
         box: null,
         module:{
+            id: 0,
             name: '',
             abriviation: '',
             coefficient: '',
@@ -58,6 +59,7 @@ export default {
     axios
         .post('http://localhost:8000/api/moduleInformation', {"id": this.$route.params.MdNum})
         .then( res => {
+            this.module.id = res.data[0].Num_Mod
             this.module.name = res.data[0].Nom_Mod
             this.module.abriviation = res.data[0].Abrv_Mod
             this.module.coefficient = res.data[0].Coeff_Mod
