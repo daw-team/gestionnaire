@@ -26,9 +26,23 @@ public function getTeacherInfo(request $request) {
                         ->where('ENSEIGNANT.Num_Ens', '=',$request->id )
                         ->get();
     }
-public function getAllStudents(request $request){
+public function getAllStudent(request $request){
     return DB::table('ETUDIANT')
                         ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud','ETUDIANT.Num_Etud','ETUDIANT.Group_Etud','ETUDIANT.UserName_Etud','ETUDIANT.Photo_Etud')
+                        ->get();
+}
+
+
+public function getAllStudents(request $request){
+    return DB::table('ETUDIANT')
+                        ->join('ABSENCE', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud'   )
+                        ->select(
+                            'ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud', 'ETUDIANT.Num_Etud', 'ETUDIANT.Group_Etud',
+                            DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
+                            DB::raw('SUM(CASE WHEN Type_Abs = "Justifié" THEN 1 ELSE 0 END) AS justified'),
+                            
+                            )
+                            ->groupby( 'ETUDIANT.Nom_Etud' , 'ETUDIANT.Prenom_Etud' , 'ETUDIANT.Num_Etud' , 'ETUDIANT.Group_Etud' )
                         ->get();
 }
 
