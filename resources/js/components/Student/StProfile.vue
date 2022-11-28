@@ -211,10 +211,7 @@ export default {
 
 <style scoped>
 .student-profile-container{
-    margin-left: 70px;
-    height: 100vh;
-    width: calc(100% - 70px);
-
+    width: 100%;
 }
 .header{
     width: 100%;
@@ -360,7 +357,6 @@ input[ type="file" ]{
     position: relative;
     border: #1f3782 1px solid;
     transition: all ease .5s;
-
 }
 
 .circle-btn {
@@ -384,7 +380,6 @@ input[ type="file" ]{
     left: 50%;
     background: linear-gradient(0deg, #14a24d, #2b5dbb);
     box-shadow: 1px 1px 10px #027224;
-
     transition: all ease .3s;
 }
 

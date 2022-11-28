@@ -43,7 +43,7 @@ public function changeTeacherInfo(request $request) {
 	enseignant::where('Num_Ens',$request->id)
 		->update(['Photo_Ens' => $request->imgSrc]);
 }
-    
+
     	enseignant::where('Num_Ens',$request->id)
                 ->update(['Nom_Ens' => $request->nom ,'Prenom_Ens' => $request->prenom,'UserName_Ens' => $request->username]);
 
@@ -58,4 +58,5 @@ public function changeTeacherInfo(request $request) {
             'msg' => 'wrong password',
         ]);
     }
+
 }

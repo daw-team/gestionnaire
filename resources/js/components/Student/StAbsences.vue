@@ -1,14 +1,14 @@
 <template>
     <div class="container">
+
+        <HeaderComp></HeaderComp>
+
         <div class="title">
             <div>
                 <h1>Abcenses</h1>
                 <p>You can find all your abcenses on this list </p>
                 <input type="text"  placeholder="Search for a student">
             </div>
-            <img v-if="compToRender == 'NonJusAbsences'" src="../../assets/pending-title.png" alt="">
-            <img v-if="compToRender == 'JustifiedAbsences'" src="../../assets/justified-title.png" alt="">
-            <img v-if="compToRender == 'AccAbsences'" src="../../assets/accepted-title.png" alt="">
         </div>
 
         <div class="drawer">
@@ -26,8 +26,7 @@
             <div></div>
         </div>
 
-
-        <component :is="compToRender"></component>
+        <component :is='compToRender'></component>
 
         <router-view></router-view>
     </div>
@@ -35,24 +34,26 @@
 
 <script>
 import JustifyForm from './AbsencesComps/JustifyForm.vue'
-import JustifiedAbsences from './AbsencesComps/JustifiedAbsences.vue'
-import NonJusAbsences from './AbsencesComps/NonJusAbsences.vue'
+import PendingAbsences from './AbsencesComps/PendingAbsences.vue'
+import UnjusAbsences from './AbsencesComps/UnjusAbsences.vue'
 import AccAbsences from './AbsencesComps/AccAbsences.vue'
+import HeaderComp from '../Header.vue'
 
 export default {
     components:{
         JustifyForm,
-        JustifiedAbsences,
-        NonJusAbsences,
+        PendingAbsences,
+        UnjusAbsences,
         AccAbsences,
+        HeaderComp
     },
     data() {
         return{
-            comps:[ 'NonJusAbsences', 'JustifiedAbsences', 'AccAbsences'],
-            compToRender: 'NonJusAbsences',
+            compToRender: 'UnjusAbsences',
+            comps:[ 'UnjusAbsences', 'PendingAbsences', 'AccAbsences'],
             drawerList: [
-                {title: 'Not Justified', active: false},
-                {title: 'Justified', active: false},
+                {title: 'Unjustified', active: false},
+                {title: 'Pending', active: false},
                 {title: 'Accepted', active: false},
             ]
         }
@@ -70,8 +71,8 @@ export default {
             this.drawerList.forEach(element => {
                 element.active = false
             });
-            this.compToRender = this.comps[i]
             this.drawerList[i].active = true
+            this.compToRender = this.comps[i]
         }
     },
 }
@@ -80,7 +81,7 @@ export default {
 
 <style scoped>
 .container{
-    margin: 0 17vw;
+    margin: 0 5vw;
 }
 
 
@@ -150,9 +151,9 @@ li{
     border-right: #000 solid 1px;
     border-left: #000 solid 1px;
     border-bottom: none;
-    border-radius: 5px 5px 0 0 ;
-    box-shadow: #000 1px 1px 8px;
-    margin-bottom: 1px;
+    border-radius: 5px 5px 0 0;
+    color: #fff;
+    background: linear-gradient(180deg, #14a24d, #2b5dbb);
 }
 
 

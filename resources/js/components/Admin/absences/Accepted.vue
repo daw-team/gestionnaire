@@ -5,6 +5,7 @@
             <div class="table-container">
                 <table>
                     <tr class="table-header">
+                        <th>Student</th>
                         <th>Module</th>
                         <th>Date</th>
                         <th>Time</th>
@@ -14,6 +15,11 @@
                         :key="index"
                         class="absence"
                     >
+
+                        <td>
+                            <p>{{ absence.Prenom_Etud }} {{ absence.Nom_Etud }}</p>
+                        </td>
+
                         <td>
                             <p>{{ absence.Abrv_Mod }}</p>
                         </td>
@@ -25,6 +31,11 @@
                         <td>
                             <p>{{ absence.Hour_Abs }}</p>
                         </td>
+
+                        <td>
+                            <a :href="`/admin=${$route.params.id}/dashboard/absences/justification=${id}`"><p>View Justification</p></a>
+                        </td>
+
                     </tr>
                 </table>
             </div>
@@ -39,7 +50,7 @@
 export default {
     data() {
         return {
-            log: { id: this.$route.params.id},
+            id: 1002,
             absences:[],
         }
     },
@@ -47,19 +58,19 @@ export default {
     mounted() {
 
         axios
-            .post('http://localhost:8000/api/JustAbs', this.log)
-            .then(response => {
-                this.absences = response.data ;
-            })
+            .get('http://localhost:8000/api/justifiedAbsences')
+            .then(response => this.absences = response.data )
     },
 }
 
 </script>
 
 
+
 <style scoped>
 .abs-container{
-    padding-top: 50px;
+    padding-top: 40px;
+    margin: 0 5vw;
 }
 
 
@@ -99,6 +110,7 @@ td ,th{
     position: sticky;
     top: 0;
     height: 40px;
+    background: #fff;
 }
 
 tr{
@@ -121,5 +133,7 @@ td img{
     margin-bottom: 10px;
     font-weight: 900;
 }
+
+
 
 </style>

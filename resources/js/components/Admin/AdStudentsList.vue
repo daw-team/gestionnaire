@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="container"
-        :class="{'small':menuChange}"
-    >
+    <div    class="container">
         <header-comp></header-comp>
         <div class="students-list">
             <div class="title">
@@ -27,17 +24,17 @@
                             class="student"
                         >
                             <td>
-                                <p>{{ student.Nom_Ens }} {{ student.Prenom_Ens }}</p>
+                                <p>{{ student.Nom_Etud }} {{ student.Prenom_Etud }}</p>
                             </td>
 
                             <td>
-                                <p>{{ student.Abrv_mod }}</p>
+                                <p>{{ student.Group_Etud }}</p>
                             </td>
 
                             <td>
                                 <div>
-                                    <img src="../../assets/edit.png" alt="" @click="goToEditPage()" >&nbsp;
-                                    <img src="../../assets/delete.png" alt="">
+                                    <img src="../../assets/edit.png" alt="" @click="editStudent(student.Num_Etud)" >&nbsp;
+                                    <img src="../../assets/delete.png" alt="" @click="deleteStudent(student.Num_Etud)">
                                 </div>
                             </td>
 
@@ -70,7 +67,6 @@
 import EditStudent from './EditComps/EditStudent.vue'
 import NewStudent from './NewStudent.vue'
 import HeaderComp from '../Header.vue'
-import bus from '../../EventBus'
 
 
 export default {
@@ -81,21 +77,14 @@ export default {
     },
     data() {
         return {
-            menuChange: false,
             students:[],
             buttonHovered: false
         }
     },
 
-    created() {
-        bus.$on('changeMenu', (value) => {
-            this.menuChange = value;
-        })
-    },
-
     mounted() {
         axios
-            .get('http://localhost:8000/api/AllModules')
+            .get('http://localhost:8000/api/studentsList')
             .then( res => {
                 console.log(res.data);
                 this.students = res.data
@@ -103,7 +92,35 @@ export default {
     },
 
     methods:{
-        goToEditPage(id){
+        editStudent(id){
+            this.$router.push(this.$route.fullPath + '/num=' + id )
+        },
+
+        deleteStudent(id){
+            this.$swal.fire({
+                title: 'Are you sure you want to delete this student?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .delete('http://localhost:8000/api/deleteStudent', { data:{ id: id } })
+                        .then(() => this.$router.go(0))
+
+                    this.$swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Student Deleted!',
+                    showConfirmButton: false,
+                    timer: 2500
+                    })
+                }
+            })
 
         },
 
@@ -117,6 +134,7 @@ export default {
 </script>
 
 <style scoped>
+
 .appear-enter{
     opacity: 0;
 }
@@ -131,29 +149,30 @@ export default {
 }
 
 .container {
-    padding-left: 70px;
-    width: calc(100% - 70px);
-    transition: all ease .4s;
-
-}
-
-.small {
-    width: calc(100% - 260px) !important;
-    padding-left: 260px !important;
+    width: 100%;
 }
 
 .title {
-    margin: 50px 0;
-    height: 200px;
+    margin: 20px 0;
+    height: 180px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin-left: 60px;
+}
+
+.title h1{
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-size: 50px;
 }
 
 .title p{
@@ -209,9 +228,7 @@ td ,th{
 .table-header{
     position: sticky;
     top: 0;
-    background: linear-gradient(0deg, #14a24d, #2b5dbb);
     height: 40px;
-    color: #fff;
 }
 
 tr{

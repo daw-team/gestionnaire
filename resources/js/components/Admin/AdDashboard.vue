@@ -1,7 +1,15 @@
 <template>
-    <div class="dashboard">
+    <div
+        class="dashboard"
+    >
         <AdSideBar></AdSideBar>
-        <router-view></router-view>
+
+        <div
+            class="container-router"
+            :class="{'small':menuChange}"
+        >
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
@@ -14,6 +22,9 @@ import AdModulesList from './AdModulesList.vue'
 import AdStudentsList from './AdStudentsList.vue'
 import AdTeachersList from './AdTeachersList.vue'
 
+import bus from '../../EventBus'
+
+
 export default {
     components:{
         AdSideBar,
@@ -23,7 +34,20 @@ export default {
         AdModulesList,
         AdStudentsList,
         AdTeachersList
-    }
+    },
+
+    data() {
+        return {
+            menuChange: false,
+
+        }
+    },
+
+    created() {
+        bus.$on('changeMenu', (value) => {
+            this.menuChange = value;
+        })
+    },
 }
 
 </script>
@@ -31,8 +55,19 @@ export default {
 <style scoped>
 
 .dashboard{
-    height: 100vh;
     width: 100%;
+}
+
+.container-router{
+    width: calc(100% - 70px) ! important;
+    padding-left: 70px;
+    transition: all ease .4s;
+
+}
+
+.small {
+    width: calc(100% - 260px) !important;
+    padding-left: 260px !important;
 }
 
 </style>

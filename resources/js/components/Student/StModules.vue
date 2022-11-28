@@ -1,5 +1,12 @@
 <template>
-    <div>
+    <div class="grid">
+        <div class="title">
+            <div>
+                <h1>Abcenses</h1>
+                <p>You can find all your abcenses on this list </p>
+                <input type="text"  placeholder="Search for a student">
+            </div>
+        </div>
         <div class="grid-container">
             <div
                 class="card"
@@ -41,7 +48,6 @@ export default {
         axios
             .get('http://localhost:8000/api/AllModules')
             .then( res => {
-                console.log(res.data);
                 this.modules = res.data
             })
     },
@@ -58,15 +64,54 @@ export default {
 
 <style scoped>
 
+.grid{
+    width: 95%;
+    margin: auto;
+}
+
+.title {
+    margin: 50px 0;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.title div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.title p{
+    margin-bottom: auto;
+}
+
+.title div input{
+    margin-bottom: auto;
+}
+
+.title input{
+    width: 280px;
+    height: 20px;
+    padding: 10px 20px;
+    border: #00000079 solid 1px;
+    border-radius: 20px;
+    background-color: rgb(201 201 201 / 29%);
+    font-size: 14px;
+}
+
 .grid-container{
-    width: calc(100% - 70px);
-    margin-left: 70px;
+    width: 100%;
     display: grid;
-    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    justify-content: space-around;
+    grid-gap: 20px;
+    align-items: center;
 }
 
 .card{
-    /* width: 300px; */
+    width: calc(100% - 40px);
     height: 300px;
     background-color: #fcfcfc;
     box-shadow: rgb(94 94 94) 5px 5px 10px;

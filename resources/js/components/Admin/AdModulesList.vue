@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="container"
-        :class="{'small':menuChange}"
-    >
+    <div    class="container">
         <HeaderComp></HeaderComp>
         <div class="modules-list">
             <div class="title">
@@ -27,11 +24,11 @@
                             class="module"
                         >
                             <td>
-                                <p>{{ module.Nom_Ens }} {{ module.Prenom_Ens }}</p>
+                                <p>{{ module.Nom_Mod }}</p>
                             </td>
 
                             <td>
-                                <p>{{ module.Abrv_mod }}</p>
+                                <p>{{ module.Abrv_Mod }}</p>
                             </td>
 
                             <td>
@@ -67,7 +64,6 @@
 import EditModule from './EditComps/EditModule.vue'
 import NewModule from './NewModule.vue'
 import HeaderComp from '../Header.vue'
-import bus from '../../EventBus'
 
 
 export default {
@@ -86,19 +82,10 @@ export default {
         }
     },
 
-    created() {
-        bus.$on('changeMenu', (value) => {
-            this.menuChange = value;
-        })
-    },
-
     mounted() {
         axios
-            .get('http://localhost:8000/api/AllModules')
-            .then( res => {
-                console.log(res.data);
-                this.modules = res.data
-            })
+            .get('http://localhost:8000/api/modulesList')
+            .then( res => this.modules = res.data)
     },
 
     methods:{
@@ -129,28 +116,30 @@ export default {
 }
 
 .container {
-    padding-left: 70px;
-    width: calc(100% - 70px);
-    transition: all ease .4s;
-}
-
-.small {
-    width: calc(100% - 260px) !important;
-    padding-left: 260px !important;
+    width: 100%;
 }
 
 .title {
-    margin: 50px 0;
-    height: 200px;
+    margin: 20px 0;
+    height: 180px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin-left: 60px;
+}
+
+.title h1{
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-size: 50px;
 }
 
 .title p{
@@ -207,9 +196,7 @@ td ,th{
 .table-header{
     position: sticky;
     top: 0;
-    background: linear-gradient(0deg, #14a24d, #2b5dbb);
     height: 40px;
-    color: #fff;
 }
 
 tr{

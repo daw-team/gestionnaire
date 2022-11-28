@@ -19,7 +19,7 @@
                             <h5>TOTAL STUDENTS</h5>
                             <span>{{ homeInfo.students }}</span>
                         </div>
-                        <img src="../../assets/absences.png" alt="">
+                        <img src="../../assets/totalstud.png" alt="">
                 </div>
 
                 <div class="card">
@@ -27,7 +27,7 @@
                             <h5>TOTAL TEACHERS</h5>
                             <span>{{ homeInfo.teachers }}</span>
                         </div>
-                        <img src="../../assets/pending.png" alt="">
+                        <img src="../../assets/totalteach.png" alt="">
                 </div>
 
                 <div class="card">
@@ -35,7 +35,7 @@
                             <h5>TOTAL MODULES</h5>
                             <span>{{ homeInfo.modules }}</span>
                         </div>
-                        <img src="../../assets/accepted.png" alt="">
+                        <img src="../../assets/totalmod.png" alt="">
                 </div>
 
                 <div class="card">
@@ -43,7 +43,7 @@
                             <h5>TOTAL ABSENCES</h5>
                             <span>{{ homeInfo.absences }}</span>
                         </div>
-                        <img src="../../assets/module.png" alt="">
+                        <img src="../../assets/totalabs.png" alt="">
                 </div>
             </div>
 
@@ -316,14 +316,22 @@ input{
 }
 
 
-.account-container :nth-child(6) {
+.account-container a {
     width: 70%;
-    border: none;
-    border-radius: 10px;
     font-weight: 500;
     background: linear-gradient#fff;
 }
 
+.account-container a button{
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+}
+
+.account-container a button:hover{
+    box-shadow: #000 1px 1px 5px;
+    transition: all ease .4s;
+}
 
 .card{
     min-width: 200px;

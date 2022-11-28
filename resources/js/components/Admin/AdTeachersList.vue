@@ -1,7 +1,5 @@
 <template>
-    <div class="container"
-        :class="{'small':menuChange}"
-    >
+    <div class="container">
         <HeaderComp></HeaderComp>
         <div class="teachers-list">
             <div class="title">
@@ -36,7 +34,7 @@
 
                             <td>
                                 <div>
-                                    <img src="../../assets/edit.png" alt="" @click="goToEditPage()" >&nbsp;
+                                    <img src="../../assets/edit.png" alt="" @click="editTeacher(teacher.Num_Ens)" >&nbsp;
                                     <img src="../../assets/delete.png" alt="" @click="ConfirmDelete">
                                 </div>
                             </td>
@@ -71,7 +69,6 @@ import EditTeacher from './EditComps/EditTeacher.vue'
 import NewTeacher from './NewTeacher.vue'
 
 import HeaderComp from '../Header.vue'
-import bus from '../../EventBus'
 
 
 export default {
@@ -84,18 +81,12 @@ export default {
 
     data() {
         return {
-            menuChange: false,
             compTobeRendered: '',
             teachers:[],
             buttonHovered: false
         }
     },
 
-    created() {
-        bus.$on('changeMenu', (value) => {
-            this.menuChange = value;
-        })
-    },
 
     mounted() {
         axios
@@ -108,8 +99,8 @@ export default {
     },
 
     methods:{
-        goToEditPage(id){
-
+        editTeacher(id){
+            this.$router.push(this.$route.fullPath + '/num=' + id )
         },
 
         goToAddPage(){
@@ -155,30 +146,30 @@ export default {
 }
 
 .container {
-    padding-left: 70px;
-    width: calc(100% - 70px);
-    transition: all ease .4s;
-
+    width: 100%;
 }
-.small {
-    width: calc(100% - 260px) !important;
-    padding-left: 260px !important;
-}
-
-
 
 .title {
-    margin: 50px 0;
-    height: 200px;
+    margin: 20px 0;
+    height: 180px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin-left: 60px;
+}
+
+.title h1{
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-size: 50px;
 }
 
 .title p{
@@ -234,9 +225,8 @@ td ,th{
 .table-header{
     position: sticky;
     top: 0;
-    background: linear-gradient(0deg, #14a24d, #2b5dbb);
     height: 40px;
-    color: #fff;
+    color: #000;
 }
 
 tr{

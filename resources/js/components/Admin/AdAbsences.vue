@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="container"
-        :class="{'small':menuChange}"
-    >
+    <div    class="container">
         <HeaderComp></HeaderComp>
         <div class="title">
             <div>
@@ -10,9 +7,6 @@
                 <p>You can find all your abcenses on this list </p>
                 <input type="text"  placeholder="Search for a student">
             </div>
-            <img v-if="compToRender == 'NonJusAbsences'" src="../../assets/pending-title.png" alt="">
-            <img v-if="compToRender == 'JustifiedAbsences'" src="../../assets/justified-title.png" alt="">
-            <img v-if="compToRender == 'AccAbsences'" src="../../assets/accepted-title.png" alt="">
         </div>
 
         <div class="drawer">
@@ -30,44 +24,39 @@
             <div></div>
         </div>
 
-        <!-- <component :is="compToRender"></component> -->
-
+        <component :is="compToRender"></component>
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-// import JustifiedAbsences from './AbsencesComps/JustifiedAbsences.vue'
-// import NonJusAbsences from './AbsencesComps/NonJusAbsences.vue'
-// import AccAbsences from './AbsencesComps/AccAbsences.vue'
+import PendingComp from './absences/Pending.vue'
+import UnjustifiedComp from './absences/Unjustified.vue'
+import AcceptedComp from './absences/Accepted.vue'
+
+import AdViewJustification from './AdViewJustification.vue'
+
 import HeaderComp from '../Header.vue'
-import bus from '../../EventBus'
 
 
 export default {
     components:{
-    //     JustifiedAbsences,
-    //     NonJusAbsences,
-    //     AccAbsences,
-        HeaderComp
+        HeaderComp,
+        PendingComp,
+        UnjustifiedComp,
+        AcceptedComp,
+        AdViewJustification
     },
     data() {
         return{
-            menuChange: false,
-            comps:[ 'NonJusAbsences', 'JustifiedAbsences', 'AccAbsences'],
-            compToRender: 'NonJusAbsences',
+            comps:[ 'UnjustifiedComp', 'PendingComp', 'AcceptedComp'],
+            compToRender: 'UnjustifiedComp',
             drawerList: [
-                {title: 'Not Justified', active: false},
-                {title: 'Justified', active: false},
+                {title: 'Unjustified', active: false},
+                {title: 'Pending', active: false},
                 {title: 'Accepted', active: false},
             ]
         }
-    },
-
-    created() {
-        bus.$on('changeMenu', (value) => {
-            this.menuChange = value;
-        })
     },
 
     mounted() {
@@ -92,15 +81,7 @@ export default {
 
 <style scoped>
 .container {
-    padding-left: 70px;
-    width: calc(100% - 70px);
-    transition: all ease .4s;
-
-}
-
-.small {
-    width: calc(100% - 260px) !important;
-    padding-left: 260px !important;
+    width: 100%;
 }
 
 
@@ -109,7 +90,7 @@ h2{
 }
 
 .title {
-    margin: 50px 0;
+    margin: 20px 0;
     height: 200px;
     display: flex;
     flex-direction: row;
@@ -120,6 +101,14 @@ h2{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.title h1{
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-size: 50px;
 }
 
 .title p{

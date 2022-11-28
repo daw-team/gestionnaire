@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="student-profile-container"
-        :class="{'small':menuChange}"
-    >
+    <div    class="student-profile-container">
         <HeaderComp></HeaderComp>
         <div class="header">
             <div
@@ -91,7 +88,6 @@
 </template>
 
 <script>
-import bus from '../../EventBus'
 import HeaderComp from '../Header.vue'
 
 
@@ -103,7 +99,6 @@ export default {
 
     data() {
         return {
-            menuChange: false,
             user: {
                 id: this.$route.params.id,
                 nom: '',
@@ -124,12 +119,6 @@ export default {
             image: '',
             imageupdated: false
         }
-    },
-
-    created() {
-        bus.$on('changeMenu', (value) => {
-            this.menuChange = value;
-        })
     },
 
     mounted() {
@@ -223,16 +212,10 @@ export default {
 
 <style scoped>
 .student-profile-container{
-    padding-left: 70px;
     height: 100vh;
-    width: calc(100% - 70px);
-    transition: all ease .4s;
+    width: 100%;
 }
 
-.small {
-    width: calc(100% - 260px) ! important;
-    padding-left: 260px;
-}
 
 .header{
     width: 100%;

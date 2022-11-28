@@ -5,6 +5,7 @@
             <div class="table-container">
                 <table>
                     <tr class="table-header">
+                        <th>Student</th>
                         <th>Module</th>
                         <th>Date</th>
                         <th>Time</th>
@@ -14,6 +15,11 @@
                         :key="index"
                         class="absence"
                     >
+
+                        <td>
+                            <p>{{ absence.Prenom_Etud }} {{ absence.Nom_Etud }}</p>
+                        </td>
+
                         <td>
                             <p>{{ absence.Abrv_Mod }}</p>
                         </td>
@@ -25,6 +31,7 @@
                         <td>
                             <p>{{ absence.Hour_Abs }}</p>
                         </td>
+
                     </tr>
                 </table>
             </div>
@@ -33,13 +40,12 @@
     </div>
 </template>
 
-
-
 <script>
+
 export default {
+
     data() {
         return {
-            log: { id: this.$route.params.id},
             absences:[],
         }
     },
@@ -47,19 +53,24 @@ export default {
     mounted() {
 
         axios
-            .post('http://localhost:8000/api/JustAbs', this.log)
+            .get('http://localhost:8000/api/unjustifiedAbsences')
             .then(response => {
+                console.log(response.data);
                 this.absences = response.data ;
             })
     },
-}
 
+    methods: {
+
+    },
+}
 </script>
 
-
 <style scoped>
+
 .abs-container{
-    padding-top: 50px;
+    padding-top: 40px;
+    margin: 0 5vw;
 }
 
 
@@ -99,6 +110,7 @@ td ,th{
     position: sticky;
     top: 0;
     height: 40px;
+    background: #fff;
 }
 
 tr{
@@ -121,5 +133,27 @@ td img{
     margin-bottom: 10px;
     font-weight: 900;
 }
+
+button{
+    border-left: none;
+    border-top: none;
+    width: 100px;
+    height: 30px;
+    background: #fff;
+    box-shadow: 1px 1px 3px #000;
+    color: #305748;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    font-size: 15px;
+}
+
+button:hover{
+    border: 1px;
+    box-shadow: none;
+    transition: ease all .4s;
+}
+
+
 
 </style>

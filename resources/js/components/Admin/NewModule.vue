@@ -1,33 +1,36 @@
 <template>
     <div class="background" @click="goBack($event)">
             <form
-            action="./api/uploadImage"
+            action=""
             method="POST"
             >
-                <h1 class="form-title">Add new module</h1>
+                <h1 class="form-title">Add new Module</h1>
 
                 <div class="name">
                     <label for="">Name:</label>
-                    <input type="text" >
+                    <input type="text" v-model="newModule.name" >
                 </div>
 
                 <div class="abrv">
                     <label for="">Abbreviation:</label>
-                    <input type="text" >
+                    <input type="text" v-model="newModule.abriviation" >
                 </div>
 
-                <div class="coeff">
-                    <label for="">Coefficient:</label>
-                    <input type="text" >
+                <div class="two">
+                    <div class="coeff">
+                        <label for="">Coefficient:</label>
+                        <input type="text" v-model="newModule.coefficient" >
+                    </div>
+
+                    <div class="credit">
+                        <label for="">Credit:</label>
+                        <input type="text" v-model="newModule.credit" >
+                    </div>
+
                 </div>
 
-                <div class="credit">
-                    <label for="">Credit:</label>
-                    <input type="text" >
-                </div>
 
-
-                <input type="submit"    name="submit"    value="Submit"  @click.prevent="">
+                <input type="submit"    name="submit"    value="Submit"  @click.prevent="create">
             </form>
     </div>
 
@@ -38,6 +41,12 @@ export default {
   data() {
     return {
         box: null,
+        newModule:{
+            name: '',
+            abriviation: '',
+            coefficient: '',
+            credit: '',
+        }
     }
   },
 
@@ -51,6 +60,37 @@ export default {
                 this.$router.go(-1)
             }
         },
+
+        checkForEmptyFields(){
+            let check = false;
+            Object.keys(this.newModule).forEach( element => {
+                if( this.newModule[element] === '' ) {
+                    check = true
+                }
+            })
+            return check
+        },
+
+        create(){
+            if(this.checkForEmptyFields()){
+                this.msg = `You can't leave empty fields`
+            }
+            else{
+                axios
+                .post('http://localhost:8000/api/CreateModule', this.newModule)
+                .then(res => console.log(res.data))
+
+                this.$swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Student created successfully',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+                this.$router.go(-1)
+            }
+
+        }
 
     },
 
@@ -69,14 +109,14 @@ export default {
 <style  scoped>
 
 @keyframes slideIn {
-    0% {background-color: transparent;  left: -1500px;  opacity: 0;}
-    50% {background-color: transparent; opacity: 0;}
-    75% {background-color: transparent;}
-    100% {background-color: #ffffff93;  left: 0px;  opacity: 1;}
+    0% {background: transparent;  left: -1500px;  opacity: 0;}
+    50% {background: transparent; opacity: 0;}
+    75% {background: transparent; opacity: 0}
+    100% {background: linear-gradient(180deg, #14a24d5d, #2b5dbb43);  left: 0px;  opacity: 1;}
 }
 
 .background{
-    background-color: #00000093;
+    background: linear-gradient(180deg, #14a24d5d, #2b5dbb43);
     width: 100%;
     height: 100vh;
     top: 0;
@@ -84,12 +124,12 @@ export default {
     position: absolute;
     animation: slideIn .7s ease-in;
     opacity: 1;
-
 }
 
 
 form {
-    width: 500px;
+    width: 65vw;
+    max-width: 500px;
     height: 70%;
     padding: 10px 50px;
     transform: translateY(10%);
@@ -99,16 +139,31 @@ form {
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-around;
+    border-radius: 15px;
 }
 
 .coeff, .credit{
     width: 100px;
 }
 
+.two{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.credit{
+    margin: 0 auto;
+}
+
 .form-title{
     font-size: 40px;
+    font-weight: 900;
     margin: 40px 0 60px 0;
-    color: rgb(126, 125, 125)
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 .name{
