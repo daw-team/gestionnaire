@@ -54,10 +54,7 @@ export default {
 
         axios
             .get('http://localhost:8000/api/unjustifiedAbsences')
-            .then(response => {
-                console.log(response.data);
-                this.absences = response.data ;
-            })
+            .then(response => this.absences = response.data )
     },
 
     methods: {
@@ -69,20 +66,20 @@ export default {
 <style scoped>
 
 .abs-container{
-    padding-top: 40px;
+    padding-top: 10px;
     margin: 0 5vw;
 }
 
 
 .the-table{
     width: 100%;
-    height: 300px;
+    height: 450px;
     overflow: hidden;
 }
 
 .table-container{
     width: 100%;
-    min-width: 300px;
+    min-width: 450px;
     height: 100%;
     overflow-x: auto;
     padding-bottom: 17px;
@@ -97,7 +94,7 @@ table {
     border-spacing: 0 10px;
     display: inline-block;
     overflow-y: auto;
-    height: 300px;
+    height: 450px;
     border-radius: 15px;
 }
 

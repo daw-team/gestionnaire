@@ -1,7 +1,7 @@
 <template>
     <div class="background" @click="goBack($event)">
             <form
-            action="./api/uploadImage"
+            action=""
             method="POST"
             >
                 <h1 class="form-title">Jusfication form</h1>
@@ -48,9 +48,9 @@ export default {
             const formData = new FormData
             formData.set('image', this.image)
             formData.append('num', this.$route.params.absNum)
-            console.log(formData)
             axios
                 .post('http://localhost:8000/api/uploadImage', formData)
+                .then(this.$router.go(-1))
         }
 
 
@@ -138,7 +138,7 @@ input[type = submit] {
     height: 40px;
     font-size: 20px;
     font-weight: 700;
-    background: linear-gradient(-70deg, rgb(44,78, 180), #2c4eb4, #008828);
+    background: linear-gradient(-70deg, #2c4eb4, #008828);
     border: 1px solid;
     border-radius: 20px;
     color: #fff;

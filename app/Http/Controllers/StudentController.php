@@ -75,14 +75,14 @@ public function getTotalAbsNbr(request $request) {
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
                         ->get();
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
 
 
 //non justified absences
@@ -95,8 +95,8 @@ public function getTotalAbsNbr(request $request) {
                         ->where('ABSENCE.Just_Abs', '=',NULL )
                         ->get();
     }
-    
-    
+
+
 //non justified absences number
 public function getNonJustifiedAbsNbr(request $request ) {
     	return DB::table('ABSENCE')
@@ -106,7 +106,7 @@ public function getNonJustifiedAbsNbr(request $request ) {
     			->count();
 
     }
-    
+
 
 
 
@@ -127,7 +127,7 @@ public function getNonJustifiedAbsNbr(request $request ) {
                         ->where('ABSENCE.Type_Abs', '=','justifié' )
                         ->get();
     }
-    
+
    //justified absences number
 public function getJustifiedAbsNbr(request $request) {
     	return DB::table('ABSENCE')
@@ -136,18 +136,18 @@ public function getJustifiedAbsNbr(request $request) {
     			->count();
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
 //pending absences
     public function getPenAbsences(request $request) {
         return DB::table('ABSENCE')
@@ -168,15 +168,15 @@ public function getJustifiedAbsNbr(request $request) {
     			->count();
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
 public function getStudentInfo(request $request) {
         return DB::table('ETUDIANT')
                         ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud','ETUDIANT.Group_Etud','ETUDIANT.UserName_Etud','ETUDIANT.Photo_Etud')
@@ -185,10 +185,10 @@ public function getStudentInfo(request $request) {
     }
 
 
-    
-    
-    
-    
+
+
+
+
 
     public function storeImage(request $request) {
         $file = $request->file('image');
@@ -196,7 +196,7 @@ public function getStudentInfo(request $request) {
         $newFile = time() .'.'.$fileExt;
         $filePath = $file->storeAs('public/justifications', $newFile);
         return Absence::where('Num_Abs', $request->num)
-                            ->update(['Just_Abs' => "../../../storage/app/public/$filePath"]);
+                            ->update(['Just_Abs' => "../../../../storage/app/$filePath"]);
 }
 
 
@@ -204,11 +204,11 @@ public function getStudentInfo(request $request) {
 
 
 
-    
-    
-    
-    
-    
+
+
+
+
+
 
     public function changeStudentInfo(request $request) {
         if($this->studentCheck($request) == 1){
@@ -222,7 +222,7 @@ public function getStudentInfo(request $request) {
 	Etudiant::where('Num_Etud',$request->id)
 		->update(['Photo_Etud' => $request->imgSrc]);
 }
-    
+
     	Etudiant::where('Num_Etud',$request->id)
                 ->update(['Nom_Etud' => $request->nom ,'Prenom_Etud' => $request->prenom,'UserName_Etud' => $request->username]);
 
@@ -265,5 +265,5 @@ public function getStudentInfo(request $request) {
 				 ->select('MODULE.Abrv_mod','ENSEIGNANT.Nom_Ens','ENSEIGNANT.Prenom_Ens','ENSEIGNANT.UserName_Ens')
 				 ->get();
 				 }
-    
+
 }

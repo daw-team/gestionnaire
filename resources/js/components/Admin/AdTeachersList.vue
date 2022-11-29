@@ -1,14 +1,19 @@
 <template>
     <div class="container">
         <HeaderComp></HeaderComp>
-        <div class="teachers-list">
-            <div class="title">
-                <div>
-                    <h1>List of teachers</h1>
-                    <p>You can find all the teachers on this list </p>
-                    <input type="text"  placeholder="Search for a teacher">
-                </div>
+
+        <div class="title">
+            <div>
+                <h1>List of teachers</h1>
+                <p>You can find all the teachers on this list </p>
+                <input type="text"  placeholder="Search for a teacher">
             </div>
+            <div class="img-src">
+                <img :src="getImageUrl(user.imgSrc)" alt="">
+            </div>
+        </div>
+
+        <div class="teachers-list">
 
             <div class="the-table">
                 <div class="table-container">
@@ -35,7 +40,7 @@
                             <td>
                                 <div>
                                     <img src="../../assets/edit.png" alt="" @click="editTeacher(teacher.Num_Ens)" >&nbsp;
-                                    <img src="../../assets/delete.png" alt="" @click="ConfirmDelete">
+                                    <img src="../../assets/delete.png" alt="" @click="deleteTeacher(teacher.Num_Ens)">
                                 </div>
                             </td>
 
@@ -81,7 +86,14 @@ export default {
 
     data() {
         return {
-            compTobeRendered: '',
+            user: {
+                id: this.$route.params.id,
+                nom: '',
+                prenom: '',
+                username: '',
+                currentPassword: '',
+                imgSrc: '../../assets/AdminProfil.png',
+            },
             teachers:[],
             buttonHovered: false
         }
@@ -89,13 +101,25 @@ export default {
 
 
     mounted() {
+
+        axios
+            .post('http://localhost:8000/api/AdminInfo', {id:this.$route.params.id})
+            .then( res => {
+                this.user.nom = res.data[0].Nom_Adm
+                this.user.prenom = res.data[0].Prenom_Adm
+                this.user.username = res.data[0].UserName_Adm
+                if(res.data[0].Photo_Adm !== null ){
+                    this.user.imgSrc = res.data[0].Photo_Adm
+                }
+            })
+
+
         axios
             .get('http://localhost:8000/api/AllModules')
             .then( res => {
                 this.teachers = res.data
             })
 
-        this.compTobeRendered = ''
     },
 
     methods:{
@@ -107,25 +131,40 @@ export default {
             this.$router.push(this.$route.fullPath + '/new')
         },
 
-        ConfirmDelete(){
+        deleteTeacher(id){
             this.$swal.fire({
-                title: 'Are you sure?',
+                title: 'Are you sure you want to delete this student?',
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
+            })
+            .then((result) => {
                 if (result.isConfirmed) {
-                    this.$swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                    )
+                    axios
+                        .delete('http://localhost:8000/api/deleteTeacher', { data:{ id: id } })
+                        .then(() => this.$router.go(0))
+
+                    this.$swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Student Deleted!',
+                    showConfirmButton: false,
+                    timer: 2500
+                    })
                 }
-                })
+            })
+
+        },
+    },
+
+    setup() {
+        const getImageUrl = (name) => {
+            return new URL(name, import.meta.url).href
         }
+        return { getImageUrl }
     }
 }
 
@@ -149,19 +188,30 @@ export default {
     width: 100%;
 }
 
+.img-src{
+    margin-right: 4vw;
+    width: auto;
+    height: 130px;
+}
+
+.img-src img{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
+
 .title {
-    margin: 20px 0;
-    height: 180px;
+    height: 155px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    margin-left: 8vw;
 }
-
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    margin-left: 60px;
 }
 
 .title h1{
@@ -194,6 +244,7 @@ export default {
     width: 100%;
     height: 300px;
     overflow: hidden;
+    margin-top: 20px;
 }
 
 .table-container{
@@ -279,6 +330,32 @@ td img{
 ion-icon{
     font-size: 40px;
     color: #fff;
+}
+
+
+@media (max-width: 500px) {
+    .title{
+        margin-left: 10px;
+    }
+
+    .img-src{
+        height: 90px;
+        margin: 0;
+    }
+
+    .img-src img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .title h1{
+        font-size: 30px;
+    }
+
+    .title input{
+        width: 150px;
+    }
+
 }
 
 </style>
