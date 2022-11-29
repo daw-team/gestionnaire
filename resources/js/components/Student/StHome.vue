@@ -49,11 +49,8 @@
 
 
             <div class="container-left">
-                <div class="header card">
-                    <img src="../../assets/logo.png" alt="">
-                    <input type="text" name="search" value="Search ...">
-                    <img src="../../assets/notif.png" alt="">
-                </div>
+
+                <HeaderComp></HeaderComp>
 
                 <div class="absences long-card">
                         <h5>RECENT ABSENCES:</h5>
@@ -109,7 +106,14 @@
 
 <script>
 
+import HeaderComp from '../Header.vue'
+
+
 export default {
+    components: {
+        HeaderComp,
+    },
+
     data() {
         return {
             showProfileCard: false,

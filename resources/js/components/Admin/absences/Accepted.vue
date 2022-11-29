@@ -33,7 +33,7 @@
                         </td>
 
                         <td>
-                            <a :href="`/admin=${$route.params.id}/dashboard/absences/justification=${id}`"><p>View Justification</p></a>
+                            <a :href="`/admin=${$route.params.id}/dashboard/absences/justification=${absence.Num_Abs}`"><p>View Justification</p></a>
                         </td>
 
                     </tr>
@@ -50,13 +50,11 @@
 export default {
     data() {
         return {
-            id: 1002,
             absences:[],
         }
     },
 
     mounted() {
-
         axios
             .get('http://localhost:8000/api/justifiedAbsences')
             .then(response => this.absences = response.data )
@@ -69,20 +67,20 @@ export default {
 
 <style scoped>
 .abs-container{
-    padding-top: 40px;
+    padding-top: 10px;
     margin: 0 5vw;
 }
 
 
 .the-table{
     width: 100%;
-    height: 300px;
+    height: 450px;
     overflow: hidden;
 }
 
 .table-container{
     width: 100%;
-    min-width: 300px;
+    min-width: 450px;
     height: 100%;
     overflow-x: auto;
     padding-bottom: 17px;
@@ -97,7 +95,7 @@ table {
     border-spacing: 0 10px;
     display: inline-block;
     overflow-y: auto;
-    height: 300px;
+    height: 450px;
     border-radius: 15px;
 }
 

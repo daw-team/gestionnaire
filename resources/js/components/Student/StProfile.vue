@@ -1,12 +1,9 @@
 <template>
     <div class="student-profile-container">
+        <HeaderComp></HeaderComp>
+
         <div class="header">
-            <div class="card">
-                    <img src="../../assets/logo.png" alt="">
-                    <h4>E-learning - Université Constantine 2</h4>
-                    <input type="text" name="search" value="Search ...">
-                    <img src="../../assets/notif.png" alt="">
-            </div>
+
             <div
                 class="profile-image"
             >
@@ -94,8 +91,12 @@
 
 <script>
 
+import HeaderComp from '../Header.vue'
 
 export default {
+    components: {
+        HeaderComp,
+    },
 
     data() {
         return {

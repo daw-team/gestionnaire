@@ -106,7 +106,7 @@ Route::post('/ChangeTeacherInfo', [TeacherController::class, 'changeTeacherInfo'
 Route::post('/AllStudents', [TeacherController::class, 'getAllStudents']);
 
 //untested Teacher Absences
- 
+
 Route::get('/groupsList', [TeacherController::class, 'groupsList']);
 Route::post('/absentDate', [TeacherController::class, 'absentedate']);
 Route::post('/totalAbs', [TeacherController::class, 'totalabs']);

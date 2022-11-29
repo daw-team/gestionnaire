@@ -7,6 +7,9 @@
                 <p>You can find all your abcenses on this list </p>
                 <input type="text"  placeholder="Search for a student">
             </div>
+            <div class="img-src">
+                    <img :src="getImageUrl(user.imgSrc)" alt="">
+            </div>
         </div>
 
         <div class="drawer">
@@ -49,6 +52,14 @@ export default {
     },
     data() {
         return{
+            user: {
+                id: this.$route.params.id,
+                nom: '',
+                prenom: '',
+                username: '',
+                currentPassword: '',
+                imgSrc: '../../assets/AdminProfil.png',
+            },
             comps:[ 'UnjustifiedComp', 'PendingComp', 'AcceptedComp'],
             compToRender: 'UnjustifiedComp',
             drawerList: [
@@ -61,6 +72,17 @@ export default {
 
     mounted() {
         this.switchContent(0);
+
+        axios
+            .post('http://localhost:8000/api/AdminInfo', {id:this.$route.params.id})
+            .then( res => {
+                this.user.nom = res.data[0].Nom_Adm
+                this.user.prenom = res.data[0].Prenom_Adm
+                this.user.username = res.data[0].UserName_Adm
+                if(res.data[0].Photo_Adm !== null ){
+                    this.user.imgSrc = res.data[0].Photo_Adm
+                }
+            })
     },
 
     methods: {
@@ -75,6 +97,13 @@ export default {
             this.drawerList[i].active = true
         }
     },
+
+    setup() {
+        const getImageUrl = (name) => {
+            return new URL(name, import.meta.url).href
+        }
+        return { getImageUrl }
+    }
 }
 </script>
 
@@ -89,12 +118,25 @@ h2{
     margin: 20px;
 }
 
+.img-src{
+    margin-right: 4vw;
+    width: auto;
+    height: 130px;
+}
+
+.img-src img{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
+
 .title {
-    margin: 20px 0;
-    height: 200px;
+    height: 155px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 10vw;
 }
 
 .title div{
@@ -136,7 +178,7 @@ ul{
 .drawer{
     display: flex;
     flex-direction: row;
-    margin: 0 100px;
+    margin: 20px 10vw 10px 10vw;
 }
 
 .drawer div{
@@ -160,8 +202,36 @@ li{
     border-right: #000 solid 1px;
     border-left: #000 solid 1px;
     border-bottom: none;
+    color: #fff;
     border-radius: 5px 5px 0 0;
-    background: linear-gradient(0deg, #14a24d, #2b5dbb);
+    background: linear-gradient(180deg, #14a24d, #2b5dbb);
+}
+
+@media (max-width: 500px) {
+    .title{
+        margin-left: 10px;
+    }
+
+    .img-src{
+        height: 90px;
+        margin: 0;
+    }
+
+    .img-src img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .title h1{
+        font-size: 35px;
+    }
+
+    .title input{
+        width: 150px;
+    }
+    .drawer{
+        margin: 10px 0;
+    }
 }
 
 

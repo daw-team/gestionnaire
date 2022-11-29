@@ -1,7 +1,7 @@
 <template>
     <div class="background" @click="goBack($event)">
         <div class="image-container">
-            justification
+            <img :src="getImageUrl(imgSrc)" alt="">
 
         </div>
     </div>
@@ -13,11 +13,16 @@ export default {
     data() {
         return {
             box: null,
+            imgSrc: '',
+            id: this.$route.params.JsNum
         }
     },
 
     mounted() {
         this.box = document.querySelector('.image-container');
+        axios
+            .post('http://localhost:8000/api/absenceInformation', { id: this.id } )
+            .then( res => this.imgSrc = res.data[0].Just_Abs )
 
     },
 
@@ -31,6 +36,12 @@ export default {
 
     },
 
+    setup() {
+        const getImageUrl = (name) => {
+            return new URL(name, import.meta.url).href
+        }
+        return { getImageUrl }
+    }
 
 
 
@@ -64,10 +75,9 @@ export default {
 }
 
 .image-container{
-    width: 65vw;
-    max-width: 500px;
+    width: 60%;
+    min-width: 400px;
     height: 70%;
-    padding: 10px 50px;
     transform: translateY(10%);
     margin: auto;
     background: #fff;
@@ -76,8 +86,13 @@ export default {
     align-items: flex-start;
     justify-content: space-around;
     border-radius: 15px;
+    overflow-y: auto;
 }
 
+.image-container img {
+    width: 100%;
+    height: auto;
+}
 
 
 </style>

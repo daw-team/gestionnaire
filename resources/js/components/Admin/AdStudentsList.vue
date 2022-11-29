@@ -1,14 +1,19 @@
 <template>
     <div    class="container">
         <header-comp></header-comp>
-        <div class="students-list">
-            <div class="title">
-                <div>
-                    <h1>List of students</h1>
-                    <p>You can find all the students on this list </p>
-                    <input type="text"  placeholder="Search for a student">
-                </div>
+
+        <div class="title">
+            <div>
+                <h1>List of students</h1>
+                <p>You can find all the students on this list </p>
+                <input type="text"  placeholder="Search for a student">
             </div>
+            <div class="img-src">
+                <img :src="getImageUrl(user.imgSrc)" alt="">
+            </div>
+        </div>
+
+        <div class="students-list">
             <div class="the-table">
                 <div class="table-container">
                     <table>
@@ -77,12 +82,32 @@ export default {
     },
     data() {
         return {
+            user: {
+                id: this.$route.params.id,
+                nom: '',
+                prenom: '',
+                username: '',
+                currentPassword: '',
+                imgSrc: '../../assets/AdminProfil.png',
+            },
             students:[],
             buttonHovered: false
         }
     },
 
     mounted() {
+        axios
+            .post('http://localhost:8000/api/AdminInfo', {id:this.$route.params.id})
+            .then( res => {
+                this.user.nom = res.data[0].Nom_Adm
+                this.user.prenom = res.data[0].Prenom_Adm
+                this.user.username = res.data[0].UserName_Adm
+                if(res.data[0].Photo_Adm !== null ){
+                    this.user.imgSrc = res.data[0].Photo_Adm
+                }
+            })
+
+
         axios
             .get('http://localhost:8000/api/studentsList')
             .then( res => {
@@ -128,7 +153,15 @@ export default {
             this.$router.push(this.$route.fullPath + '/new')
         }
 
+    },
+
+    setup() {
+        const getImageUrl = (name) => {
+            return new URL(name, import.meta.url).href
+        }
+        return { getImageUrl }
     }
+
 }
 
 </script>
@@ -152,19 +185,31 @@ export default {
     width: 100%;
 }
 
+.img-src{
+    margin-right: 4vw;
+    width: auto;
+    height: 130px;
+}
+
+.img-src img{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
+
 .title {
-    margin: 20px 0;
-    height: 180px;
+    height: 155px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    margin-left: 8vw;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    margin-left: 60px;
 }
 
 .title h1{

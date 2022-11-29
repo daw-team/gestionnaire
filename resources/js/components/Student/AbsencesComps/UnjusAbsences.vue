@@ -27,7 +27,7 @@
                             <p>{{ absence.Hour_Abs }}</p>
                         </td>
 
-                        <td><button>Justify</button></td>
+                        <td><button @click="showForm(absence.Num_Abs)">Justify</button></td>
 
                     </tr>
                 </table>

@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import bus from '../../EventBus'
+
 import HeaderComp from '../Header.vue'
 
 export default {
@@ -140,11 +140,6 @@ export default {
         }
     },
 
-    created() {
-        bus.$on('changeMenu', (value) => {
-            this.menuChange = value;
-        })
-    },
 
     mounted() {
         axios

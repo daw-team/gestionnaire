@@ -1,14 +1,19 @@
 <template>
     <div    class="container">
         <HeaderComp></HeaderComp>
-        <div class="modules-list">
-            <div class="title">
-                <div>
-                    <h1>List of modules</h1>
-                    <p>You can find all the modules on this list </p>
-                    <input type="text"  placeholder="Search for a module">
-                </div>
+
+        <div class="title">
+            <div>
+                <h1>List of modules</h1>
+                <p>You can find all the modules on this list </p>
+                <input type="text"  placeholder="Search for a module">
             </div>
+            <div class="img-src">
+                <img :src="getImageUrl(user.imgSrc)" alt="">
+            </div>
+        </div>
+
+        <div class="modules-list">
 
             <div class="the-table">
                 <div class="table-container">
@@ -76,6 +81,14 @@ export default {
 
     data() {
         return {
+            user: {
+                id: this.$route.params.id,
+                nom: '',
+                prenom: '',
+                username: '',
+                currentPassword: '',
+                imgSrc: '../../assets/AdminProfil.png',
+            },
             menuChange: false,
             modules:[],
             buttonHovered: false
@@ -83,6 +96,18 @@ export default {
     },
 
     mounted() {
+        axios
+            .post('http://localhost:8000/api/AdminInfo', {id:this.$route.params.id})
+            .then( res => {
+                this.user.nom = res.data[0].Nom_Adm
+                this.user.prenom = res.data[0].Prenom_Adm
+                this.user.username = res.data[0].UserName_Adm
+                if(res.data[0].Photo_Adm !== null ){
+                    this.user.imgSrc = res.data[0].Photo_Adm
+                }
+            })
+
+
         axios
             .get('http://localhost:8000/api/modulesList')
             .then( res => this.modules = res.data)
@@ -92,11 +117,46 @@ export default {
         editModule(id){
             this.$router.push(this.$route.fullPath + '/num=' + id )
         },
+        deleteModule(id){
+            this.$swal.fire({
+                title: 'Are you sure you want to delete this student?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .delete('http://localhost:8000/api/deleteModule', { data:{ id: id } })
+                        .then(() => this.$router.go(0))
+
+                    this.$swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Student Deleted!',
+                    showConfirmButton: false,
+                    timer: 2500
+                    })
+                }
+            })
+
+        },
 
         goToAddPage(){
             this.$router.push(this.$route.fullPath + '/new')
         }
+    },
+
+    setup() {
+        const getImageUrl = (name) => {
+            return new URL(name, import.meta.url).href
+        }
+        return { getImageUrl }
     }
+
 }
 
 </script>
@@ -119,19 +179,31 @@ export default {
     width: 100%;
 }
 
+.img-src{
+    margin-right: 4vw;
+    width: auto;
+    height: 130px;
+}
+
+.img-src img{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
+
 .title {
-    margin: 20px 0;
-    height: 180px;
+    height: 155px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    margin-left: 8vw;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    margin-left: 60px;
 }
 
 .title h1{
