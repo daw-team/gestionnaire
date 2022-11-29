@@ -1,7 +1,6 @@
 <template>
     <div
         class="home"
-        :class="{'small-home':menuChange}"
     >
         <div class="home-container">
 
@@ -12,7 +11,9 @@
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
                 <p>{{ user.username }}</p>
                 <button>View profile</button>
-                <button>Log out</button>
+                <a href="/logout">
+                    <button>Log out</button>
+                </a>
             </div>
 
                 <div class="card">
@@ -20,7 +21,7 @@
                             <h5>TOTAL STUDENTS</h5>
                             <span>{{ homeInfo.students }}</span>
                         </div>
-                        <img src="../../assets/absences.png" alt="">
+                        <img src="../../assets/totalstud.png" alt="">
                 </div>
 
                 <div class="card">
@@ -28,7 +29,7 @@
                             <h5>TOTAL TEACHERS</h5>
                             <span>{{ homeInfo.teachers }}</span>
                         </div>
-                        <img src="../../assets/pending.png" alt="">
+                        <img src="../../assets/totalteach.png" alt="">
                 </div>
 
                 <div class="card">
@@ -36,7 +37,7 @@
                             <h5>TOTAL MODULES</h5>
                             <span>{{ homeInfo.modules }}</span>
                         </div>
-                        <img src="../../assets/accepted.png" alt="">
+                        <img src="../../assets/totalmod.png" alt="">
                 </div>
 
                 <div class="card">
@@ -44,18 +45,14 @@
                             <h5>TOTAL ABSENCES</h5>
                             <span>{{ homeInfo.absences }}</span>
                         </div>
-                        <img src="../../assets/module.png" alt="">
+                        <img src="../../assets/totalabs.png" alt="">
                 </div>
             </div>
 
 
             <div class="container-left">
-                <div class="header card">
-                    <img src="../../assets/logo.png" alt="">
-                    <input type="text" name="search" value="Search ...">
-                    <img src="../../assets/notif.png" alt="">
-                </div>
 
+                <HeaderComp></HeaderComp>
                 <div class="absences long-card">
                         <h5>RECENT ABSENCES:</h5>
                     <div class="card-column-title">
@@ -111,8 +108,14 @@
 
 <script>
 import bus from '../../EventBus'
+import HeaderComp from '../Header.vue'
 
 export default {
+
+    components: {
+        HeaderComp,
+    },
+
     data() {
         return {
             menuChange: false,
@@ -151,7 +154,7 @@ export default {
                 this.user.prenom = res.data[0].Prenom_Adm
                 this.user.username = res.data[0].UserName_Adm
                 if(res.data[0].Photo_Adm !== null ){
-                    this.user.imgSrc = res.data[0].Photo_Etud
+                    this.user.imgSrc = res.data[0].Photo_Adm
                 }
             })
 
@@ -189,6 +192,8 @@ export default {
     methods: {
 
     },
+
+
     setup() {
     const getImageUrl = (name) => {
         return new URL(name, import.meta.url).href
@@ -203,18 +208,7 @@ export default {
 
 <style scoped>
 .home{
-    width: calc(100% - 70px) ! important;
-    padding-left: 70px;
-    min-height: 300px;
-    padding-bottom: 40px;
-    overflow: hidden;
-    transition: all ease .4s;
-    background: #fff;
-}
-
-.small-home {
-    width: calc(100% - 260px) ! important;
-    padding-left: 260px;
+    width:100%;
 }
 
 .home-container{
@@ -324,14 +318,22 @@ input{
 }
 
 
-.account-container :nth-child(6) {
+.account-container a {
     width: 70%;
-    border: none;
-    border-radius: 10px;
     font-weight: 500;
-    background: linear-gradient#fff;
+    background: #fff;
 }
 
+.account-container a button{
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+}
+
+.account-container a button:hover{
+    box-shadow: #000 1px 1px 5px;
+    transition: all ease .4s;
+}
 
 .card{
     min-width: 200px;
@@ -371,6 +373,12 @@ input{
     width: 100%;
     align-items: center;
     justify-content: space-around;
+}
+
+.account-container img {
+    height: 70px !important;
+    width: 70px !important;
+    border-radius: 50% !important;
 }
 
 .card img {
@@ -430,7 +438,10 @@ h5 {
     background: #fff;
     overflow-y: auto;
     overflow-x: visible;
+}
 
+.card-container {
+    background: #fff;
 }
 
 .absence{

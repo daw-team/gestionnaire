@@ -1,78 +1,132 @@
 <template>
-    <div class="teachers-list">
-        <div class="title">
-            <div>
-                <h1>List of teachers</h1>
-                <p>You can find all the teachers on this list </p>
-                <input type="text"  placeholder="Search for a teacher">
+    <div class="container">
+        <HeaderComp></HeaderComp>
+        <div class="teachers-list">
+            <div class="title">
+                <div>
+                    <h1>List of teachers</h1>
+                    <p>You can find all the teachers on this list </p>
+                    <input type="text"  placeholder="Search for a teacher">
+                </div>
             </div>
-        </div>
 
-        <table>
-            <tr>
-                <th>Teacher</th>
-                <th>Module</th>
-                <th>Edit/Delete</th>
-                <th>Email</th>
-            </tr>
-            <tr
-                v-for="(teacher, index) in teachers"
-                :key="index"
-                class="teacher"
+            <div class="the-table">
+                <div class="table-container">
+                    <table>
+                        <tr class="table-header">
+                            <th>Teacher</th>
+                            <th>Module</th>
+                            <th>Edit/Delete</th>
+                            <th>Email</th>
+                        </tr>
+                        <tr
+                            v-for="(teacher, index) in teachers"
+                            :key="index"
+                            class="teacher"
+                        >
+                            <td>
+                                <p>{{ teacher.Nom_Ens }} {{ teacher.Prenom_Ens }}</p>
+                            </td>
+
+                            <td>
+                                <p>{{ teacher.Abrv_mod }}</p>
+                            </td>
+
+                            <td>
+                                <div>
+                                    <img src="../../assets/edit.png" alt="" @click="editTeacher(teacher.Num_Ens)" >&nbsp;
+                                    <img src="../../assets/delete.png" alt="" @click="ConfirmDelete">
+                                </div>
+                            </td>
+
+                            <td>
+                                <img src="../../assets/mailSend.png" alt="">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div
+                class="add"
+                @mouseover="buttonHovered = true"
+                :class="{'add-expand': buttonHovered}"
+                @mouseleave="buttonHovered = false"
+                @click="goToAddPage"
             >
-                <td>
-                    <p>{{ teacher.Nom_Ens }} {{ teacher.Prenom_Ens }}</p>
-                </td>
+                <ion-icon name="add-outline"></ion-icon>
+                <transition name="appear">
+                    <h3 v-if="buttonHovered">New teacher</h3>
+                </transition>
+            </div>
 
-                <td>
-                    <p>{{ teacher.Abrv_mod }}</p>
-                </td>
-
-                <td>
-                    <div>
-                        <img src="../../assets/edit.png" alt="">&nbsp;
-                        <img src="../../assets/delete.png" alt="">
-                    </div>
-                </td>
-
-                <td>
-                    <img src="../../assets/mailSend.png" alt="">
-                </td>
-            </tr>
-        </table>
-        <div
-            class="add"
-            @mouseover="buttonHovered = true"
-            :class="{'add-expand': buttonHovered}"
-            @mouseleave="buttonHovered = false"
-        >
-            <ion-icon name="add-outline"></ion-icon>
-            <transition name="appear">
-                <h3 v-if="buttonHovered">New teacher</h3>
-            </transition>
         </div>
-
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
+import EditTeacher from './EditComps/EditTeacher.vue'
+import NewTeacher from './NewTeacher.vue'
+
+import HeaderComp from '../Header.vue'
+
 
 export default {
+
+    components:{
+        EditTeacher,
+        NewTeacher,
+        HeaderComp
+    },
+
     data() {
         return {
+            compTobeRendered: '',
             teachers:[],
             buttonHovered: false
         }
     },
 
+
     mounted() {
         axios
             .get('http://localhost:8000/api/AllModules')
             .then( res => {
-                console.log(res.data);
                 this.teachers = res.data
             })
+
+        this.compTobeRendered = ''
     },
+
+    methods:{
+        editTeacher(id){
+            this.$router.push(this.$route.fullPath + '/num=' + id )
+        },
+
+        goToAddPage(){
+            this.$router.push(this.$route.fullPath + '/new')
+        },
+
+        ConfirmDelete(){
+            this.$swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                    )
+                }
+                })
+        }
+    }
 }
 
 </script>
@@ -88,22 +142,34 @@ export default {
 
 
 .teachers-list{
-    margin: 0 17vw;
+    margin: 0 5vw;
+}
 
+.container {
+    width: 100%;
 }
 
 .title {
-    margin: 50px 0;
-    height: 200px;
+    margin: 20px 0;
+    height: 180px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin-left: 60px;
+}
+
+.title h1{
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-size: 50px;
 }
 
 .title p{
@@ -124,14 +190,49 @@ export default {
     font-size: 14px;
 }
 
-
-table{
+.the-table{
     width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.table-container{
+    width: 100%;
+    min-width: 300px;
+    height: 100%;
+    overflow-x: auto;
+    padding-bottom: 17px;
+    box-sizing: content-box;
+    overflow-y: hidden;
+}
+
+
+table {
+    width: 1200px;
     border-collapse: separate;
     border-spacing: 0 10px;
+    display: inline-block;
+    overflow-y: auto;
+    height: 300px;
+    border-radius: 15px;
 }
-td{
+
+td ,th{
     text-align: center;
+    width: 100%;
+}
+
+.table-header{
+    position: sticky;
+    top: 0;
+    height: 40px;
+    color: #000;
+}
+
+tr{
+    width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 td img{
@@ -141,7 +242,6 @@ td img{
 }
 
 .teacher{
-    padding: 5px 15px;
     margin: auto;
     height: 70px;
     background-color: rgb(201, 201, 201);
@@ -154,9 +254,10 @@ td img{
     width: 60px;
     height: 60px;
     position: absolute;
-    bottom: 30px;
-    right: 30px;
+    bottom: 5%;
+    right: 5%;
     background: linear-gradient(0deg, #14a24d, #2b5dbb);
+    box-shadow: 2px 2px 10px #000;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -164,12 +265,14 @@ td img{
     flex-direction: row;
     transition: all ease .3s;
     color: #fff;
+    cursor: pointer;
 }
 
 .add-expand{
     width: 180px;
     border-radius: 15px;
     background: linear-gradient(-70deg, #1f3782, #027224);
+    box-shadow: none;
     transition: all ease .3s;
 }
 

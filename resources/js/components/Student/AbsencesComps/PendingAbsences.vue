@@ -47,7 +47,7 @@ export default {
     mounted() {
 
         axios
-            .post('http://localhost:8000/api/JustAbs', this.log)
+            .post('http://localhost:8000/api/PendJus', this.log)
             .then(response => {
                 this.absences = response.data ;
             })
@@ -55,6 +55,7 @@ export default {
 }
 
 </script>
+
 
 
 <style scoped>
@@ -121,5 +122,7 @@ td img{
     margin-bottom: 10px;
     font-weight: 900;
 }
+
+
 
 </style>

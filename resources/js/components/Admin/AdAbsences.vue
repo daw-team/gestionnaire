@@ -1,14 +1,12 @@
 <template>
-    <div class="container">
+    <div    class="container">
+        <HeaderComp></HeaderComp>
         <div class="title">
             <div>
                 <h1>Abcenses</h1>
                 <p>You can find all your abcenses on this list </p>
                 <input type="text"  placeholder="Search for a student">
             </div>
-            <img v-if="compToRender == 'NonJusAbsences'" src="../../assets/pending-title.png" alt="">
-            <img v-if="compToRender == 'JustifiedAbsences'" src="../../assets/justified-title.png" alt="">
-            <img v-if="compToRender == 'AccAbsences'" src="../../assets/accepted-title.png" alt="">
         </div>
 
         <div class="drawer">
@@ -26,33 +24,36 @@
             <div></div>
         </div>
 
-
-        <!-- <component :is="compToRender"></component> -->
-
+        <component :is="compToRender"></component>
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-// import JustifyForm from './AbsencesComps/JustifyForm.vue'
-// import JustifiedAbsences from './AbsencesComps/JustifiedAbsences.vue'
-// import NonJusAbsences from './AbsencesComps/NonJusAbsences.vue'
-// import AccAbsences from './AbsencesComps/AccAbsences.vue'
+import PendingComp from './absences/Pending.vue'
+import UnjustifiedComp from './absences/Unjustified.vue'
+import AcceptedComp from './absences/Accepted.vue'
+
+import AdViewJustification from './AdViewJustification.vue'
+
+import HeaderComp from '../Header.vue'
+
 
 export default {
-    // components:{
-    //     JustifyForm,
-    //     JustifiedAbsences,
-    //     NonJusAbsences,
-    //     AccAbsences,
-    // },
+    components:{
+        HeaderComp,
+        PendingComp,
+        UnjustifiedComp,
+        AcceptedComp,
+        AdViewJustification
+    },
     data() {
         return{
-            comps:[ 'NonJusAbsences', 'JustifiedAbsences', 'AccAbsences'],
-            compToRender: 'NonJusAbsences',
+            comps:[ 'UnjustifiedComp', 'PendingComp', 'AcceptedComp'],
+            compToRender: 'UnjustifiedComp',
             drawerList: [
-                {title: 'Not Justified', active: false},
-                {title: 'Justified', active: false},
+                {title: 'Unjustified', active: false},
+                {title: 'Pending', active: false},
                 {title: 'Accepted', active: false},
             ]
         }
@@ -79,8 +80,8 @@ export default {
 
 
 <style scoped>
-.container{
-    margin: 0 17vw;
+.container {
+    width: 100%;
 }
 
 
@@ -89,7 +90,7 @@ h2{
 }
 
 .title {
-    margin: 50px 0;
+    margin: 20px 0;
     height: 200px;
     display: flex;
     flex-direction: row;
@@ -100,6 +101,14 @@ h2{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.title h1{
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-size: 50px;
 }
 
 .title p{
@@ -127,6 +136,7 @@ ul{
 .drawer{
     display: flex;
     flex-direction: row;
+    margin: 0 100px;
 }
 
 .drawer div{
@@ -150,9 +160,8 @@ li{
     border-right: #000 solid 1px;
     border-left: #000 solid 1px;
     border-bottom: none;
-    border-radius: 5px 5px 0 0 ;
-    box-shadow: #000 1px 1px 8px;
-    margin-bottom: 1px;
+    border-radius: 5px 5px 0 0;
+    background: linear-gradient(0deg, #14a24d, #2b5dbb);
 }
 
 

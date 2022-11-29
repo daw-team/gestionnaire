@@ -3,125 +3,109 @@
         class="home"
         :class="{'small-home':menuChange}"
     >
-        <div    class="background">
-            <div class="account">
-                <div class="left">
-                    <input type="text" name="search" value="Search ...">
-                </div>
-                <div class="right">
-                    <ion-icon name="notifications-outline"></ion-icon>
-                    <img src="../../assets/user.png" alt="" @click="showProfileCard = !showProfileCard">
-                    <h3>{{ user.prenom }} {{ user.nom }}</h3>
-                </div>
-            </div>
-        </div>
+        <div class="home-container">
 
-        <div
-            class="profile-card"
-            v-if="showProfileCard"
-        >
-            <img src="../../assets/user.png" alt="">
-            <h3>{{ user.prenom }} {{ user.nom }}</h3>
-            <div class="info">
-
-            </div>
-            <button>Logout</button>
-        </div>
-
-        <div class="cards">
-            <div class="card">
-                <div class="row-one">
-                    <div>
-                        <h5>TOTAL ABSENCES</h5>
-                        <span>5</span>
-                    </div>
-                    <img src="../../assets/absences.png" alt="">
-                </div>
-                <div class="row-two">
-                    <button>CHECK <ion-icon name="chevron-forward-outline"></ion-icon> </button>
-                </div>
+        <div class="container-right">
+            <div class="account-container card">
+                <p>ADMIN</p>
+                <img :src="getImageUrl(user.imgSrc)" alt="" @click="showProfileCard = !showProfileCard">
+                <h3>{{ user.prenom}} {{ user.nom}}</h3>
+                <p>{{ user.username }}</p>
+                <button>View profile</button>
+                <button>Log out</button>
             </div>
 
-            <div class="card">
-                <div class="row-one">
-                    <div>
-                        <h5>PENDING ABSENCES</h5>
-                        <span>5</span>
-                    </div>
-                    <img src="../../assets/pending.png" alt="">
-                </div>
-                <div class="row-two">
-                    <button>CHECK <ion-icon name="chevron-forward-outline"></ion-icon> </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="row-one">
-                    <div>
-                        <h5>JUSTIFIED ABSENCES</h5>
-                        <span>5</span>
-                    </div>
-                    <img src="../../assets/accepted.png" alt="">
-                </div>
-                <div class="row-two">
-                    <button>CHECK <ion-icon name="chevron-forward-outline"></ion-icon> </button>
-                </div>
-            </div>
-
-            <div class="card"
-                :class="{'card-4':menuChange}"
-            >
-                <div class="row-one">
-                    <div>
-                        <h5>HEIGHEST MODEL</h5>
-                        <span>DAW</span>
-                    </div>
-                    <img src="../../assets/module.png" alt="">
-                </div>
-                <div class="row-two">
-                    <button>CHECK <ion-icon name="chevron-forward-outline"></ion-icon> </button>
-                </div>
-            </div>
-
-
-            <div class="card" id="absences">
-                <h5>ABSENCES:</h5>
-                <div
-                    v-for="(item, index) in absences"
-                    :key="index"
-
-                >
-                    <div class="absence">
-                        <p>{{ item.module }}</p>
-                        <p>{{ item.date }}</p>
-                    </div>
-                    <hr>
-                </div>
-            </div>
-
-
-            <div class="card contact"
-                :class="{'.contact-2': menuChange}"
-            >
-                <h5>SEND EMAIL</h5>
-                <div
-                    v-for="(contact, index) in contacts"
-                    :key="index"
-
-                >
-                    <div class="teacher">
+                <div class="card">
                         <div>
-                            <p>{{ contact.name }}</p>
-                            <span>{{ contact.module }}</span>
+                            <h5>TOTAL STUDENTS</h5>
+                            <span>{{ homeInfo.students }}</span>
                         </div>
-                        <a :href="`mailto:${contact.email}`"><ion-icon class="mail-icon" name="mail-outline"></ion-icon></a>
-                    </div>
-                    <hr>
+                        <img src="../../assets/absences.png" alt="">
+                </div>
+
+                <div class="card">
+                        <div>
+                            <h5>TOTAL TEACHERS</h5>
+                            <span>{{ homeInfo.teachers }}</span>
+                        </div>
+                        <img src="../../assets/pending.png" alt="">
+                </div>
+
+                <div class="card">
+                        <div>
+                            <h5>TOTAL MODULES</h5>
+                            <span>{{ homeInfo.modules }}</span>
+                        </div>
+                        <img src="../../assets/accepted.png" alt="">
+                </div>
+
+                <div class="card">
+                        <div>
+                            <h5>TOTAL ABSENCES</h5>
+                            <span>{{ homeInfo.absences }}</span>
+                        </div>
+                        <img src="../../assets/module.png" alt="">
                 </div>
             </div>
 
-        </div>
 
+            <div class="container-left">
+                <div class="header card">
+                    <img src="../../assets/logo.png" alt="">
+                    <input type="text" name="search" value="Search ...">
+                    <img src="../../assets/notif.png" alt="">
+                </div>
+
+                <div class="absences long-card">
+                        <h5>RECENT ABSENCES:</h5>
+                    <div class="card-column-title">
+                        <p>Module</p>
+                        <p>Date</p>
+                        <p>Time</p>
+                        <p>justification</p>
+                    </div>
+                    <div  class="card-container">
+                        <div class="absence"
+                        v-for="(item, index) in absences"
+                        :key="index"
+                        >
+                            <p>{{ item.module }}</p>
+                            <p>{{ item.date }}</p>
+                            <p>{{ item.time }}</p>
+                            <img v-if="item.accepted" src="../../assets/Yellowdot.png" alt="">
+                            <img v-if="!item.accepted" src="../../assets/reddot.png" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact long-card"
+                    :class="{'.contact-2': menuChange}"
+                >
+                    <h5>SEND EMAIL</h5>
+                    <div    class="card-container">
+                        <a
+                            :href="`mailto:${contact.UserName_Ens}`"
+                            v-for="(contact, index) in contacts"
+                            :key="index"
+                        >
+                        <div class="teacher"
+                        >
+                                <div>
+                                    <p>{{ contact.Nom_Ens }} {{ contact.Prenom_Ens }}</p>
+                                    <span>{{ contact.Abrv_mod }}</span>
+                                </div>
+                                <p>{{ contact.UserName_Ens }}</p>
+                                <img src="../../assets/mailSend.png" alt="">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
     </div>
 </template>
 
@@ -139,15 +123,15 @@ export default {
                 {module: 'daw', date: '14/21/2021'},
                 {module: 'daw', date: '14/21/2021'}
             ],
-            contacts:[
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-                {name: 'Yamane Houfani', module: 'TEC', email: 'yamane.houfani@univ-constantine2.dz'},
-            ],
+            contacts:[],
             user: {
                 nom:'',
                 prenom: '',
+                username: '',
+                imgSrc: '../../assets/AdminProfil.png'
+            },
+            homeInfo:{
+
             }
         }
     },
@@ -162,11 +146,21 @@ export default {
         axios
             .post('http://localhost:8000/api/TeacherInfo', {id:this.$route.params.id})
             .then( res => {
-                console.log(res.data)
                 this.user.nom = res.data[0].Nom_Ens
                 this.user.prenom = res.data[0].Prenom_Ens
+                this.user.username = res.data[0].UserName_Ens
+                if(res.data[0].Photo_Ens !== null ){
+                    this.user.imgSrc = res.data[0].Photo_Ens
+                }
             })
     },
+
+    setup() {
+    const getImageUrl = (name) => {
+        return new URL(name, import.meta.url).href
+    }
+    return { getImageUrl }
+    }
 }
 
 
@@ -181,13 +175,57 @@ export default {
     padding-bottom: 40px;
     overflow: hidden;
     transition: all ease .4s;
+    background: #fff;
 }
 
 .small-home {
     width: calc(100% - 260px) ! important;
     padding-left: 260px;
+}
+
+.home-container{
+    display: flex;
+    flex-flow: row-reverse wrap;
+    min-height: 90vh;
+    justify-content: space-around;
+}
+
+.container-right{
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100vh;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.container-left{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 100vh;
+    flex-grow: 1;
+}
+
+.header{
+    padding: 0 20px !important;
+    width: calc(98% - 40px) !important;
+    align-items: center;
+    height: 60px !important;
+    box-shadow: none !important;
+    margin: 7px 20px 40px 20px!important;
+}
 
 
+.header :nth-child(1){
+    width: 55px;
+    height: auto ;
+}
+
+.header :nth-child(3){
+    width: 35px ;
+    height: auto;
 }
 
 input{
@@ -195,163 +233,179 @@ input{
     height: 20px;
     padding: 10px 20px;
     border: #ffffff79 solid 1px;
-    color: #fff;
+    color: #e8e8e8;
     border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.174);
     font-size: 14px;
+    background: linear-gradient(0deg, #2b5dbb64, #14a24d5c);
 }
 
-.background{
-    width: 100%;
-    height: 150px;
-    /* background-color: #2c4eb4; */
-      background: linear-gradient(70deg, #2c4eb4, #305748);
-    /* #008828 */
-    left: 0;
-    z-index: 0;
-
-}
-
-.profile-card{
-    position: absolute;
-    top: 70px;
-    right: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-    height: 500px;
-    background: #dcd9d9;
-}
-
-.profile-card img{
-    width: auto;
-    height: 65px;
-    margin-top: auto;
-}
-
-.profile-card h3{
-    margin-bottom: auto;
-}
-
-.profile-card button {
-    margin-bottom: auto;
-}
-
-.account {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 30px;
-    color: #fff;
+.account-container {
+    width: 100% !important;
+    flex-direction: column !important;
     font-size: 15px;
-    padding-top: 20px;
-}
-
-.account img {
-    width: auto;
-    height: 50px;
-}
-
-.account h3 {
-    margin-left: 8px;
-}
-
-.right{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+    height: 300px !important;
+    padding: 0 !important;
     align-items: center;
-}
-.left{
-    margin-left: 150px;
+    justify-content: space-around !important;
 }
 
-.cards {
-    margin-top: -30px;
-    display: grid;
-    grid-gap: 20px;
-    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
-    justify-content: space-around;
-    flex-wrap: wrap;
-    width: 100%;
-    max-height: 900px;
-    grid-row-gap: 50px;
-    z-index: 2;
+.account-container::after{
+    content: none !important;
 }
+
+.account-container :nth-child(4){
+    margin-bottom: auto;
+    color: gray;
+    font-weight: 900;
+    font-size: 13px;
+}
+
+.account-container :nth-child(1){
+    margin-top: auto;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: gray;
+    font-weight: 900;
+    font-size: 13px;
+}
+
+
+
+.account-container button{
+    height: 40px;
+    margin: 5px auto;
+}
+
+.account-container :nth-child(5) {
+    width: 80%;
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+}
+
+.account-container :nth-child(5):hover {
+    background: linear-gradient(0deg, #1e4881, #106e3a);
+}
+
+
+.account-container :nth-child(6) {
+    width: 70%;
+    border: none;
+    border-radius: 10px;
+    font-weight: 500;
+    background: linear-gradient#fff;
+}
+
+
 .card{
-    min-width: 250px;
-    margin: 0 30px;
-    width: auto;
-    height: 100px;
-    background-color: #fff;
-    box-shadow: 5px 5px 10px rgb(94, 94, 94);
-    border-radius: 5px;
+    min-width: 200px;
+    width: calc(100% - 40px);
+    height: 80px;
+    background-color: #fcfcfc;
+    box-shadow: rgb(94 94 94) 5px 5px 10px;
     padding: 15px 20px;
-}
-
-.row-one {
+    border-radius: 15px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-left: auto;
+    position: relative;
 }
 
-.row-one img {
+.card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 15px;
+  border: 2px solid transparent;
+  background: linear-gradient(0deg, #2b5dbb, #14a24d);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+
+.card-info{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.account-container img {
+    height: 70px !important;
+    width: 70px !important;
+    border-radius: 50% !important;
+}
+
+.card img {
     height: 70px;
     width: auto;
 }
 
- h5 {
+h5 {
     color: gray;
     font-weight: 900;
     margin-bottom: 10px;
     font-size: 13px;
 }
 
-.row-one span {
+.card span {
     font-size: 30px;
     font-weight: 700;
 }
 
-.row-two{
-    margin-top: 8px;
-}
-
-.row-two button{
-    border-right: #000;
-    border-bottom: #000;
-    border-left: none;
-    border-top: none;
+.card-column-title{
     display: flex;
-    justify-content: end;
-    align-items: center;
-    width: 100px;
-    height: 30px;
-    background: #fff;
-    color: #305748;
-    border-radius: 5px;
-    font-weight: 600;
-
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 10px 25px;
 }
 
-.row-two button:hover{
-    width: 260px;
-    cursor: pointer;
-    box-shadow: 2px 2px 2px #0000003f;
-    border-radius: 2px;
-    transition: all ease .3s;
-}
-
-.row-two ion-icon{
-    color: #305748;
-
-}
-
-#absences{
+.long-card{
+    flex-direction: column;
+    padding: 0;
     height: auto;
-    grid-column: span 2;
+    box-shadow: none;
+    border-radius: 15px;
+    min-width: 200px;
+    margin: 20px 10vw;
+    flex-grow: 1;
+    overflow-x: visible;
+}
+
+.long-card h5{
+    color: rgb(255 255 255);
+    padding: 0 20px;
+    width: calc(100% - 40px);
+    height: 80px;
+    font-size: 20px;
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 20px;
+}
+
+
+
+.card-container{
+    height: 200px;
+    background: #fff;
+    overflow-y: auto;
+    overflow-x: visible;
+}
+
+.card-container {
+    background: #fff;
 }
 
 .absence{
@@ -359,59 +413,42 @@ input{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    margin: 10px 0;
-    padding: 5px 15px;
+    justify-content: space-around;
+    padding: 0 15px;
+    margin-bottom: 5px;
     cursor: pointer;
+    font-weight: 800;
+    color: #fff;
+    background: #c9c6c6;
+    position: relative;
 }
 
 .absence:hover{
     box-shadow: 3px 3px 8px rgb(94, 94, 94);
     border-radius: 0px;
-    /* background: rgba(0, 0, 0, 0); */
     background: rgba(0, 0, 0, 0.1);
-
     transition: all ease .4s;
 }
 
-ion-icon{
-    color: #fff;
-    margin-right: 30px;
-    font-size: 25px;
-    contain: inherit;
-
+.absence:hover::before{
+    position: absolute;
+    content: '';
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
+    width: 10px;
+    height: 100%;
+    left: 0;
+    transition: all ease .4s;
 }
 
-.card-4{
-    grid-column: span 3;
+.absence img{
+    width: auto;
+    height: 20px;
 }
 
-@media (max-width: 1400px) {
-    .cards :nth-child(4){
-        grid-column: 1/ -1;
-    }
-    .contact{
-        grid-column: 1/2 !important;
-    }
-}
-
-@media (max-width: 800px) {
-    #absences{
-        grid-column-start: 1;
-        grid-column-end: 2;
-    }
-}
-
-.contact{
+.teacher img{
+    color: #000;
+    width: 20px;
     height: auto;
-    grid-column: 3/5;
-    justify-self: center;
-    min-width: 300px;
-}
-
-.contact-2{
-    grid-column: span 1 !important;
-    grid-row: 3;
 }
 
 .mail-icon{
@@ -424,16 +461,33 @@ ion-icon{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     margin: 10px 0;
-    padding: 5px 15px;
-    cursor: pointer;
-    border-radius: 8px;
+    background: #c9c6c6;
+    padding: 8px 0;
+    color: #fff;
+    font-weight: 800;
+
+}
+
+.teacher:hover{
+    box-shadow: 3px 3px 8px rgb(94, 94, 94);
+    border-radius: 0px;
+    background: rgba(0, 0, 0, 0.1);
+    transition: all ease .4s;
 }
 
 .teacher span{
     color: gray;
     font-weight: 900;
     font-size: 13px;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:visited{
+    text-decoration: none;
 }
 </style>

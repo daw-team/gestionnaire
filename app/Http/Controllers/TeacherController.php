@@ -26,9 +26,23 @@ public function getTeacherInfo(request $request) {
                         ->where('ENSEIGNANT.Num_Ens', '=',$request->id )
                         ->get();
     }
-public function getAllStudents(request $request){
+public function getAllStudent(request $request){
     return DB::table('ETUDIANT')
                         ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud','ETUDIANT.Num_Etud','ETUDIANT.Group_Etud','ETUDIANT.UserName_Etud','ETUDIANT.Photo_Etud')
+                        ->get();
+}
+
+
+public function getAllStudents(request $request){
+    return DB::table('ETUDIANT')
+                        ->join('ABSENCE', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud'   )
+                        ->select(
+                            'ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud', 'ETUDIANT.Num_Etud', 'ETUDIANT.Group_Etud', 
+                            DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
+                            DB::raw('SUM(CASE WHEN Type_Abs = "Justifié" THEN 1 ELSE 0 END) AS justified'),
+                            )
+                             ->where('ABSENCE.Num_Ens', '=' , $request->id)
+                            ->groupby( 'ETUDIANT.Nom_Etud' , 'ETUDIANT.Prenom_Etud' , 'ETUDIANT.Num_Etud' , 'ETUDIANT.Group_Etud'   )
                         ->get();
 }
 
@@ -43,7 +57,7 @@ public function changeTeacherInfo(request $request) {
 	enseignant::where('Num_Ens',$request->id)
 		->update(['Photo_Ens' => $request->imgSrc]);
 }
-    
+
     	enseignant::where('Num_Ens',$request->id)
                 ->update(['Nom_Ens' => $request->nom ,'Prenom_Ens' => $request->prenom,'UserName_Ens' => $request->username]);
 
@@ -58,27 +72,28 @@ public function changeTeacherInfo(request $request) {
             'msg' => 'wrong password',
         ]);
     }
-    
-    
+
+
+
     //untested functions
 
 public function groupsList() {
   return DB::table('ETUDIANT')
                 ->orderBy('Group_Etud')
                 ->get();
-                     
-    } 
+
+    }
 
     public function absentDate(request $request) {
-        enseignant::where('Num_Ens', '=',$request->id ) 
+        enseignant::where('Num_Ens', '=',$request->id )
                      ->get();
                     return DB::table('ABSENCE')
                     ->select('ABSENCE.Date_Abs')
                     ->get();
-                  
+
     }
     public function totalAbs(request $request) {
-        enseignant::where('Num_Ens', '=',$request->id ) 
+        enseignant::where('Num_Ens', '=',$request->id )
                      ->get();
                     return DB::table('ABSENCE')
                     ->get()
@@ -101,41 +116,41 @@ public function groupsList() {
                         ->delete();
             return response()->json([
              'msg' => 'information deleted successfuly',
-               ]);         
-        }  
+               ]);
+        }
 
         public function getNonJusAbsences(request $request) {
-            ABSENCE::where('Num_Ens', '=',$request->id ) 
-                ->where('Date_Abs', '=',$request->date ) 
+            ABSENCE::where('Num_Ens', '=',$request->id )
+                ->where('Date_Abs', '=',$request->date )
                 ->get();
             return DB::table('ABSENCE')
                          ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                          ->where('ABSENCE.Just_Abs', '=',NULL )
                          ->get();
-                         
+
         }
-    
-    
+
+
     public function getPenAbsencesEns(request $request) {
-        ABSENCE::where('Num_Ens', '=',$request->id ) 
-                ->where('Date_Abs', '=',$request->date ) 
+        ABSENCE::where('Num_Ens', '=',$request->id )
+                ->where('Date_Abs', '=',$request->date )
                 ->get();
-        return DB::table('ABSENCE') 
+        return DB::table('ABSENCE')
                 ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                 ->where('ABSENCE.Just_Abs', '!=',NULL )
                 ->get();
                 }
-    
+
     public function getacceptedAbsences(request $request) {
-        ABSENCE::where('Num_Ens', '=',$request->id ) 
-                ->where('Date_Abs', '=',$request->date ) 
+        ABSENCE::where('Num_Ens', '=',$request->id )
+                ->where('Date_Abs', '=',$request->date )
                 ->get();
             return DB::table('ABSENCE')
                             ->where('ABSENCE.Type_Abs', '=','justifié' )
                             ->where('ABSENCE.Just_Abs', '!=',NULL )
                             ->get();
-        } 
-        
+        }
+
    public function exludedStudents(request $request){
 
         $result = absence::select(
@@ -151,6 +166,5 @@ public function groupsList() {
         return $result;
     
     }
-    
 }
 
