@@ -103,7 +103,7 @@ Route::post('/TeacherInfo', [TeacherController::class, 'getTeacherInfo']);
 Route::post('/ChangeTeacherInfo', [TeacherController::class, 'changeTeacherInfo']);
 
 //Get the list of all students
-Route::get('/AllStudents', [TeacherController::class, 'getAllStudents']);
+Route::post('/AllStudents', [TeacherController::class, 'getAllStudents']);
 
 //untested Teacher Absences
  
