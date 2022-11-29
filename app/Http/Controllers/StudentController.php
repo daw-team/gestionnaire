@@ -37,13 +37,29 @@ class StudentController extends Controller
 //Student checker
 public function studentCheck(request $request){
 
+
+
+// if the user is not logged in as a student : return 0
+// if the user is logged in and the sessUser matches the request id: return 1
+// if the user is logged in as a different student (different than request id) : return 2
+
+
     $Etud = Etudiant::where('Num_Etud', $request->id)->get();
+    //check if logged in as a student
     if (count($Etud) != 0){
-    if ($request->id == $request->session()->get('sessUser')) {
-        return 1;
-    }else { redirect('/login'); return 0;}
-}return 0;
+   		 //check if the method is allowed (request id is same as the id of the student who is logged in)
+   		 // ( a user can't send or receive data of a student unless he is logged in as the same student account (checked using sessUser)
+   		 if ($request->id == $request->session()->get('sessUser')) {
+     		   return 1; // student is logged in
+    }else { 
+    		return 2; //student is logged in but has not access to another student data
+    	}
+}return 0;  //student is not logged in
 }
+
+
+
+
 
 
 //public function createAbs(request $request) {
@@ -164,7 +180,7 @@ public function getJustifiedAbsNbr(request $request) {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
-    			->where('ABSENCE.Just_Abs', '=!',NULL )
+    			->where('ABSENCE.Just_Abs', '!=',NULL )
     			->count();
 
     }
@@ -236,7 +252,17 @@ public function getStudentInfo(request $request) {
         }else  return response()->json([
             'msg' => 'wrong password',
         ]);
-        }else return 0;
+        }else{
+		if($this->studentCheck($request) == 2){
+		return response()->json([
+                            'msg' => 'access denied',
+                        ]);
+		}else if($this->studentCheck($request) == 0){
+		return response()->json([
+                            'msg' => 'login as a student first',
+                        ]);
+		}
+    }
     }
 
 

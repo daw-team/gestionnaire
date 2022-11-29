@@ -149,9 +149,8 @@ public function groupsList() {
                             ->groupby( 'Num_Etud' )
                             ->count();
         return $result;
+    
     }
-    
-    
     
 }
 
