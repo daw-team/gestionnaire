@@ -100,7 +100,7 @@ class loginController extends Controller
                         'id' => $userAdm[0]['Num_Adm'],
                         'email'=> $userAdm[0]['UserName_Adm'],
                         'sessUser' => $sesUser
-
+                        
                     ]);
                 }
                 else {

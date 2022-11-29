@@ -103,7 +103,7 @@ Route::post('/TeacherInfo', [TeacherController::class, 'getTeacherInfo']);
 Route::post('/ChangeTeacherInfo', [TeacherController::class, 'changeTeacherInfo']);
 
 //Get the list of all students
-Route::get('/AllStudents', [TeacherController::class, 'getAllStudents']);
+Route::post('/AllStudents', [TeacherController::class, 'getAllStudents']);
 
 //untested Teacher Absences
 
@@ -112,9 +112,9 @@ Route::post('/absentDate', [TeacherController::class, 'absentedate']);
 Route::post('/totalAbs', [TeacherController::class, 'totalabs']);
 Route::post('/creatAbs', [TeacherController::class, 'creatabs']);
 Route::delete('/deletAbs', [TeacherController::class, 'deletAbs']);
-Route::post('/getNonJusAbsences', [TeacherController::class, 'getNonJusAbsences']);
+Route::get('/getNonJusAbsences', [TeacherController::class, 'getNonJusAbsences']);
 Route::post('/getPenAbsencesEns', [TeacherController::class, 'getPenAbsencesEns']);
-Route::post('/getacceptedAbsences', [TeacherController::class, 'getacceptedAbsences']);
+Route::get('/getacceptedAbsences', [TeacherController::class, 'getacceptedAbsences']);
 Route::post('/exludedStudents', [TeacherController::class, 'exludedStudents']);
 
 
