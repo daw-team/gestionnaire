@@ -55,6 +55,9 @@ Route::post('/changeStudentInfo', [StudentController::class, 'changeStudentInfo'
 Route::get('/AllModules', [StudentController::class, 'getAllModules']);
 Route::get('/sendTeacherEmail', [StudentController::class, 'sendTeacherEmail']);
 
+//Get the list of all modules with absences
+Route::post('/AllModulesAbsences', [StudentController::class, 'getModulesabsences']);
+
 
 
 
@@ -107,21 +110,21 @@ Route::post('/AllStudents', [TeacherController::class, 'getAllStudents']);
 
 //untested Teacher Absences
 
+//
+//------------comments in the right are parameters
+//
 Route::get('/groupsList', [TeacherController::class, 'groupsList']);
-Route::post('/absentDate', [TeacherController::class, 'absentedate']);
-Route::post('/totalAbs', [TeacherController::class, 'totalabs']);
-Route::post('/creatAbs', [TeacherController::class, 'creatabs']);
-Route::delete('/deletAbs', [TeacherController::class, 'deletAbs']);
-Route::get('/getNonJusAbsences', [TeacherController::class, 'getNonJusAbsences']);
-Route::post('/getPenAbsencesEns', [TeacherController::class, 'getPenAbsencesEns']);
-Route::get('/getacceptedAbsences', [TeacherController::class, 'getacceptedAbsences']);
-Route::post('/exludedStudents', [TeacherController::class, 'exludedStudents']);
+Route::post('/absentDate', [TeacherController::class, 'absentedate']);// id : number   (teacher id) 
+Route::post('/totalAbs', [TeacherController::class, 'totalabs']);// id : number   (teacher id)
+Route::post('/createAbs', [TeacherController::class, 'createAbs']); //(ids :array of numbers) , date , hour , num_module , num_ens (send data in raw format -JSON-)
+Route::delete('/deleteAbs', [TeacherController::class, 'deleteAbs']);// id : number   (absence number)
+Route::post('/getNonJusAbsences', [TeacherController::class, 'getNonJusAbsences']); // id : number   (teacher id) , date
+Route::post('/getPenAbsencesEns', [TeacherController::class, 'getPenAbsencesEns']); // id : number   (teacher id) , date
+Route::post('/getacceptedAbsences', [TeacherController::class, 'getacceptedAbsences']); // id : number   (teacher id) , date
+Route::post('/exludedStudents', [TeacherController::class, 'exludedStudents']); // id : number   (teacher id)
+Route::post('/studentsOfGroup', [TeacherController::class, 'studentsOfGroup']); // id : number   (group number)
 
 
-
-
-//Get the list of all modules with absences
-Route::post('/AllModulesAbsences', [StudentController::class, 'getModulesabsences']);
 
 
 
