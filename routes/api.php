@@ -47,6 +47,8 @@ Route::post('/totalJustAbsNbr', [StudentController::class, 'getJustifiedAbsNbr']
 
 Route::post('/totalPendJus', [StudentController::class, 'getTotalPendJusNbr']);
 Route::post('/PendJus', [StudentController::class, 'getPenAbsences']);
+Route::post('/NbrExcluded', [StudentController::class, 'getNbrExcludedMod']);
+
 
 
 Route::post('/uploadImage', [StudentController::class, 'storeImage']);
@@ -57,6 +59,9 @@ Route::get('/sendTeacherEmail', [StudentController::class, 'sendTeacherEmail']);
 
 //Get the list of all modules with absences
 Route::post('/AllModulesAbsences', [StudentController::class, 'getModulesabsences']);
+
+Route::post('/getExcludedModules', [StudentController::class, 'getExcludedModules']); // id : number   (student id)
+
 
 
 
@@ -122,6 +127,7 @@ Route::post('/getNonJusAbsences', [TeacherController::class, 'getNonJusAbsences'
 Route::post('/getPenAbsencesEns', [TeacherController::class, 'getPenAbsencesEns']); // id : number   (teacher id) , date
 Route::post('/getacceptedAbsences', [TeacherController::class, 'getacceptedAbsences']); // id : number   (teacher id) , date
 Route::post('/exludedStudents', [TeacherController::class, 'exludedStudents']); // id : number   (teacher id)
+
 Route::post('/studentsOfGroup', [TeacherController::class, 'studentsOfGroup']); // id : number   (group number)
 
 Route::post('/acceptJust', [TeacherController::class, 'acceptJust']); // id : number   (Absence number)
