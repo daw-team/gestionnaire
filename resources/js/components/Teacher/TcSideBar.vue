@@ -65,7 +65,7 @@ export default {
       links:[
 
       ],
-      menuActive: true,
+      menuActive: false,
       activeTitle: '',
     };
   },

@@ -5,9 +5,12 @@
 
         <div class="title">
             <div>
-                <h1>Abcenses</h1>
+                <h1>Modules</h1>
                 <p>You can find all your abcenses on this list </p>
                 <input type="text"  placeholder="Search for a student">
+            </div>
+            <div class="img-src">
+                    <img :src="getProfileUrl(user.imgSrc)" alt="">
             </div>
         </div>
 
@@ -49,6 +52,14 @@ export default {
     },
     data() {
         return{
+            user: {
+                id: this.$route.params.id,
+                nom: '',
+                prenom: '',
+                username: '',
+                currentPassword: '',
+                imgSrc: '../../assets/user.png',
+            },
             compToRender: 'UnjusAbsences',
             comps:[ 'UnjusAbsences', 'PendingAbsences', 'AccAbsences'],
             drawerList: [
@@ -61,6 +72,17 @@ export default {
 
     mounted() {
         this.switchContent(0);
+
+        axios
+            .post('http://localhost:8000/api/StudentInfo', {id:this.$route.params.id})
+            .then( res => {
+                this.user.nom = res.data[0].Nom_Etud
+                this.user.prenom = res.data[0].Prenom_Etud
+                this.user.username = res.data[0].UserName_Etud
+                if(res.data[0].Photo_Etud !== null){
+                    this.user.imgSrc = res.data[0].Photo_Etud
+                }
+            })
     },
 
     methods: {
@@ -75,6 +97,16 @@ export default {
             this.compToRender = this.comps[i]
         }
     },
+
+    setup() {
+
+        const getProfileUrl = (name) => {
+            return new URL(name, import.meta.url).href
+        }
+
+    return { getProfileUrl }
+    }
+
 }
 </script>
 
@@ -89,12 +121,33 @@ h2{
     margin: 20px;
 }
 
+.img-src{
+    margin-right: 4vw;
+    width: auto;
+    height: 130px;
+}
+
+.img-src img{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
+
 .title {
-    margin: 50px 0;
-    height: 200px;
+    height: 155px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 8vw;
+}
+
+.title h1{
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-size: 50px;
 }
 
 .title div{
@@ -128,6 +181,7 @@ ul{
 .drawer{
     display: flex;
     flex-direction: row;
+    margin-top: 20px;
 }
 
 .drawer div{
