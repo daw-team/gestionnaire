@@ -246,6 +246,7 @@ public function getStudentInfo(request $request) {
 
 
 
+
     public function changeStudentInfo(request $request) {
         if($this->studentCheck($request) == 1){
     $Etud = Etudiant::where('Num_Etud', $request->id)->get();
