@@ -101,14 +101,23 @@ public function groupsList(request $request) {
     }
 
     public function createAbs(request $request) {
+    
        foreach ($request->ids as $id) {
+       $abrv = DB::table('MODULE')
+            ->select('Abrv_Mod')
+            ->where('MODULE.Num_Mod','=',$request->num_module)
+            ->get()->value('Abrv_Mod');
         $queryState = absence::insert(['Date_Abs' => $request->date ,'Hour_Abs' => $request->hour,'Num_Mod' => $request->num_module,'Num_Ens'=>$request->num_ens, 'Num_Etud'=>$id]);
       if(!$queryState) {
     return response()->json([
-                'msg' => 'operation failed',
+                'msg' => 'operation failed (inserting absence)',
          ]);
-         absence::insert([
-         
+         }
+        $queryState = Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $id,'Text_Not' => 'unjustified absence in '.$abrv .' ']);
+         if(!$queryState) {
+    return response()->json([
+                'msg' => 'operation failed (inserting notification)',
+         ]);
 }  
 }
 return response()->json([
