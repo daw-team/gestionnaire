@@ -218,8 +218,21 @@ public function getStudentInfo(request $request) {
         $fileExt = $file->extension();
         $newFile = time() .'.'.$fileExt;
         $filePath = $file->storeAs('public/justifications', $newFile);
-        return Absence::where('Num_Abs', $request->num)
+        $resp =  Absence::where('Num_Abs', $request->num)
                             ->update(['Just_Abs' => "../../../../storage/app/$filePath"]);
+	if($resp != 0){
+		$ens = Absence::select('Num_Ens')
+            ->where('Num_Abs', $request->num)
+            ->get()->value('Num_Ens');
+		$queryState = Notification::insert(['Des_Type' => 'Enseignant','Des_Id' => $ens,'Text_Not' => 'unchecked justification']);
+         if(!$queryState) {
+    return response()->json([
+                'msg' => 'operation failed (inserting notification)',
+         ]);
+}else return 1;  
+	}else return response()->json([
+                'msg' => 'operation failed (uploading justification)',
+         ]);
 }
 
 
