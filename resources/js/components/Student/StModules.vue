@@ -1,10 +1,15 @@
 <template>
     <div class="grid">
+
+        <HeaderComp></HeaderComp>
         <div class="title">
             <div>
-                <h1>Abcenses</h1>
+                <h1>Modules</h1>
                 <p>You can find all your abcenses on this list </p>
                 <input type="text"  placeholder="Search for a student">
+            </div>
+            <div class="img-src">
+                    <img :src="getProfileUrl(user.imgSrc)" alt="">
             </div>
         </div>
         <div class="grid-container">
@@ -32,10 +37,23 @@
 </template>
 
 <script>
+import HeaderComp from '../Header.vue'
 
 export default {
+    components: {
+        HeaderComp,
+    },
+
     data() {
         return {
+            user: {
+                id: this.$route.params.id,
+                nom: '',
+                prenom: '',
+                username: '',
+                currentPassword: '',
+                imgSrc: '../../assets/user.png',
+            },
             modules: [
                 {Abrv_Mod: 'DAW', Nom_Mod: 'Developement des application web', Ens_Prenom: 'asfdklfj', Ens_Nom: 'dsfhj', Mod_Coef: 4, Mod_Cred: 10},
                 {Abrv_Mod: 'DAW', Nom_Mod: 'Developement des application web', Ens_Prenom: 'asfdklfj', Ens_Nom: 'dsfhj', Mod_Coef: 4, Mod_Cred: 10},
@@ -50,6 +68,17 @@ export default {
             .then( res => {
                 this.modules = res.data
             })
+
+        axios
+        .post('http://localhost:8000/api/StudentInfo', {id:this.$route.params.id})
+        .then( res => {
+            this.user.nom = res.data[0].Nom_Etud
+            this.user.prenom = res.data[0].Prenom_Etud
+            this.user.username = res.data[0].UserName_Etud
+            if(res.data[0].Photo_Etud !== null){
+                this.user.imgSrc = res.data[0].Photo_Etud
+            }
+        })
     },
 
     setup() {
@@ -57,7 +86,12 @@ export default {
         name = `../../assets/` + name + ".png"
         return new URL(name, import.meta.url).href
     }
-    return { getImageUrl }
+
+    const getProfileUrl = (name) => {
+        return new URL(name, import.meta.url).href
+    }
+
+    return { getImageUrl, getProfileUrl }
     }
 }
 </script>
@@ -69,18 +103,39 @@ export default {
     margin: auto;
 }
 
+.img-src{
+    margin-right: 4vw;
+    width: auto;
+    height: 130px;
+}
+
+.img-src img{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
+
 .title {
-    margin: 50px 0;
-    height: 200px;
+    height: 155px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 8vw;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.title h1{
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-size: 50px;
 }
 
 .title p{
@@ -108,6 +163,7 @@ export default {
     justify-content: space-around;
     grid-gap: 20px;
     align-items: center;
+    margin-top: 20px;
 }
 
 .card{

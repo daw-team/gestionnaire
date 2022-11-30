@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="home"
-        :class="{'small-home':menuChange}"
-    >
+    <div    class="home">
         <div class="home-container">
 
         <div class="container-right">
@@ -11,8 +8,13 @@
                 <img :src="getImageUrl(user.imgSrc)" alt="" @click="showProfileCard = !showProfileCard">
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
                 <p>{{ user.username }}</p>
-                <button>View profile</button>
-                <button>Log out</button>
+                <a :href="`/teacher=${$route.params.id}/dashboard/profile`"   class="view-profile">
+                    <button>View profile</button>
+                </a>
+
+                <a href="/logout" class="logout">
+                    <button>Log out</button>
+                </a>
             </div>
 
                 <div class="card">
@@ -50,11 +52,8 @@
 
 
             <div class="container-left">
-                <div class="header card">
-                    <img src="../../assets/logo.png" alt="">
-                    <input type="text" name="search" value="Search ...">
-                    <img src="../../assets/notif.png" alt="">
-                </div>
+
+                <HeaderComp></HeaderComp>
 
                 <div class="absences long-card">
                         <h5>RECENT ABSENCES:</h5>
@@ -78,9 +77,7 @@
                     </div>
                 </div>
 
-                <div class="contact long-card"
-                    :class="{'.contact-2': menuChange}"
-                >
+                <div class="contact long-card">
                     <h5>SEND EMAIL</h5>
                     <div    class="card-container">
                         <a
@@ -91,11 +88,10 @@
                         <div class="teacher"
                         >
                                 <div>
-                                    <p>{{ contact.Nom_Ens }} {{ contact.Prenom_Ens }}</p>
-                                    <span>{{ contact.Abrv_mod }}</span>
+                                    <p>{{ contact.Nom_Etud }} {{ contact.Prenom_Etud }}</p>
                                 </div>
-                                <p>{{ contact.UserName_Ens }}</p>
-                                <img src="../../assets/mailSend.png" alt="">
+                                <p>{{ contact.UserName_Etud }}</p>
+                                <a href=""><img src="../../assets/mailSend.png" alt=""></a>
                             </div>
                         </a>
                     </div>
@@ -110,12 +106,16 @@
 </template>
 
 <script>
-import bus from '../../EventBus'
+
+import HeaderComp from '../Header.vue'
 
 export default {
+
+    components: {
+        HeaderComp,
+    },
     data() {
         return {
-            menuChange: false,
             showProfileCard: false,
             absences:[
                 {module: 'daw', date: '14/21/2021'},
@@ -136,12 +136,6 @@ export default {
         }
     },
 
-    created() {
-        bus.$on('changeMenu', (value) => {
-            this.menuChange = value;
-        })
-    },
-
     mounted() {
         axios
             .post('http://localhost:8000/api/TeacherInfo', {id:this.$route.params.id})
@@ -153,6 +147,9 @@ export default {
                     this.user.imgSrc = res.data[0].Photo_Ens
                 }
             })
+        axios
+            .get( 'http://localhost:8000/api/studentsList' )
+            .then( res => this.contacts = res.data)
     },
 
     setup() {
@@ -169,19 +166,13 @@ export default {
 
 <style scoped>
 .home{
-    width: calc(100% - 70px) ! important;
-    padding-left: 70px;
+    width: 100%;
     min-height: 300px;
     padding-bottom: 40px;
     overflow: hidden;
-    transition: all ease .4s;
     background: #fff;
 }
 
-.small-home {
-    width: calc(100% - 260px) ! important;
-    padding-left: 260px;
-}
 
 .home-container{
     display: flex;
@@ -269,11 +260,25 @@ input{
     font-size: 13px;
 }
 
-
+.account-container .logout{
+    margin-top: auto;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: gray;
+    font-weight: 900;
+    font-size: 13px;
+}
 
 .account-container button{
     height: 40px;
-    margin: 5px auto;
+    width: 100%;
+    background: transparent;
+    border: none;
+}
+
+.view-profile button{
+    margin-bottom: 0 !important;
+    color: #fff !important;
 }
 
 .account-container :nth-child(5) {
@@ -290,14 +295,21 @@ input{
 }
 
 
-.account-container :nth-child(6) {
+.account-container .logout {
     width: 70%;
-    border: none;
-    border-radius: 10px;
     font-weight: 500;
-    background: linear-gradient#fff;
 }
 
+.account-container .logout button{
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+}
+
+.account-container .logout button:hover{
+    box-shadow: #000 1px 1px 5px;
+    transition: all ease .4s;
+}
 
 .card{
     min-width: 200px;

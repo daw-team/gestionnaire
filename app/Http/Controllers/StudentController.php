@@ -8,7 +8,6 @@ use App\Models\absence;
 use App\Models\Administrateur;
 use App\Models\enseignant;
 use App\Models\Etudiant;
-use App\Models\Notification;
 use App\Models\module;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -218,21 +217,8 @@ public function getStudentInfo(request $request) {
         $fileExt = $file->extension();
         $newFile = time() .'.'.$fileExt;
         $filePath = $file->storeAs('public/justifications', $newFile);
-        $resp =  Absence::where('Num_Abs', $request->num)
+        return Absence::where('Num_Abs', $request->num)
                             ->update(['Just_Abs' => "../../../../storage/app/$filePath"]);
-	if($resp != 0){
-		$ens = Absence::select('Num_Ens')
-            ->where('Num_Abs', $request->num)
-            ->get()->value('Num_Ens');
-		$queryState = Notification::insert(['Des_Type' => 'Enseignant','Des_Id' => $ens,'Text_Not' => 'unchecked justification']);
-         if(!$queryState) {
-    return response()->json([
-                'msg' => 'operation failed (inserting notification)',
-         ]);
-}else return 1;  
-	}else return response()->json([
-                'msg' => 'operation failed (uploading justification)',
-         ]);
 }
 
 
@@ -328,6 +314,42 @@ public function getStudentInfo(request $request) {
                        ->groupby( 'Module.Abrv_Mod' )
                          ->get();
                 }
+
+        
+            // get the excluded modules
+    public function getExcludedModules(request $request){
+        return DB::table('ABSENCE')
+        ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod'   )
+         ->select(
+         'MODULE.Abrv_Mod'
+        //  DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
+        //  DB::raw('COUNT(Type_Abs) AS total')
+        ) 
+        ->where('ABSENCE.Num_Etud', '=' , $request->id)
+        ->having( DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END)'), '>=', 3 )
+        ->orHaving(DB::raw('COUNT(Type_Abs)'), '>=', 5)
+       ->groupby( 'Module.Abrv_Mod' )
+         ->get();
+        
+    
+        }
+
+        public function getNbrExcludedMod(request $request){
+
+            $result = absence::select(
+                                    'Num_Mod',
+                                    DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
+                                    DB::raw('COUNT(Type_Abs) AS total')
+                                )
+                                ->where( 'Num_Etud', $request->id )
+                                ->having( 'unjustified', '>=', 3 )
+                                ->orHaving('total', '>=', 5)
+                                ->groupby( 'Num_Mod' )
+                                ->count();
+            return $result;
+        
+        }
+    
                 
 
 }

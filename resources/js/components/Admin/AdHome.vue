@@ -10,8 +10,12 @@
                 <img :src="getImageUrl(user.imgSrc)" alt="" @click="showProfileCard = !showProfileCard">
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
                 <p>{{ user.username }}</p>
-                <button>View profile</button>
-                <a href="/logout">
+
+                <a :href="`/admin=${$route.params.id}/dashboard/profile`"   class="view-profile">
+                    <button>View profile</button>
+                </a>
+
+                <a href="/logout" class="logout">
                     <button>Log out</button>
                 </a>
             </div>
@@ -53,6 +57,7 @@
             <div class="container-left">
 
                 <HeaderComp></HeaderComp>
+
                 <div class="absences long-card">
                         <h5>RECENT ABSENCES:</h5>
                     <div class="card-column-title">
@@ -153,28 +158,29 @@ export default {
                 }
             })
 
-        // axios
-        //     .post('http://localhost:8000/api/totalAbsNbr', {id:this.$route.params.id})
-        //     .then( res => {
-        //         this.homeInfo.teachers = res.data
-        //     })
+        axios
+            .get('http://localhost:8000/api/TotalTeachersNbr')
+            .then( res => {
+                this.homeInfo.teachers = res.data
+            })
 
-        // axios
-        //     .post('http://localhost:8000/api/totalJustAbsNbr', {id:this.$route.params.id})
-        //     .then( res => {
-        //         this.homeInfo.students = res.data
-        //     })
+        axios
+            .get('http://localhost:8000/api/TotalStudentsNbr')
+            .then( res => {
+                this.homeInfo.students = res.data
+            })
 
-        //     axios
-        //     .post('http://localhost:8000/api/totalNonJustAbsNbr', {id:this.$route.params.id})
-        //     .then( res => {
-        //         this.homeInfo.absences = res.data
-        //     })
+        axios
+            .get('http://localhost:8000/api/TotalAbsencesNbr')
+            .then( res => {
+                this.homeInfo.absences = res.data
+            })
 
-        //     .post('http://localhost:8000/api/totalNonJustAbsNbr', {id:this.$route.params.id})
-        //     .then( res => {
-        //         this.homeInfo.modules = res.data
-        //     })
+        axios
+            .get('http://localhost:8000/api/TotalModulesNbr')
+            .then( res => {
+                this.homeInfo.modules = res.data
+            })
 
         axios
             .get('http://localhost:8000/api/sendTeacherEmail')
@@ -292,11 +298,25 @@ input{
     font-size: 13px;
 }
 
-
+.account-container .logout{
+    margin-top: auto;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: gray;
+    font-weight: 900;
+    font-size: 13px;
+}
 
 .account-container button{
     height: 40px;
-    margin: 5px auto;
+    width: 100%;
+    background: transparent;
+    border: none;
+}
+
+.view-profile button{
+    margin-bottom: 0 !important;
+    color: #fff !important;
 }
 
 .account-container :nth-child(5) {
@@ -313,19 +333,18 @@ input{
 }
 
 
-.account-container a {
+.account-container .logout {
     width: 70%;
     font-weight: 500;
-    background: #fff;
 }
 
-.account-container a button{
+.account-container .logout button{
     width: 100%;
     border-radius: 10px;
     border: none;
 }
 
-.account-container a button:hover{
+.account-container .logout button:hover{
     box-shadow: #000 1px 1px 5px;
     transition: all ease .4s;
 }
