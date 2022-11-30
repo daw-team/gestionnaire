@@ -118,3 +118,10 @@ Route::get('/getacceptedAbsences', [TeacherController::class, 'getacceptedAbsenc
 Route::post('/exludedStudents', [TeacherController::class, 'exludedStudents']);
 
 
+
+
+//Get the list of all modules with absences
+Route::post('/AllModulesAbsences', [StudentController::class, 'getModulesabsences']);
+
+
+

@@ -89,6 +89,7 @@ public function getTotalAbsNbr(request $request) {
                         ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
                         ->select('MODULE.Abrv_Mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs','ABSENCE.Hour_Abs', 'ABSENCE.Num_Abs' , 'ABSENCE.Just_Abs')
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
+                        ->orderby('ABSENCE.Date_Abs' , 'DESC')
                         ->get();
     }
 
@@ -109,6 +110,7 @@ public function getTotalAbsNbr(request $request) {
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
     			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                         ->where('ABSENCE.Just_Abs', '=',NULL )
+                        ->orderby('ABSENCE.Date_Abs' , 'DESC')
                         ->get();
     }
 
@@ -118,7 +120,7 @@ public function getNonJustifiedAbsNbr(request $request ) {
     	return DB::table('ABSENCE')
     			->where('ABSENCE.Num_Etud', '=',$request->id )
     			->where('ABSENCE.Type_Abs', '=','nonJustifié' )
-    			->where('ABSENCE.Just_Abs', '=',NULL )
+    			->where('ABSENCE.Just_Abs', '!=',NULL )
     			->count();
 
     }
@@ -141,6 +143,7 @@ public function getNonJustifiedAbsNbr(request $request ) {
                         ->select('MODULE.Abrv_Mod','ABSENCE.Num_Etud', 'ABSENCE.Date_Abs','ABSENCE.Hour_Abs', 'ABSENCE.Num_Abs','ABSENCE.Just_Abs')
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
                         ->where('ABSENCE.Type_Abs', '=','justifié' )
+                        ->orderby('ABSENCE.Date_Abs' , 'DESC')
                         ->get();
     }
 
@@ -172,6 +175,9 @@ public function getJustifiedAbsNbr(request $request) {
                         ->where('ABSENCE.Num_Etud', '=',$request->id )
                         ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                         ->where('ABSENCE.Just_Abs', '!=',NULL )
+                        ->orderby('ABSENCE.Date_Abs' , 'DESC')
+
+
                         ->get();
     }
 
@@ -292,4 +298,23 @@ public function getStudentInfo(request $request) {
 				 ->get();
 				 }
 
+
+    
+    public function getModulesAbsences(request $request){
+            return DB::table('ABSENCE')
+                        ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod'   )
+                         ->select(
+                         'MODULE.Abrv_Mod', 
+                         DB::raw('COUNT(Type_Abs) AS total'),
+                          DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
+                       DB::raw('SUM(CASE WHEN Type_Abs = "Justifié" THEN 1 ELSE 0 END) AS justified'),
+                                            )
+                        ->where('ABSENCE.Num_Etud', '=' , $request->id)
+                       ->groupby( 'Module.Abrv_Mod' )
+                         ->get();
+                }
+                
+
 }
+
+ 

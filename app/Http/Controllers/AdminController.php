@@ -85,6 +85,8 @@ public function modulesList(request $request) {
 }
 public function absencesList(request $request) {
         return DB::table('ABSENCE')
+        ->orderby('ABSENCE.Date_Abs' , 'DESC')
+
                  ->get();
 }
 
@@ -94,6 +96,8 @@ public function unjustifiedAbsences(request $request){
 		    ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
                     ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                     ->where('ABSENCE.Just_Abs', '=',NULL )
+                    ->orderby('ABSENCE.Date_Abs' , 'DESC')
+
                     ->get();
 }
 
@@ -102,7 +106,9 @@ public function pendingAbsences(request $request){
        		    ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod')
 		    ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
                     ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
-                    ->where('ABSENCE.Just_Abs', '!=',NULL )
+                    ->where('ABSENCE.Just_Abs', '=!',NULL )
+                    ->orderby('ABSENCE.Date_Abs' , 'DESC')
+
                     ->get();
 }
 public function justifiedAbsences(request $request){
@@ -110,6 +116,8 @@ public function justifiedAbsences(request $request){
         	    ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod')
 		    ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
                     ->where('ABSENCE.Type_Abs', '=','Justifié' )
+                    ->orderby('ABSENCE.Date_Abs' , 'DESC')
+
                     ->get();
 }
 public function deleteStudent(request $request){
