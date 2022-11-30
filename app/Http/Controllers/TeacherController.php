@@ -125,7 +125,34 @@ return response()->json([
          ]);
          }
 
-
+public function acceptJust(request $request){
+	$etud = Absence::select('Num_Etud')
+            ->where('Num_Abs','=',$request->id)
+            ->get()->value('Num_Etud');
+         $nmr =   Absence::select('Num_Mod')
+            ->where('Num_Abs','=',$request->id)
+            ->get()->value('Num_Mod');
+        $abrv = module::select('Abrv_Mod')
+            ->where('Num_Mod','=',$nmr)
+            ->get()->value('Abrv_Mod');
+            
+	$queryState = Absence::where('Num_Abs',$request->id)
+                ->update(['Type_Abs' => "justifié"]);
+                
+        if(!$queryState) {
+    return response()->json([
+                'msg' => 'operation failed (accepting justification)',
+         ]);
+         }
+        $queryState = Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $etud,'Text_Not' => ' '.$abrv.' jusifcation accepted']);
+         if(!$queryState) {
+    return response()->json([
+                'msg' => 'operation failed (inserting notification)',
+         ]);
+}return response()->json([
+                    'msg' => 'informations updated successfully',
+                ]);
+     }
 
          public function deleteAbs(request $request){
             $queryState = absence::where('Num_Abs',$request->id)

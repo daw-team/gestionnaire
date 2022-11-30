@@ -124,6 +124,8 @@ Route::post('/getacceptedAbsences', [TeacherController::class, 'getacceptedAbsen
 Route::post('/exludedStudents', [TeacherController::class, 'exludedStudents']); // id : number   (teacher id)
 Route::post('/studentsOfGroup', [TeacherController::class, 'studentsOfGroup']); // id : number   (group number)
 
+Route::post('/acceptJust', [TeacherController::class, 'acceptJust']); // id : number   (Absence number)
+
 
 
 
