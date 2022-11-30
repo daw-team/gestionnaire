@@ -14,4 +14,5 @@ class Etudiant extends Model
     public $timestamps = false;
     protected $primaryKey = 'Num_Etud';
     protected $guarded = []; 
+    protected $hidden = ['PassWord_Etud'];
 }
