@@ -8,6 +8,7 @@ use App\Models\absence;
 use App\Models\Administrateur;
 use App\Models\enseignant;
 use App\Models\Etudiant;
+use App\Models\Notification;
 use App\Models\module;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;

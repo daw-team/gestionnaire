@@ -15,6 +15,8 @@ use App\Models\absence;
 use App\Models\Etudiant;
 use App\Models\enseignant;
 use App\Models\Administrateur;
+use App\Models\Notification;
+use App\Models\module;
 
 
 class TeacherController extends Controller
@@ -105,6 +107,8 @@ public function groupsList(request $request) {
     return response()->json([
                 'msg' => 'operation failed',
          ]);
+         absence::insert([
+         
 }  
 }
 return response()->json([

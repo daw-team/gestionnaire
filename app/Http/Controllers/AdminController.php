@@ -16,6 +16,7 @@ use App\Models\Etudiant;
 use App\Models\enseignant;
 use App\Models\Administrateur;
 use App\Models\module;
+use App\Models\Notification;
 
 
 class AdminController extends Controller
