@@ -37,13 +37,12 @@ public function getAllStudent(request $request){
 
 public function getAllStudents(request $request){
     return DB::table('ETUDIANT')
-                        ->join('ABSENCE', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud'   )
+                        ->leftJoin('ABSENCE', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud'   )
                         ->select(
-                            'ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud', 'ETUDIANT.Num_Etud', 'ETUDIANT.Group_Etud', 
-                            DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
-                            DB::raw('SUM(CASE WHEN Type_Abs = "Justifié" THEN 1 ELSE 0 END) AS justified'),
+                            'ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud', 'ETUDIANT.Num_Etud', 'ETUDIANT.Group_Etud',
+                            DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" AND Num_Ens = ' . $request->id . ' THEN 1 ELSE 0 END) AS unjustified'),
+                            DB::raw('SUM(CASE WHEN Type_Abs = "Justifié" AND Num_Ens = ' . $request->id . ' THEN 1 ELSE 0 END) AS justified'),
                             )
-                             ->where('ABSENCE.Num_Ens', '=' , $request->id)
                             ->groupby( 'ETUDIANT.Nom_Etud' , 'ETUDIANT.Prenom_Etud' , 'ETUDIANT.Num_Etud' , 'ETUDIANT.Group_Etud'   )
                         ->get();
 }
@@ -93,15 +92,24 @@ public function groupsList(request $request) {
                     ->distinct()
                     ->get();
     }
-    
-    public function totalAbs(request $request) {
-                    return DB::table('ABSENCE')
-                    ->where('Num_Ens', '=',$request->id)
+
+    public function getTotalGroups(request $request) {
+        return DB::table('ETUDIANT')
+                    ->select('Group_Etud')
+                    ->distinct()
+                    ->get()
                     ->count();
     }
 
+
+    public function totalAbs(request $request) {
+        return DB::table('ABSENCE')
+            ->where('Num_Ens', '=',$request->id)
+            ->count();
+    }
+
     public function createAbs(request $request) {
-    
+
        foreach ($request->ids as $id) {
        $abrv = DB::table('MODULE')
             ->select('Abrv_Mod')
@@ -118,7 +126,7 @@ public function groupsList(request $request) {
     return response()->json([
                 'msg' => 'operation failed (inserting notification)',
          ]);
-}  
+}
 }
 return response()->json([
                 'msg' => 'information inserted successfuly',
@@ -135,10 +143,10 @@ public function acceptJust(request $request){
         $abrv = module::select('Abrv_Mod')
             ->where('Num_Mod','=',$nmr)
             ->get()->value('Abrv_Mod');
-            
+
 	$queryState = Absence::where('Num_Abs',$request->id)
                 ->update(['Type_Abs' => "justifié"]);
-                
+
         if(!$queryState) {
     return response()->json([
                 'msg' => 'operation failed (accepting justification)',
@@ -169,17 +177,19 @@ public function acceptJust(request $request){
 
         public function getNonJusAbsences(request $request) {
              return DB::table('ABSENCE')
-            		 ->where('Num_Ens', '=',$request->id )
-               		 ->where('Date_Abs', '=',$request->date )
-                         ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
-                         ->where('ABSENCE.Just_Abs', '=',NULL )
-                         ->get();
+                        ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+            		    ->where('Num_Ens', '=',$request->id )
+               		    ->where('Date_Abs', '=',$request->date )
+                        ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                        ->where('ABSENCE.Just_Abs', '=',NULL )
+                        ->get();
         }
 
 
     public function getPenAbsencesEns(request $request) {
         return DB::table('ABSENCE')
-        	->where('Num_Ens', '=',$request->id )
+                ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+        	    ->where('Num_Ens', '=',$request->id )
                 ->where('Date_Abs', '=',$request->date )
                 ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                 ->where('ABSENCE.Just_Abs', '!=',NULL )
@@ -188,8 +198,9 @@ public function acceptJust(request $request){
 
     public function getacceptedAbsences(request $request) {
         return DB::table('ABSENCE')
+        ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud'   )
 		->where('Num_Ens', '=',$request->id )
-		->where('Date_Abs', '=',$request->date )            			
+		->where('Date_Abs', '=',$request->date )
 		->where('ABSENCE.Type_Abs', '=','justifié' )
 		->where('ABSENCE.Just_Abs', '!=',NULL )
 		->get();
@@ -208,13 +219,39 @@ public function acceptJust(request $request){
                             ->groupby( 'Num_Etud' )
                             ->count();
         return $result;
-    
+
     }
-    
-    
+
+
     public function studentsOfGroup(request $request) {
         return Etudiant::where('Group_Etud', '=',$request->id)
                     ->get();
+    }
+
+    public function getAllNonJusAbsences(request $request) {
+        return DB::table('ABSENCE')
+                    ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+                    ->where('Num_Ens', '=',$request->id )
+                    ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                    ->where('ABSENCE.Just_Abs', '=',NULL )
+                    ->get();
+    }
+
+    public function getAllPenAbsencesEns(request $request) {
+        return DB::table('ABSENCE')
+                ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+        	    ->where('Num_Ens', '=',$request->id )
+                ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                ->where('ABSENCE.Just_Abs', '!=',NULL )
+                ->get();
+    }
+
+    public function getAllacceptedAbsences(request $request) {
+        return DB::table('ABSENCE')
+        ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+		->where('Num_Ens', '=',$request->id )
+		->where('ABSENCE.Type_Abs', '=','justifié' )
+		->get();
     }
 }
 

@@ -27,6 +27,7 @@ import TcHome from './components/Teacher/TcHome.vue'
 import TcProfile from './components/Teacher/TcProfile.vue'
 import TcAbsences from './components/Teacher/TcAbsences.vue'
 import TcStudentsList from './components/Teacher/TcStudentsList.vue'
+import TcViewJustification from './components/Teacher/TcViewJustification.vue'
 
 
 
@@ -74,7 +75,9 @@ export const routes = [
             { path: 'home', name:'TcHome', component: TcHome },
             { path: 'profile', name:'TcProfile', component: TcProfile },
             { path: 'students', name:'TcStudentsList', component: TcStudentsList },
-            { path: 'absences', name:'TcAbsences', component: TcAbsences },
+            { path: 'absences', name:'TcAbsences', component: TcAbsences, children:[
+                { path: 'justification=:JsNum', name:'AdViewJustification', component: TcViewJustification },
+            ] },
         ] },
     ] },
     { path: '/admin=:id', name:'admin', component: AdminApp, children:[

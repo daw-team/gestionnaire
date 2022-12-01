@@ -55,7 +55,6 @@ export default {
     width: calc(100% - 70px) ! important;
     padding-left: 70px;
     min-height: 300px;
-    padding-bottom: 40px;
     overflow: hidden;
     transition: all ease .4s;
 }

@@ -172,7 +172,7 @@ export default {
 
 
 .modules-list{
-    margin: 0 5vw;
+    margin: 10px 5vw;
 }
 
 .container {
@@ -235,13 +235,13 @@ export default {
 
 .the-table{
     width: 100%;
-    height: 300px;
+    height: 420px;
     overflow: hidden;
 }
 
 .table-container{
     width: 100%;
-    min-width: 300px;
+    min-width: 420px;
     height: 100%;
     overflow-x: auto;
     padding-bottom: 17px;
@@ -251,12 +251,12 @@ export default {
 
 
 table {
-    width: 1200px;
+    width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px;
     display: inline-block;
     overflow-y: auto;
-    height: 300px;
+    height: 420px;
     border-radius: 15px;
 }
 
@@ -269,6 +269,7 @@ td ,th{
     position: sticky;
     top: 0;
     height: 40px;
+    background: #fff;
 }
 
 tr{
@@ -321,6 +322,37 @@ td img{
 ion-icon{
     font-size: 40px;
     color: #fff;
+}
+
+@media (max-width: 500px) {
+    .title{
+        margin-left: 10px;
+    }
+
+    .img-src{
+        height: 90px;
+        margin: 0;
+    }
+
+    .img-src img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .title h1{
+        font-size: 30px;
+    }
+
+    .title input{
+        width: 150px;
+    }
+
+}
+
+@media (max-width: 1425px) {
+    table{
+        width: 1200px
+    }
 }
 
 </style>

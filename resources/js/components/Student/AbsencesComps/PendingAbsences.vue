@@ -82,7 +82,7 @@ export default {
 
 
 table {
-    width: 1200px;
+    width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px;
     display: inline-block;
@@ -123,6 +123,10 @@ td img{
     font-weight: 900;
 }
 
-
+@media (max-width: 1425px) {
+    table{
+        width: 1200px
+    }
+}
 
 </style>
