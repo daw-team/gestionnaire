@@ -214,9 +214,10 @@ public function getStudentInfo(request $request) {
 
 
     public function storeImage(request $request) {
+    	$filename = $request->num;
         $file = $request->file('image');
         $fileExt = $file->extension();
-        $newFile = time() .'.'.$fileExt;
+        $newFile = $filename.'.'.$fileExt;
         $filePath = $file->storeAs('public/justifications', $newFile);
         $resp =  Absence::where('Num_Abs', $request->num)
                             ->update(['Just_Abs' => "../../../../storage/app/$filePath"]);

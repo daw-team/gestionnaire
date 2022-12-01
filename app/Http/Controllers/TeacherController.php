@@ -153,6 +153,8 @@ public function acceptJust(request $request){
                     'msg' => 'informations updated successfully',
                 ]);
      }
+     
+     
 
          public function deleteAbs(request $request){
             $queryState = absence::where('Num_Abs',$request->id)
