@@ -4,7 +4,7 @@
 
         <div class="container-right">
             <div class="account-container card">
-                <p>ADMIN</p>
+                <p>TEACHER</p>
                 <img :src="getImageUrl(user.imgSrc)" alt="" @click="showProfileCard = !showProfileCard">
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
                 <p>{{ user.username }}</p>
@@ -27,18 +27,10 @@
 
                 <div class="card">
                         <div>
-                            <h5>TOTAL TEACHERS</h5>
-                            <span>{{ homeInfo.teachers }}</span>
+                            <h5>TOTAL GROUPS</h5>
+                            <span>{{ homeInfo.groups }}</span>
                         </div>
                         <img src="../../assets/pending.png" alt="">
-                </div>
-
-                <div class="card">
-                        <div>
-                            <h5>TOTAL MODULES</h5>
-                            <span>{{ homeInfo.modules }}</span>
-                        </div>
-                        <img src="../../assets/accepted.png" alt="">
                 </div>
 
                 <div class="card">
@@ -48,6 +40,15 @@
                         </div>
                         <img src="../../assets/module.png" alt="">
                 </div>
+
+                <div class="card">
+                        <div>
+                            <h5>EXCLUDED STUDENTS</h5>
+                            <span>{{ homeInfo.excluded }}</span>
+                        </div>
+                        <img src="../../assets/accepted.png" alt="">
+                </div>
+
             </div>
 
 
@@ -79,21 +80,30 @@
 
                 <div class="contact long-card">
                     <h5>SEND EMAIL</h5>
-                    <div    class="card-container">
-                        <a
-                            :href="`mailto:${contact.UserName_Ens}`"
-                            v-for="(contact, index) in contacts"
-                            :key="index"
-                        >
-                        <div class="teacher"
-                        >
-                                <div>
-                                    <p>{{ contact.Nom_Etud }} {{ contact.Prenom_Etud }}</p>
-                                </div>
-                                <p>{{ contact.UserName_Etud }}</p>
-                                <a href=""><img src="../../assets/mailSend.png" alt=""></a>
-                            </div>
-                        </a>
+                    <div class="the-table">
+                        <div class="table-container">
+                            <table>
+                                <a
+                                    :href="`mailto:${contact.UserName_Etud}`"
+                                    v-for="(contact, index) in contacts"
+                                    :key="index"
+                                >
+                                    <tr>
+                                        <td>
+                                            <p>{{ contact.Nom_Etud }} {{ contact.Prenom_Etud }}</p>
+                                        </td>
+
+                                        <td>
+                                            <p>{{ contact.UserName_Etud }}</p>
+                                        </td>
+
+                                        <td>
+                                            <img src="../../assets/mailSend.png" alt="">
+                                        </td>
+                                    </tr>
+                                </a>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -131,7 +141,7 @@ export default {
                 imgSrc: '../../assets/AdminProfil.png'
             },
             homeInfo:{
-
+                students: 0, absences: 0, excluded: 0, groups: 0
             }
         }
     },
@@ -150,6 +160,22 @@ export default {
         axios
             .get( 'http://localhost:8000/api/studentsList' )
             .then( res => this.contacts = res.data)
+
+            axios
+            .post('http://localhost:8000/api/exludedStudents', { id: this.$route.params.id })
+            .then( res => this.homeInfo.excluded = res.data )
+
+        axios
+            .get('http://localhost:8000/api/totalGroups')
+            .then( res => this.homeInfo.groups = res.data )
+
+        axios
+            .post('http://localhost:8000/api/totalAbs', { id: this.$route.params.id })
+            .then( res => this.homeInfo.absences = res.data )
+
+        axios
+            .get('http://localhost:8000/api/TotalStudentsNbr')
+            .then( res => this.homeInfo.students = res.data )
     },
 
     setup() {
@@ -388,7 +414,7 @@ h5 {
     box-shadow: none;
     border-radius: 15px;
     min-width: 200px;
-    margin: 20px 10vw;
+    margin: 20px 6vw;
     flex-grow: 1;
     overflow-x: visible;
 }
@@ -397,7 +423,7 @@ h5 {
     color: rgb(255 255 255);
     padding: 0 20px;
     width: calc(100% - 40px);
-    height: 80px;
+    height: 60px;
     font-size: 20px;
     background: linear-gradient(0deg, #2b5dbb, #14a24d);
     display: flex;
@@ -457,7 +483,39 @@ h5 {
     height: 20px;
 }
 
-.teacher img{
+.mail-icon{
+    color: #000;
+    font-size: 40px;
+}
+
+.the-table{
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.table-container{
+    width: 100%;
+    min-width: 300px;
+    height: 100%;
+    overflow-x: auto;
+    padding-bottom: 17px;
+    box-sizing: content-box;
+    overflow-y: hidden;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    display: inline-block;
+    overflow-y: auto;
+    height: 300px;
+    border-radius: 15px;
+}
+
+td img{
     color: #000;
     width: 20px;
     height: auto;
@@ -468,7 +526,7 @@ h5 {
     font-size: 40px;
 }
 
-.teacher{
+tr{
     height: 50px;
     display: flex;
     flex-direction: row;
@@ -479,21 +537,36 @@ h5 {
     padding: 8px 0;
     color: #fff;
     font-weight: 800;
-
 }
 
-.teacher:hover{
+td{
+    text-align: center;
+    width: 100%;
+}
+
+tr:hover{
     box-shadow: 3px 3px 8px rgb(94, 94, 94);
     border-radius: 0px;
     background: rgba(0, 0, 0, 0.1);
     transition: all ease .4s;
 }
 
-.teacher span{
+tr:hover::before{
+    position: absolute;
+    content: '';
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
+    width: 10px;
+    height: 100%;
+    left: 0;
+    transition: all ease .4s;
+}
+
+td span{
     color: gray;
     font-weight: 900;
     font-size: 13px;
 }
+
 
 a{
     text-decoration: none;

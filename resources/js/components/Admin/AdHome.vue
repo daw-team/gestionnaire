@@ -58,48 +58,73 @@
 
                 <HeaderComp></HeaderComp>
 
-                <div class="absences long-card">
-                        <h5>RECENT ABSENCES:</h5>
-                    <div class="card-column-title">
-                        <p>Module</p>
-                        <p>Date</p>
-                        <p>Time</p>
-                        <p>justification</p>
+                <div class="card2-container">
+                    <div class="card-2">
+                        <h1>List of students</h1>
+                        <div class="card2-info">
+                            <p>edit and delete list of students and
+                            create a new student</p>
+                            <a :href="`/admin=${$route.params.id}/dashboard/students`"><button>Check</button></a>
+                        </div>
                     </div>
-                    <div  class="card-container">
-                        <div class="absence"
-                        v-for="(item, index) in absences"
-                        :key="index"
-                        >
-                            <p>{{ item.module }}</p>
-                            <p>{{ item.date }}</p>
-                            <p>{{ item.time }}</p>
-                            <img v-if="item.accepted" src="../../assets/Yellowdot.png" alt="">
-                            <img v-if="!item.accepted" src="../../assets/reddot.png" alt="">
+
+                    <div class="card-2">
+                        <h1>List of teachers</h1>
+                        <div class="card2-info">
+                            <p>edit and delete list of teachers and
+                            create a new teacher</p>
+                            <a :href="`/admin=${$route.params.id}/dashboard/teachers`"><button>Check</button></a>
+                        </div>
+                    </div>
+
+                    <div class="card-2">
+                        <h1>List of modules</h1>
+                        <div class="card2-info">
+                            <p>edit and delete list of modules and
+                            create a new module</p>
+                            <a :href="`/admin=${$route.params.id}/dashboard/modules`"><button>Check</button></a>
+                        </div>
+                    </div>
+
+                    <div class="card-2">
+                        <h1>List of absences</h1>
+                        <div class="card2-info">
+                                <p>consult list of absences:
+                                unjustified, pending and accepted</p>
+                            <a :href="`/admin=${$route.params.id}/dashboard/absences`"><button>Check</button></a>
                         </div>
                     </div>
                 </div>
 
-                <div class="contact long-card"
-                    :class="{'.contact-2': menuChange}"
+                <div class="long-card"
                 >
                     <h5>SEND EMAIL</h5>
-                    <div    class="card-container">
-                        <a
-                            :href="`mailto:${contact.UserName_Ens}`"
-                            v-for="(contact, index) in contacts"
-                            :key="index"
-                        >
-                        <div class="teacher"
-                        >
-                                <div>
-                                    <p>{{ contact.Nom_Ens }} {{ contact.Prenom_Ens }}</p>
-                                    <span>{{ contact.Abrv_mod }}</span>
-                                </div>
-                                <p>{{ contact.UserName_Ens }}</p>
-                                <img src="../../assets/mailSend.png" alt="">
-                            </div>
-                        </a>
+
+                    <div class="the-table">
+                        <div class="table-container">
+                            <table>
+                                <tr
+                                    :href="`mailto:${contact.UserName_Ens}`"
+                                    v-for="(contact, index) in contacts"
+                                    :key="index"
+                                >
+                                    <td>
+                                        <div>
+                                            <p>{{ contact.Nom_Ens }} {{ contact.Prenom_Ens }}</p>
+                                            <span>{{ contact.Abrv_mod }}</span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <p>{{ contact.UserName_Ens }}</p>
+                                    </td>
+
+                                    <td>
+                                        <img src="../../assets/mailSend.png" alt="">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -224,7 +249,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: 100vh;
     align-items: center;
     padding: 10px 20px;
 }
@@ -251,6 +275,7 @@ export default {
     width: 55px;
     height: auto ;
 }
+
 
 .header :nth-child(3){
     width: 35px ;
@@ -381,14 +406,6 @@ input{
   mask-composite: exclude;
 }
 
-.card-info{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-    justify-content: space-around;
-}
-
 .account-container img {
     height: 70px !important;
     width: 70px !important;
@@ -412,11 +429,82 @@ h5 {
     font-weight: 700;
 }
 
-.card-column-title{
+.card2-container{
+    min-height: 340px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    justify-content: space-around;
+    grid-gap: 20px;
+    align-items: center;
+    margin: 0 6vw;
+}
+
+.card-2{
+    min-width: 300px;
+    height: 120px;
+    background-color: #fcfcfc;
+    padding: 15px 20px;
+    border-radius: 15px;
+    margin-left: auto;
+    position: relative;
+}
+
+.card-2 h1{
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-size: 30px;
+}
+
+.card2-info{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    margin: 10px 25px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-2 p{
+    padding: 5px 10px;
+}
+
+.card2-info button{
+    width: 100px;
+    height: 30px;
+    border: none;
+    background: #fff;
+    position: relative;
+    border-radius: 15px;
+    z-index: 99;
+    cursor: pointer;
+    transition: all ease .4s ;
+
+}
+
+.card-2 button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 15px;
+  border: 1px solid transparent;
+  background: linear-gradient(0deg, #2b5dbb, #14a24d);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+
+.card-2 button:hover{
+    border-radius: 5px;
+    color: #fff;
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
+    transition: all ease .4s ;
 }
 
 .long-card{
@@ -426,7 +514,7 @@ h5 {
     box-shadow: none;
     border-radius: 15px;
     min-width: 200px;
-    margin: 20px 10vw;
+    margin: 20px 6vw;
     flex-grow: 1;
     overflow-x: visible;
 }
@@ -445,57 +533,34 @@ h5 {
     font-size: 20px;
 }
 
-
-
-.card-container{
-    height: 200px;
-    background: #fff;
-    overflow-y: auto;
-    overflow-x: visible;
+.the-table{
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
 }
 
-.card-container {
-    background: #fff;
-}
-
-.absence{
-    height: 50px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 15px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    font-weight: 800;
-    color: #fff;
-    background: #c9c6c6;
-    position: relative;
-}
-
-.absence:hover{
-    box-shadow: 3px 3px 8px rgb(94, 94, 94);
-    border-radius: 0px;
-    background: rgba(0, 0, 0, 0.1);
-    transition: all ease .4s;
-}
-
-.absence:hover::before{
-    position: absolute;
-    content: '';
-    background: linear-gradient(0deg, #2b5dbb, #14a24d);
-    width: 10px;
+.table-container{
+    width: 100%;
+    min-width: 300px;
     height: 100%;
-    left: 0;
-    transition: all ease .4s;
+    overflow-x: auto;
+    padding-bottom: 17px;
+    box-sizing: content-box;
+    overflow-y: hidden;
 }
 
-.absence img{
-    width: auto;
-    height: 20px;
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    display: inline-block;
+    overflow-y: auto;
+    height: 300px;
+    border-radius: 15px;
 }
 
-.teacher img{
+td img{
     color: #000;
     width: 20px;
     height: auto;
@@ -506,7 +571,7 @@ h5 {
     font-size: 40px;
 }
 
-.teacher{
+tr{
     height: 50px;
     display: flex;
     flex-direction: row;
@@ -517,17 +582,31 @@ h5 {
     padding: 8px 0;
     color: #fff;
     font-weight: 800;
-
 }
 
-.teacher:hover{
+td{
+    text-align: center;
+    width: 100%;
+}
+
+tr:hover{
     box-shadow: 3px 3px 8px rgb(94, 94, 94);
     border-radius: 0px;
     background: rgba(0, 0, 0, 0.1);
     transition: all ease .4s;
 }
 
-.teacher span{
+tr:hover::before{
+    position: absolute;
+    content: '';
+    background: linear-gradient(0deg, #2b5dbb, #14a24d);
+    width: 10px;
+    height: 100%;
+    left: 0;
+    transition: all ease .4s;
+}
+
+td span{
     color: gray;
     font-weight: 900;
     font-size: 13px;

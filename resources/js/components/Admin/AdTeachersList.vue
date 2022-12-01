@@ -242,14 +242,14 @@ export default {
 
 .the-table{
     width: 100%;
-    height: 300px;
+    height: 420px;
     overflow: hidden;
     margin-top: 20px;
 }
 
 .table-container{
     width: 100%;
-    min-width: 300px;
+    min-width: 420px;
     height: 100%;
     overflow-x: auto;
     padding-bottom: 17px;
@@ -259,12 +259,12 @@ export default {
 
 
 table {
-    width: 1200px;
+    width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px;
     display: inline-block;
     overflow-y: auto;
-    height: 300px;
+    height: 420px;
     border-radius: 15px;
 }
 
@@ -330,6 +330,12 @@ td img{
 ion-icon{
     font-size: 40px;
     color: #fff;
+}
+
+@media (max-width: 1425px) {
+    table{
+        width: 1200px
+    }
 }
 
 
