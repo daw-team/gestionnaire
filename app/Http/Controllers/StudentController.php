@@ -364,7 +364,13 @@ public function getStudentInfo(request $request) {
             return $result;
         
         }
-    
+    public function getRecentAbs(request $request){
+       
+            return ABSENCE::where('Num_Etud', '=',$request->id)
+             ->skip(0)
+             ->take(10)
+             ->get();
+        }
                 
 
 }

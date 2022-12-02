@@ -340,6 +340,5 @@ $justPath = storage_path()."/app/public/justifications/$justPath";
             ->where('Num_Ens', '=',$request->id_Ens)
              ->get();
         }
-    
 }
 

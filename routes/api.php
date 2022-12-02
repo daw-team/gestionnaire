@@ -49,7 +49,6 @@ Route::post('/PendJus', [StudentController::class, 'getPenAbsences']);
 Route::post('/NbrExcluded', [StudentController::class, 'getNbrExcludedMod']);
 
 
-
 Route::post('/uploadImage', [StudentController::class, 'storeImage']);
 Route::post('/StudentInfo', [StudentController::class, 'getStudentInfo']);
 Route::post('/changeStudentInfo', [StudentController::class, 'changeStudentInfo']);
@@ -60,7 +59,7 @@ Route::get('/sendTeacherEmail', [StudentController::class, 'sendTeacherEmail']);
 Route::post('/AllModulesAbsences', [StudentController::class, 'getModulesabsences']);
 
 Route::post('/getExcludedModules', [StudentController::class, 'getExcludedModules']); // id : number   (student id)
-
+Route::post('/getRecentAbs', [StudentController::class, 'getRecentAbs']);  //  id: student id
 
 
 
