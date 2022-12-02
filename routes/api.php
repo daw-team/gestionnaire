@@ -136,7 +136,7 @@ Route::post('/exludedStudents', [TeacherController::class, 'exludedStudents']); 
 Route::post('/studentsOfGroup', [TeacherController::class, 'studentsOfGroup']); // id : number   (group number)
 
 Route::post('/acceptJust', [TeacherController::class, 'acceptJust']); // id : number   (Absence number)
-
+Route::post('/rejectJust', [TeacherController::class, 'rejectJust']); // id : number   (Absence number)
 
 
 
