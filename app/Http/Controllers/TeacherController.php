@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 // use Illuminate\Http\UploadedFile::extention;
 
 
@@ -159,6 +161,63 @@ public function acceptJust(request $request){
          ]);
 }return response()->json([
                     'msg' => 'informations updated successfully',
+                ]);
+     }
+     
+     
+public function rejectJust(request $request){
+//get student id
+	$etud = Absence::select('Num_Etud')
+            ->where('Num_Abs','=',$request->id)
+            ->get()->value('Num_Etud');
+//get module id
+         $nmr =   Absence::select('Num_Mod')
+            ->where('Num_Abs','=',$request->id)
+            ->get()->value('Num_Mod');
+//get module abrv
+        $abrv = module::select('Abrv_Mod')
+            ->where('Num_Mod','=',$nmr)
+            ->get()->value('Abrv_Mod');
+            
+            
+
+//get justification path
+$justPath = Absence::select('Just_Abs')
+            ->where('Num_Abs','=',$request->id)
+            ->get()->value('Just_Abs');
+            
+//delete justification file path from the DB
+	$queryState = Absence::where('Num_Abs',$request->id)
+                ->update(['Just_Abs' => NULL]);
+
+//edit Type_Abs to nonJustifié
+//	$queryState = Absence::where('Num_Abs',$request->id)
+  //              ->update(['Type_Abs' => "nonJustifié"]);
+
+
+$justPath = Str::substr($justPath, 46);
+
+//delete justification file from public folder
+$justPath = storage_path()."/app/public/justifications/$justPath";
+ if(File::exists($justPath)){
+          File::delete($justPath);
+      }
+
+//looking for errors...
+        if(!$queryState) {
+    return response()->json([
+                'msg' => 'operation failed (rejecting justification)',
+         ]);
+         }
+        $queryState = Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $etud,'Text_Not' => ' '.$abrv.' jusifcation rejected']);
+         if(!$queryState) {
+    return response()->json([
+                'msg' => 'operation failed (inserting notification)',
+         ]);
+
+//if no errors return success msg
+}return response()->json([
+                    'msg' => 'information updated successfuly',
                 ]);
      }
      
