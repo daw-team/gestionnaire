@@ -129,10 +129,29 @@ public function groupsList(request $request) {
                 'msg' => 'operation failed (inserting notification)',
          ]);
 }
-}
+$allAbsences = Absence::select('Num_Abs')
+		->where('Num_Etud','=',$id)
+		->where('Num_Ens','=',$request->num_ens)
+            	->count();
+            	if($allAbsences >= 5){
+            		Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $id,'Text_Not' => 'you are exluded from '.$abrv .' ']);
+            	}else {
+            	
+            	$unjustifiedAbs = Absence::select('Num_Abs')
+		->where('Num_Etud','=',$id)
+		->where('Num_Ens','=',$request->num_ens)
+            	->where('Type_Abs','=','nonJustifié')
+            	->count();
+            	if($unjustifiedAbs >= 3){
+            		Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $id,'Text_Not' => 'you are exluded from '.$abrv .' ']);
+            	
+            	}
+
+}}
 return response()->json([
-                'msg' => 'information inserted successfuly',
+                'msg' => 'information inserted successfuly'.$allAbsences,
          ]);
+         
          }
 
 public function acceptJust(request $request){
