@@ -333,5 +333,13 @@ $justPath = storage_path()."/app/public/justifications/$justPath";
 		->where('ABSENCE.Type_Abs', '=','justifié' )
 		->get();
     }
+
+    public function getAbsByStudent(request $request){
+       
+            return ABSENCE::where('Num_Etud', '=',$request->id_Etud)
+            ->where('Num_Ens', '=',$request->id_Ens)
+             ->get();
+        }
+    
 }
 
