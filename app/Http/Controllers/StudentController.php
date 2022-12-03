@@ -364,15 +364,31 @@ public function getStudentInfo(request $request) {
             return $result;
         
         }
+           
     public function getRecentAbs(request $request){
        
-            return ABSENCE::where('Num_Etud', '=',$request->id)
+            return DB::table('ABSENCE')
+	     ->join('MODULE', 'MODULE.Num_Mod', '=', 'ABSENCE.Num_Mod')
+	     ->select('MODULE.Abrv_Mod','ABSENCE.*')
+             ->where('Num_Etud', '=',$request->id)
              ->skip(0)
              ->take(10)
              ->orderby('Updated_At' , 'DESC')
              ->get();
         }
-                
+      public function getStudentNotif(request $request){
+            return Notification::where('Des_Id', '=',$request->id)
+             ->get();
+        }    
+        public function unseenStudentNotifNbr(request $request){
+            return Notification::where('Des_Id', '=',$request->id)
+             ->where('Is_Seen', '=',0)
+             ->count();
+        }    
+        public function seeStudentNotif(request $request){
+            return Notification::where('Des_Id', '=',$request->id)
+             ->update(['Is_Seen' => 1]);
+        }       
 
 }
 
