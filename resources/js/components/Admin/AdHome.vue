@@ -56,7 +56,7 @@
 
             <div class="container-left">
 
-                <HeaderComp></HeaderComp>
+                <HeaderComp class="header-comp"></HeaderComp>
 
                 <div class="card2-container">
                     <div class="card-2">
@@ -150,13 +150,6 @@ export default {
         return {
             menuChange: false,
             showProfileCard: false,
-            absences:[
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: false},
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: false},
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: true},
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: false},
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: true},
-            ],
             contacts:[],
             user:{
                 nom:'',
@@ -513,10 +506,10 @@ h5 {
     height: auto;
     box-shadow: none;
     border-radius: 15px;
-    min-width: 200px;
+    min-width: 350px;
     margin: 20px 6vw;
     flex-grow: 1;
-    overflow-x: visible;
+    overflow-x: hidden;
 }
 
 .long-card h5{
@@ -566,11 +559,6 @@ td img{
     height: auto;
 }
 
-.mail-icon{
-    color: #000;
-    font-size: 40px;
-}
-
 tr{
     height: 50px;
     display: flex;
@@ -582,6 +570,7 @@ tr{
     padding: 8px 0;
     color: #fff;
     font-weight: 800;
+    position: relative;
 }
 
 td{
@@ -594,6 +583,7 @@ tr:hover{
     border-radius: 0px;
     background: rgba(0, 0, 0, 0.1);
     transition: all ease .4s;
+    cursor: pointer;
 }
 
 tr:hover::before{
@@ -618,5 +608,18 @@ a{
 
 a:visited{
     text-decoration: none;
+}
+
+@media (max-width: 1072px) {
+    .header-comp{
+        display: none;
+    }
+    .long-card{
+        margin: 20px auto;
+        width: 300px;
+    }
+    table {
+    width: 1000px;
+    }
 }
 </style>

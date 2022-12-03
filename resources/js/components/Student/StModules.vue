@@ -31,6 +31,11 @@
                     <p>Coefficient: {{ module.Coeff_Mod }}</p>
                     <p>Credit: {{ module.Credit_Mod }}</p>
                 </div>
+                <!-- <div class="row-three">
+                    <p>{{ module.total }}</p>
+                    <p>unjustified: {{ module.unjustified }}</p>
+                    <p>justified: {{ module.justified }}</p>
+                </div> -->
             </div>
         </div>
     </div>
@@ -54,11 +59,7 @@ export default {
                 currentPassword: '',
                 imgSrc: '../../assets/user.png',
             },
-            modules: [
-                {Abrv_Mod: 'DAW', Nom_Mod: 'Developement des application web', Ens_Prenom: 'asfdklfj', Ens_Nom: 'dsfhj', Mod_Coef: 4, Mod_Cred: 10},
-                {Abrv_Mod: 'DAW', Nom_Mod: 'Developement des application web', Ens_Prenom: 'asfdklfj', Ens_Nom: 'dsfhj', Mod_Coef: 4, Mod_Cred: 10},
-                {Abrv_Mod: 'DAW', Nom_Mod: 'Developement des application web', Ens_Prenom: 'asfdklfj', Ens_Nom: 'dsfhj', Mod_Coef: 4, Mod_Cred: 10},
-            ],
+            modules: [],
         }
     },
 
@@ -79,6 +80,28 @@ export default {
                 this.user.imgSrc = res.data[0].Photo_Etud
             }
         })
+
+        // axios
+        //     .post('http://localhost:8000/api/AllModulesAbsences', {id:this.$route.params.id})
+        //     .then( res => {
+        //         // this.modules.forEach(module => {
+        //         //     console.log(res.data);
+        //         //     res.data.forEach(element => {
+        //         //         if(element.Num_Mod === module.Num_Mod){
+        //         //             module.unjustified = element.unjustified
+        //         //             module.justified = element.justified
+        //         //             module.total = element.total
+        //         //         }else{
+        //         //             module.unjustified = 0
+        //         //             module.justified = 0
+        //         //             module.total = 0
+        //         //         }
+
+        //         //     });
+        //         // });
+        //         console.log(res.data);
+        //         this.modules = res.data
+        //     })
     },
 
     setup() {
@@ -219,6 +242,12 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+}
+
+.row-three{
+    display: flex;
+    flex-direction: row;
+    color: #830000;
 }
 
 </style>

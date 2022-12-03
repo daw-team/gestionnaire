@@ -107,7 +107,7 @@ public function pendingAbsences(request $request){
        		    ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod')
 		    ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
                     ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
-                    ->where('ABSENCE.Just_Abs', '=!',NULL )
+                    ->where('ABSENCE.Just_Abs', '!=',NULL )
                     ->orderby('ABSENCE.Date_Abs' , 'DESC')
 
                     ->get();

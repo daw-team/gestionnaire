@@ -6,7 +6,7 @@
             <div>
                 <h1>List of students</h1>
                 <p>You can find all the students on this list </p>
-                <input type="text"  placeholder="Search for a student">
+                <input type="text" v-model="search" placeholder="Search for a student">
             </div>
             <div class="img-src">
                 <img :src="getImageUrl(user.imgSrc)" alt="">
@@ -18,17 +18,20 @@
                 <div class="table-container">
                     <table>
                         <tr class="table-header">
-                            <th>Student</th>
-                            <th>Groupe</th>
-                            <th>N of Unjustified Absences</th>
-                            <th>N of accepted Absences</th>
-                            <th>Email</th>
+                            <th
+                            v-for="column in columns" :key="column.name" @click="sortBy(column.name)"
+                            :class="sortKey === column.name ? (sortOrders[column.name] > 0 ? 'sorting_asc' : 'sorting_desc') : 'sorting'"
+                            style="width: 40%; cursor:pointer;"
+                            >
+                            {{column.label}}
+                            </th>
+                            <th style="width: 40%; cursor:pointer;">Email</th>
                         </tr>
                         <tr
-                            v-for="(student, index) in students"
+                            v-for="(student, index) in filteredUsers"
                             :key="index"
                             class="student"
-                            :class="{'excluded': student.unjustified >= 3 || student.unjustified + student.justified >= 5}"
+                            :class="{'excluded': parseInt(student.unjustified) >= 3 || parseInt(student.unjustified) + parseInt(student.justified) >= 5 }"
                         >
                             <td>
                                 <p>{{ student.Nom_Etud }} {{ student.Prenom_Etud }}</p>
@@ -69,6 +72,16 @@ export default {
         HeaderComp
     },
     data() {
+        let sortOrders = {};
+        let columns = [
+            {label: 'Student', name: 'Nom_Etud', type: 'string' },
+            {label: 'Groupe', name: 'Group_Etud', type: 'number'},
+            {label: 'N° Unj/Abs', name: 'unjustified', type: 'number'},
+            {label: 'N° Jus/Abs', name: 'justified', type: 'number'},
+        ];
+        columns.forEach((column) => {
+            sortOrders[column.name] = 1;
+        });
         return {
             user: {
                 id: this.$route.params.id,
@@ -79,6 +92,14 @@ export default {
                 imgSrc: '../../assets/AdminProfil.png',
             },
             students:[],
+
+            columns: columns,
+            sortKey: 'Nom_Etud',
+            sortOrders: sortOrders,
+            search: '',
+            tableShow: {
+                showdata: true,
+            },
         }
     },
 
@@ -97,14 +118,47 @@ export default {
 
         axios
             .post('http://localhost:8000/api/AllStudents', {id:this.$route.params.id})
-            .then( res => {
-                this.students = res.data
-                console.log(res.data);
-            })
+            .then( res => this.students = res.data )
     },
 
     methods:{
+        sortBy(key) {
+            this.sortKey = key;
+            this.sortOrders[key] = this.sortOrders[key] * -1;
+        },
+        getIndex(array, key, value) {
+            return array.findIndex(i => i[key] == value)
+        },
+    },
 
+    computed: {
+        filteredUsers() {
+            let students = this.students;
+            if (this.search) {
+                students = students.filter((row) => {
+                    return Object.keys(row).some((key) => {
+                        return String(row[key]).toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+                    })
+                });
+            }
+            let sortKey = this.sortKey;
+            let order = this.sortOrders[sortKey] || 1;
+            if (sortKey) {
+                students = students.slice().sort((a, b) => {
+                    let index = this.getIndex(this.columns, 'name', sortKey);
+                    a = String(a[sortKey]).toLowerCase();
+                    b = String(b[sortKey]).toLowerCase();
+                    if (this.columns[index].type && this.columns[index].type === 'date') {
+                        return (a === b ? 0 : new Date(a).getTime() > new Date(b).getTime() ? 1 : -1) * order;
+                    } else if (this.columns[index].type && this.columns[index].type === 'number') {
+                        return (+a === +b ? 0 : +a > +b ? 1 : -1) * order;
+                    } else {
+                        return (a === b ? 0 : a > b ? 1 : -1) * order;
+                    }
+                });
+            }
+            return students;
+        },
     },
 
     setup() {
@@ -222,8 +276,8 @@ table {
 }
 
 td ,th{
-    text-align: center;
     width: 100%;
+    padding-left: 30px;
 }
 
 .table-header{
@@ -237,6 +291,7 @@ tr{
     width: 100%;
     display: flex;
     align-items: center;
+    text-align: left;
 }
 
 td img{
@@ -251,7 +306,6 @@ td img{
     background-color: rgb(201, 201, 201);
     color: #fff;
     margin-bottom: 10px;
-    font-weight: 900;
 }
 
 .add {
@@ -314,6 +368,22 @@ ion-icon{
     table{
         width: 1200px
     }
+}
+
+.sorting {
+    background-image: url('../../assets/sort_both.png');
+    background-repeat: no-repeat;
+    background-position: center left;
+}
+.sorting_asc {
+    background-image: url('../../assets/sort_asc.png');
+    background-repeat: no-repeat;
+    background-position: center left;
+}
+.sorting_desc {
+    background-image: url('../../assets/sort_desc.png');
+    background-repeat: no-repeat;
+    background-position: center left;
 }
 
 </style>
