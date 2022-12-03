@@ -342,12 +342,27 @@ $justPath = storage_path()."/app/public/justifications/$justPath";
         }
          public function getTeacherRecentAbs(request $request){
        
-            return ABSENCE::where('Num_Ens', '=',$request->id)
+            return DB::table('ABSENCE')
+             ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+             ->select('ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud','ABSENCE.*')
+             ->where('Num_Ens', '=',$request->id)
              ->skip(0)
              ->take(10)
              ->orderby('Updated_At' , 'DESC')
              ->get();
         }
-            
+        public function getTeacherNotif(request $request){
+            return Notification::where('Des_Id', '=',$request->id)
+             ->get();
+        }    
+            public function unseenTeacherNotifNbr(request $request){
+            return Notification::where('Des_Id', '=',$request->id)
+             ->where('Is_Seen', '=',0)
+             ->count();
+        }   
+        public function seeTeacherNotif(request $request){
+            return Notification::where('Des_Id', '=',$request->id)
+             ->update(['Is_Seen' => 1]);
+        }       
 }
 
