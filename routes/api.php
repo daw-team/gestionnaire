@@ -60,6 +60,9 @@ Route::post('/AllModulesAbsences', [StudentController::class, 'getModulesabsence
 
 Route::post('/getExcludedModules', [StudentController::class, 'getExcludedModules']); // id : number   (student id)
 Route::post('/getRecentAbs', [StudentController::class, 'getRecentAbs']);  //  id: student id
+Route::post('/getStudentNotif', [StudentController::class, 'getStudentNotif']);  //  id: student id
+Route::post('/unseenStudentNotifNbr', [StudentController::class, 'unseenStudentNotifNbr']);  //  id: student id
+Route::post('/seeStudentNotif', [StudentController::class, 'seeStudentNotif']);  //  id: student id
 
 
 
@@ -99,6 +102,9 @@ Route::post('/CreateTeacher', [AdminController::class, 'CreateTeacher']);
 Route::post('/CreateStudent', [AdminController::class, 'CreateStudent']);
 Route::post('/CreateModule', [AdminController::class, 'CreateModule']);
 
+Route::post('/getAdminNotif', [AdminController::class, 'getAdminNotif']);  //  id: admin id
+Route::post('/unseenAdminNotifNbr', [AdminController::class, 'unseenAdminNotifNbr']);  //  id: admin id
+Route::post('/seeAdminNotif', [AdminController::class, 'seeAdminNotif']);  //  id: admin id
 
 
 // Route::resource('/login', 'App\Http\Controllers\LoginController');
@@ -139,5 +145,8 @@ Route::post('/rejectJust', [TeacherController::class, 'rejectJust']); // id : nu
 Route::post('/getAbsByStudent', [TeacherController::class, 'getAbsByStudent']);  //  id_Etud ,  id_Ens
 Route::post('/getTeacherRecentAbs', [TeacherController::class, 'getTeacherRecentAbs']);  //  id: number  (Teacher Number)
 
+Route::post('/getTeacherNotif', [TeacherController::class, 'getTeacherNotif']);  //  id: teacher id
+Route::post('/unseenTeacherNotifNbr', [TeacherController::class, 'unseenTeacherNotifNbr']);  //  id: teacher id
+Route::post('/seeTeacherNotif', [TeacherController::class, 'seeTeacherNotif']);  //  id: teacher id
 
 
