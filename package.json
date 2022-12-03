@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "@vitejs/plugin-vue2": "^2.0.0",
+        "primevue": "^2.6.0",
         "vue": "^2.7.13",
         "vue-loader": "^17.0.1",
         "vue-router": "^3.6.5",

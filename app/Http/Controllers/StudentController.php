@@ -52,7 +52,7 @@ public function studentCheck(request $request){
    		 // ( a user can't send or receive data of a student unless he is logged in as the same student account (checked using sessUser)
    		 if ($request->id == $request->session()->get('sessUser')) {
      		   return 1; // student is logged in
-    }else { 
+    }else {
     		return 2; //student is logged in but has not access to another student data
     	}
 }return 0;  //student is not logged in
@@ -230,7 +230,7 @@ public function getStudentInfo(request $request) {
     return response()->json([
                 'msg' => 'operation failed (inserting notification)',
          ]);
-}else return 1;  
+}else return 1;
 	}else return response()->json([
                 'msg' => 'operation failed (uploading justification)',
          ]);
@@ -315,12 +315,12 @@ public function getStudentInfo(request $request) {
 				 }
 
 
-    
+
     public function getModulesAbsences(request $request){
             return DB::table('ABSENCE')
                         ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod'   )
                          ->select(
-                         'MODULE.Abrv_Mod', 
+                         'MODULE.Abrv_Mod',
                          DB::raw('COUNT(Type_Abs) AS total'),
                           DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
                        DB::raw('SUM(CASE WHEN Type_Abs = "Justifié" THEN 1 ELSE 0 END) AS justified'),
@@ -330,7 +330,7 @@ public function getStudentInfo(request $request) {
                          ->get();
                 }
 
-        
+
             // get the excluded modules
     public function getExcludedModules(request $request){
         return DB::table('ABSENCE')
@@ -339,14 +339,14 @@ public function getStudentInfo(request $request) {
          'MODULE.Abrv_Mod'
         //  DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
         //  DB::raw('COUNT(Type_Abs) AS total')
-        ) 
+        )
         ->where('ABSENCE.Num_Etud', '=' , $request->id)
         ->having( DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END)'), '>=', 3 )
         ->orHaving(DB::raw('COUNT(Type_Abs)'), '>=', 5)
        ->groupby( 'Module.Abrv_Mod' )
          ->get();
-        
-    
+
+
         }
 
         public function getNbrExcludedMod(request $request){
@@ -362,11 +362,11 @@ public function getStudentInfo(request $request) {
                                 ->groupby( 'Num_Mod' )
                                 ->count();
             return $result;
-        
+
         }
-    
-                
+
+
 
 }
 
- 
+

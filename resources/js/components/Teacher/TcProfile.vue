@@ -178,7 +178,6 @@ export default {
             let check = false;
             Object.keys(this.user).forEach( element => {
                 if( this.user[element] === '' ) {
-                    console.log(element);
                     check = true
                 }
             })

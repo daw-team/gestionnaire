@@ -7,7 +7,11 @@
                 <h1 class="form-title">Jusfication form</h1>
                 <p></p>
                 <label for="">Select your justification file:</label>
-                <input type="file" @change="saveImage">
+                <label for="file-upload" class="custom-file-upload">
+                        <ion-icon name="camera"></ion-icon>
+                        Upload Justification
+                        <input id="file-upload" type="file" accept="image/*" @change="saveImage"/>
+                </label>
 
                 <textarea
                     type="textarea"
@@ -26,6 +30,7 @@ export default {
     return {
         box: null,
         image: '',
+        description: ''
     }
   },
 
@@ -50,6 +55,15 @@ export default {
             formData.append('num', this.$route.params.absNum)
             axios
                 .post('http://localhost:8000/api/uploadImage', formData)
+                .then( () => {
+                    this.$swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'absence justified!',
+                    showConfirmButton: false,
+                    timer: 2500
+                    })
+                })
                 .then(this.$router.go(-1))
         }
 
@@ -70,15 +84,16 @@ export default {
 
 <style  scoped>
 
+
 @keyframes slideIn {
-    0% {background-color: transparent;  left: -1500px;  opacity: 0;}
-    50% {background-color: transparent; opacity: 0;}
-    75% {background-color: transparent;}
-    100% {background-color: #ffffff93;  left: 0px;  opacity: 1;}
+    0% {background: transparent;  left: -1500px;  opacity: 0;}
+    50% {background: transparent; opacity: 0;}
+    75% {background: transparent; opacity: 0}
+    100% {background: linear-gradient(180deg, #14a24d5d, #2b5dbb43);  left: 0px;  opacity: 1;}
 }
 
 .background{
-    background-color: #00000093;
+    background: linear-gradient(180deg, #14a24d5d, #2b5dbb43);
     width: 100%;
     height: 100vh;
     top: 0;
@@ -86,7 +101,6 @@ export default {
     position: absolute;
     animation: slideIn .7s ease-in;
     opacity: 1;
-
 }
 
 
@@ -100,6 +114,7 @@ form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    border-radius: 15px;
 }
 
 .form-title{
@@ -127,10 +142,30 @@ textarea:focus {
     border: #2c4eb4 solid 1px;
 }
 
-input[type = file] {
-    font-size: 12px;
+.custom-file-upload > ion-icon{
+    font-size: 30px;
+    margin: auto 5px;
+    color: rgb(122, 121, 121);
+}
+
+.custom-file-upload {
+    width: 160px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 6px 6px;
+    cursor: pointer;
     color: #000;
-    margin: 20px auto;
+    font-weight: 500;
+    font-size: 13px;
+    border-radius: 15px;
+    margin: 10px auto;
+}
+
+input[ type="file" ]{
+    display: none;
 }
 
 input[type = submit] {
@@ -138,12 +173,19 @@ input[type = submit] {
     height: 40px;
     font-size: 20px;
     font-weight: 700;
-    background: linear-gradient(-70deg, #2c4eb4, #008828);
+    background: linear-gradient(0deg, #14a24d, #2b5dbb);
     border: 1px solid;
     border-radius: 20px;
     color: #fff;
     box-shadow: 5px 5px 10px black;
-    margin: 40px auto;
+    margin: 10px auto;
+    transition: all ease-out .2s;
+}
+
+input[type = submit]:hover{
+    background: linear-gradient(180deg, #1f3782, #027224);
+    box-shadow: none;
+    transition: all ease-in .2s;
 }
 
 form p {

@@ -5,8 +5,8 @@
                 <img class="login-img" src="../../assets/login-background.png">
                 <div class="cover-text">
                     <h1>Welcome</h1>
-                    <p>This form is dedicated to NTIC students
-                        Profissionnel Email is to the login prosses
+                    <p>This form is dedicated to NTIC students.
+                        &nbsp;&nbsp;Profissionnel Email is required to the login prosses
                     </p>
 
                 </div>
@@ -145,14 +145,24 @@ export default {
 .cover-text {
     width: 70%;
     height: 50%;
-    padding: 20%;
+    padding: 20% 15%;
     text-align: start;
     color: #fff;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: space-around;
     position:absolute;
     top: 0;
+}
+
+.cover-text h1
+{
+    margin-top: 30px;
+}
+.cover-text p{
+    width: 70%;
+    font-style: italic;
 }
 
 .login-img{
@@ -204,29 +214,24 @@ input:focus {
     border-radius: 20px;
 }
 
-/* input[type = password]{
-    width: 180px;
-    height: 20px;
-    border: none;
-    outline: none;
-    border-bottom: solid #121212 1px;
-    margin: 40px 0 10px 0;
-    font-size: 18px;
-
-
-} */
-
 input[type = submit] {
     width: 100px;
-    height: 40px;
+    height: 45px;
     font-size: 20px;
+    background: linear-gradient(0deg, #14a24d, #2b5dbb);
     font-weight: 700;
-    background: linear-gradient(-70deg, rgb(44,78, 180), #2c4eb4, #008828);
     border: 1px solid;
     border-radius: 20px;
     color: #fff;
     box-shadow: 5px 5px 10px black;
     margin: 40px auto;
+    transition: all ease-in .4s;
+}
+
+input[type = submit]:hover{
+    background: linear-gradient(0deg, #1f3782, #027224);
+    box-shadow: none;
+    transition: all ease-in .4s;
 }
 
 form p {

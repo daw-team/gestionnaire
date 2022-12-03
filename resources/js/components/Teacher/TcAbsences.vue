@@ -1,33 +1,33 @@
 <template>
     <div    class="container">
         <HeaderComp></HeaderComp>
-        <div class="title" v-if="compToRender == 'AbsencesComp'">
-            <div>
-                <h1>Abcenses</h1>
-                <p>You can find all your abcenses on this list </p>
-                <input type="text"  placeholder="Search for a student">
+            <div class="title">
+                <div>
+                    <h1>Abcenses</h1>
+                    <p>You can find all your abcenses on this list </p>
+                </div>
+                <div class="img-src">
+                        <img :src="getImageUrl(user.imgSrc)" alt="">
+                </div>
             </div>
-            <div class="img-src">
-                    <img :src="getImageUrl(user.imgSrc)" alt="">
+
+        <div class="display-section">
+            <div class="drawer">
+                <ul>
+                    <li
+                        v-for="(item , index) in drawerList"
+                        :key="index"
+                        @click="switchContent(index)"
+                        :class="{'list-active': item.active}"
+                    >
+                        {{ item.title }}
+                    </li>
+                </ul>
             </div>
-        </div>
 
-        <div class="drawer">
-            <ul>
-                <li
-                    v-for="(item , index) in drawerList"
-                    :key="index"
-                    @click="switchContent(index)"
-                    :class="{'list-active': item.active}"
-                >
-                    {{ item.title }}
-                </li>
-            </ul>
-            <div></div>
+            <component :is="compToRender"></component>
+            <router-view></router-view>
         </div>
-
-        <component :is="compToRender"></component>
-        <router-view></router-view>
     </div>
 </template>
 
@@ -103,6 +103,25 @@ export default {
 
 
 <style scoped>
+
+.desappear-enter{
+    opacity: 0;
+}
+
+.desappear-enter-active{
+    transition: opacity 1s;
+}
+
+.desappear-leave{
+    height: 100%;
+}
+
+.desappear-leave-active{
+    opacity: 0;
+    transform: translateY(-200px);
+    transition: all 1s;
+}
+
 .container {
     width: 100%;
 }
@@ -125,11 +144,9 @@ h2{
 }
 
 .title {
-    height: 155px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
     margin-left: 10vw;
 }
 
@@ -172,33 +189,50 @@ ul{
 .drawer{
     display: flex;
     flex-direction: row;
-    margin: 20px 10vw 10px 10vw;
-}
-
-.drawer div{
-    flex-grow: 1;
-    border-bottom: #000 solid 1px;
-
-}
-
-li{
-    width: auto;
-    list-style: none;
-    font-size: 18px;
-    font-weight: 800;
-    border-bottom: #000 solid 1px;
-    padding: 5px 20px;
-    cursor: pointer;
+    margin: 0 10vw 10px 10vw;
 }
 
 .list-active{
-    border-top: #000 solid 1px;
-    border-right: #000 solid 1px;
-    border-left: #000 solid 1px;
-    border-bottom: none;
+    border: #000 solid 1px;
     color: #fff;
-    border-radius: 5px 5px 0 0;
+    border-radius: 5px;
     background: linear-gradient(180deg, #14a24d, #2b5dbb);
+    border: none;
+    transition: all ease .3s;
+}
+
+li {
+    width: auto;
+    list-style: none;
+    margin: 0 0.6vw;
+    font-size: 18px;
+    font-weight: 800;
+    border: none;
+    padding: 5px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-image: linear-gradient(180deg, #0c602e, #1a3972);
+    -webkit-background-clip: text;
+    color: transparent;
+    position: relative;
+    transition: all ease .3s;
+}
+
+li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  background: linear-gradient(0deg, #2b5dbb, #14a24d);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
 }
 
 @media (max-width: 500px) {

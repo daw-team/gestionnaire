@@ -22,7 +22,7 @@
                             <h5>TOTAL STUDENTS</h5>
                             <span>{{ homeInfo.students }}</span>
                         </div>
-                        <img src="../../assets/absences.png" alt="">
+                        <img src="../../assets/totalstud.png" alt="">
                 </div>
 
                 <div class="card">
@@ -38,7 +38,7 @@
                             <h5>TOTAL ABSENCES</h5>
                             <span>{{ homeInfo.absences }}</span>
                         </div>
-                        <img src="../../assets/module.png" alt="">
+                        <img src="../../assets/totalabs.png" alt="">
                 </div>
 
                 <div class="card">
@@ -46,7 +46,7 @@
                             <h5>EXCLUDED STUDENTS</h5>
                             <span>{{ homeInfo.excluded }}</span>
                         </div>
-                        <img src="../../assets/accepted.png" alt="">
+                        <img src="../../assets/module.png" alt="">
                 </div>
 
             </div>

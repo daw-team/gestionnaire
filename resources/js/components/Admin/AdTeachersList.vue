@@ -6,7 +6,7 @@
             <div>
                 <h1>List of teachers</h1>
                 <p>You can find all the teachers on this list </p>
-                <input type="text"  placeholder="Search for a teacher">
+                <input type="text"  placeholder="Search for a teacher" v-model="search">
             </div>
             <div class="img-src">
                 <img :src="getImageUrl(user.imgSrc)" alt="">
@@ -19,18 +19,25 @@
                 <div class="table-container">
                     <table>
                         <tr class="table-header">
-                            <th>Teacher</th>
-                            <th>Module</th>
-                            <th>Edit/Delete</th>
-                            <th>Email</th>
+                            <!-- <th>Teacher</th>
+                            <th>Module</th> -->
+                        <th
+                            v-for="column in columns" :key="column.name" @click="sortBy(column.name)"
+                            :class="sortKey === column.name ? (sortOrders[column.name] > 0 ? 'sorting_asc' : 'sorting_desc') : 'sorting'"
+                            style="width: 40%; cursor:pointer;"
+                        >
+                        {{column.label}}
+                        </th>
+                            <th style="width: 40%; cursor:pointer;" >Edit/Delete</th>
+                            <th style="width: 40%; cursor:pointer;" >Email</th>
                         </tr>
                         <tr
-                            v-for="(teacher, index) in teachers"
+                            v-for="(teacher, index) in filteredUsers"
                             :key="index"
                             class="teacher"
                         >
                             <td>
-                                <p>{{ teacher.Nom_Ens }} {{ teacher.Prenom_Ens }}</p>
+                                <p>{{ teacher.Prenom_Ens }} {{ teacher.Nom_Ens }}</p>
                             </td>
 
                             <td>
@@ -85,6 +92,14 @@ export default {
     },
 
     data() {
+        let sortOrders = {};
+        let columns = [
+            {label: 'Teacher', name: 'Prenom_Ens', type: 'string'  },
+            {label: 'Module', name: 'Abrv_Mod', type: 'string'},
+        ];
+        columns.forEach((column) => {
+            sortOrders[column.name] = 1;
+        });
         return {
             user: {
                 id: this.$route.params.id,
@@ -95,7 +110,15 @@ export default {
                 imgSrc: '../../assets/AdminProfil.png',
             },
             teachers:[],
-            buttonHovered: false
+            buttonHovered: false,
+
+            columns: columns,
+            sortKey: 'Prenom_Ens',
+            sortOrders: sortOrders,
+            search: '',
+            tableShow: {
+                showdata: true,
+            },
         }
     },
 
@@ -157,6 +180,45 @@ export default {
                 }
             })
 
+        },
+        sortBy(key) {
+                this.sortKey = key;
+                this.sortOrders[key] = this.sortOrders[key] * -1;
+            },
+        getIndex(array, key, value) {
+            return array.findIndex(i => i[key] == value)
+        },
+
+    },
+
+
+    computed: {
+        filteredUsers() {
+            let teachers = this.teachers;
+            if (this.search) {
+                teachers = teachers.filter((row) => {
+                    return Object.keys(row).some((key) => {
+                        return String(row[key]).toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+                    })
+                });
+            }
+            let sortKey = this.sortKey;
+            let order = this.sortOrders[sortKey] || 1;
+            if (sortKey) {
+                teachers = teachers.slice().sort((a, b) => {
+                    let index = this.getIndex(this.columns, 'name', sortKey);
+                    a = String(a[sortKey]).toLowerCase();
+                    b = String(b[sortKey]).toLowerCase();
+                    if (this.columns[index].type && this.columns[index].type === 'date') {
+                        return (a === b ? 0 : new Date(a).getTime() > new Date(b).getTime() ? 1 : -1) * order;
+                    } else if (this.columns[index].type && this.columns[index].type === 'number') {
+                        return (+a === +b ? 0 : +a > +b ? 1 : -1) * order;
+                    } else {
+                        return (a === b ? 0 : a > b ? 1 : -1) * order;
+                    }
+                });
+            }
+            return teachers;
         },
     },
 
@@ -269,23 +331,23 @@ table {
 }
 
 td ,th{
-    text-align: center;
     width: 100%;
+    padding-left: 30px;
 }
 
 .table-header{
     position: sticky;
     top: 0;
     height: 40px;
-    color: #000;
+    background: #fff;
 }
 
 tr{
     width: 100%;
     display: flex;
     align-items: center;
+    text-align: left;
 }
-
 td img{
     width: 20px;
     height: auto ;
@@ -298,7 +360,6 @@ td img{
     background-color: rgb(201, 201, 201);
     color: #fff;
     margin-bottom: 10px;
-    font-weight: 900;
 }
 
 .add {
@@ -362,6 +423,22 @@ ion-icon{
         width: 150px;
     }
 
+}
+
+.sorting {
+    background-image: url('../../assets/sort_both.png');
+    background-repeat: no-repeat;
+    background-position: center left;
+}
+.sorting_asc {
+    background-image: url('../../assets/sort_asc.png');
+    background-repeat: no-repeat;
+    background-position: center left;
+}
+.sorting_desc {
+    background-image: url('../../assets/sort_desc.png');
+    background-repeat: no-repeat;
+    background-position: center left;
 }
 
 </style>
