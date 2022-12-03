@@ -333,5 +333,21 @@ $justPath = storage_path()."/app/public/justifications/$justPath";
 		->where('ABSENCE.Type_Abs', '=','justifié' )
 		->get();
     }
+
+    public function getAbsByStudent(request $request){
+       
+            return ABSENCE::where('Num_Etud', '=',$request->id_Etud)
+            ->where('Num_Ens', '=',$request->id_Ens)
+             ->get();
+        }
+         public function getTeacherRecentAbs(request $request){
+       
+            return ABSENCE::where('Num_Ens', '=',$request->id)
+             ->skip(0)
+             ->take(10)
+             ->orderby('Updated_At' , 'DESC')
+             ->get();
+        }
+            
 }
 
