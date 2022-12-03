@@ -233,6 +233,18 @@ public function getAbsenceInfo(request $request) {
            ->where('ABSENCE.Num_Abs','=',$request->id)
            ->get();
 }
-
+public function getAdminNotif(request $request){
+            return Notification::where('Des_Id', '=',$request->id)
+             ->get();
+        }    
+        public function unseenAdminNotifNbr(request $request){
+            return Notification::where('Des_Id', '=',$request->id)
+             ->where('Is_Seen', '=',0)
+             ->count();
+        }   
+        public function seeAdminNotif(request $request){
+            return Notification::where('Des_Id', '=',$request->id)
+             ->update(['Is_Seen' => 1]);
+        }       
 }
 
