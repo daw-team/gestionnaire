@@ -13,7 +13,6 @@
             <NotificationsComp
                 v-if="showNotifications"
                 class="notif"
-                @newNotif="getNewNotif"
             ></NotificationsComp>
         </div>
 
@@ -37,9 +36,17 @@ export default {
     },
 
     mounted() {
-        if(this.userNotif === 'student'){
+        if( this.$route.fullPath.includes('student=') ){
+            this.user = 'Student'
+            axios
+                .post('http://localhost:8000/api/unseenStudentNotifNbr',{ id: this.$route.params.id })
+                .then( res => this.getNewNotif = res.data )
 
-        }else if(this.userNotif === 'student'){
+        }else if(this.$route.fullPath.includes('teacher=')){
+            this.user = 'Teacher'
+            axios
+                .post('http://localhost:8000/api/unseenTeacherNotifNbr',{ id: this.$route.params.id })
+                .then( res => this.getNewNotif = res.data )
 
         }else{
 
@@ -48,9 +55,13 @@ export default {
 
     methods: {
         notifActive(){
-            showNotifications = !showNotifications
-            axios
-                .post('',)
+            this.showNotifications = !this.showNotifications
+            if( this.showNotifications === false){
+                axios
+                    .post('http://localhost:8000/api/see' + this.user + 'Notif', { id: this.$route.params.id })
+                    .then(res => res.data)
+                }
+                this.getNewNotif = 0
         }
     },
 
@@ -116,8 +127,8 @@ export default {
     align-items: center;
     justify-content: center;
     position: absolute;
-    bottom: -3px;
-    right: 23px;
+    bottom: 20px;
+    right: -3px;
     font-size: 15px;
     font-weight: 500;
 }
