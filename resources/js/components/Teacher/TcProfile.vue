@@ -108,7 +108,7 @@ export default {
                 prenom: '',
                 username: '',
                 currentPassword: '',
-                imgSrc: '../../assets/AdminProfil.png',
+                imgSrc: '../../assets/teacherProfil.png'
             },
             EditModeActive: false,
             changePasswordActive: false,
@@ -167,9 +167,13 @@ export default {
                 .post('http://localhost:8000/api/ChangeTeacherInfo', formData)
                 .then( res => {
                     this.EditModeActive = false
+                    this.changePasswordActive = false
                     this.updated = true
                     this.currentPassword = ''
                     this.msg = res.data.msg
+                    setTimeout(() => {
+                        this.$router.go(0)
+                    }, 2000);
                 })
             }
         },
@@ -214,7 +218,7 @@ export default {
 
 <style scoped>
 .student-profile-container{
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
 
 }
@@ -240,39 +244,6 @@ export default {
 
 .header h2 {
     font-size: 35px;
-}
-
-.card{
-    padding: 0 20px;
-    width: calc(98% - 40px);
-    height: 60px;
-    margin: 10px 20px 40px 20px;
-    min-width: 200px;
-    background-color: #fcfcfc;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    z-index: -1;
-}
-
-.card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 15px;
-  border: 2px solid transparent;
-  background: linear-gradient(-70deg, #1f3782, #027224);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) padding-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
 }
 
 .profile-image{
@@ -309,34 +280,6 @@ export default {
 
 input[ type="file" ]{
     display: none;
-}
-
-.card :nth-child(1){
-    width: 55px;
-    height: auto ;
-}
-
-.card :nth-child(4){
-    width: 35px ;
-    height: auto;
-    margin-left: 15px;
-}
-
-.card h4{
-    font-family: 'Audiowide', cursive;
-    margin-right: auto;
-    color: #02722476;
-}
-
-.card input{
-    width: 280px;
-    height: 20px;
-    padding: 10px 20px;
-    border: #ffffff79 solid 1px;
-    color: #e8e8e8;
-    border-radius: 20px;
-    font-size: 14px;
-    background: linear-gradient(6deg, #1f378233, #02722438);
 }
 
 .edit-container{
@@ -433,6 +376,7 @@ input[ type="file" ]{
     border-bottom: solid #121212 1px;
     font-size: 14px;
     font-size: 20px;
+    background: transparent;
     transition: all ease .3s;
 
 }
@@ -442,7 +386,6 @@ input[ type="file" ]{
     border: #818181 solid 1px;
     border-radius: 20px;
     opacity: 0.5;
-    z-index: -1;
     transition: all ease .3s;
 }
 

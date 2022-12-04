@@ -10,7 +10,7 @@
                 <img :src="getImageUrl(user.imgSrc)" alt="" @click="showProfileCard = !showProfileCard">
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
                 <p>{{ user.username }}</p>
-                <button>View profile</button>
+                <button @click="goToProfile">View profile</button>
                 <a href="/logout"><button>Log out</button></a>
             </div>
 
@@ -50,52 +50,85 @@
 
             <div class="container-left">
 
-                <HeaderComp></HeaderComp>
+                <HeaderComp class="head"></HeaderComp>
 
-                <div class="absences long-card">
-                        <h5>RECENT ABSENCES:</h5>
-                    <div class="card-column-title">
-                        <p>Module</p>
-                        <p>Date</p>
-                        <p>Time</p>
-                        <p>justification</p>
-                    </div>
-                    <div  class="card-container">
-                        <div class="absence"
-                        v-for="(item, index) in absences"
-                        :key="index"
-                        >
-                            <p>{{ item.module }}</p>
-                            <p>{{ item.date }}</p>
-                            <p>{{ item.time }}</p>
-                            <img v-if="item.accepted" src="../../assets/Yellowdot.png" alt="">
-                            <img v-if="!item.accepted" src="../../assets/reddot.png" alt="">
+                <div class="contact long-card">
+                    <h5>RECENT ABSENCES:</h5>
+                    <div class="the-table">
+                        <div class="table-container">
+                            <table>
+                                <tr class="table-header">
+                                    <th>Module</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Stat</th>
+                                </tr>
+
+                                <tr
+                                    v-for="(absence, index) in absences"
+                                    :key="index"
+                                    class="table-row"
+                                >
+                                    <td>
+                                        <p>{{ absence.Abrv_Mod }}</p>
+                                    </td>
+
+                                    <td>
+                                        <p>{{ absence.Date_Abs }}</p>
+                                    </td>
+
+                                    <td>
+                                        <p>{{ absence.Hour_Abs }}</p>
+                                    </td>
+
+                                    <td>
+                                        <div class="unjustified" v-if="absence.Just_Abs == null && absence.Type_Abs === 'nonJustifié'">
+                                            <p>UNJUSTIFIED</p>
+                                        </div>
+                                        <div class="justified" v-if="absence.Just_Abs != null  && absence.Type_Abs === 'nonJustifié'">
+                                            <p>PENDING</p>
+                                        </div>
+                                        <div class="accepted" v-if="absence.Type_Abs === 'justifié'">
+                                            <p>ACCEPTED</p>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
 
-                <div class="contact long-card"
-                >
+                <div class="contact long-card">
                     <h5>SEND EMAIL</h5>
-                    <div    class="card-container">
-                        <a
-                            :href="`mailto:${contact.UserName_Ens}`"
-                            v-for="(contact, index) in contacts"
-                            :key="index"
-                        >
-                        <div class="teacher"
-                        >
-                                <div>
-                                    <p>{{ contact.Nom_Ens }} {{ contact.Prenom_Ens }}</p>
-                                    <span>{{ contact.Abrv_mod }}</span>
-                                </div>
-                                <p>{{ contact.UserName_Ens }}</p>
-                                <img src="../../assets/mailSend.png" alt="">
-                            </div>
-                        </a>
+                    <div class="the-table">
+                        <div class="table-container">
+                            <table>
+                                <a
+                                    :href="`mailto:${contact.UserName_Ens}`"
+                                    v-for="(contact, index) in contacts"
+                                    :key="index"
+                                >
+                                    <tr class="table-row">
+                                        <td>
+                                            <div>
+                                                <p>{{ contact.Nom_Ens }} {{ contact.Prenom_Ens }}</p>
+                                                <span>{{ contact.Abrv_mod }}</span>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <p>{{ contact.UserName_Ens }}</p>
+                                            <img src="../../assets/mailSend.png" alt="">
+
+                                        </td>
+
+                                    </tr>
+                                </a>
+                            </table>
+                        </div>
                     </div>
                 </div>
-
 
             </div>
 
@@ -117,13 +150,7 @@ export default {
     data() {
         return {
             showProfileCard: false,
-            absences:[
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: false},
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: false},
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: true},
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: false},
-                {module: 'DAW', date: '2021-12-20', time: '11:30', accepted: true},
-            ],
+            absences:[],
             contacts:[],
             user:{
                 nom:'',
@@ -167,12 +194,22 @@ export default {
                 this.absencesInfo.pendingAbsences = res.data
             })
 
-        // teachers contacts
+
         axios
             .get('http://localhost:8000/api/sendTeacherEmail')
             .then( res => {
                 this.contacts = res.data
             })
+
+        axios
+            .post('http://localhost:8000/api/getRecentAbs', {id: this.$route.params.id})
+            .then( res => this.absences = res.data)
+        },
+
+        methods: {
+            goToProfile(){
+                this.$router.push(`/student=${this.$route.params.id}/dashboard/profile`)
+            }
         },
 
     setup() {
@@ -223,26 +260,6 @@ a:visited{
     justify-content: space-around;
     min-height: 100vh;
     flex-grow: 1;
-}
-
-.header{
-    padding: 0 20px !important;
-    width: calc(98% - 40px) !important;
-    align-items: center;
-    height: 60px !important;
-    box-shadow: none !important;
-    margin: 7px 20px 40px 20px!important;
-}
-
-
-.header :nth-child(1){
-    width: 55px;
-    height: auto ;
-}
-
-.header :nth-child(3){
-    width: 35px ;
-    height: auto;
 }
 
 input{
@@ -345,7 +362,7 @@ input{
     min-width: 200px;
     width: calc(100% - 40px);
     height: 80px;
-    background-color: #fcfcfc;
+    background-color: #ffffff;
     box-shadow: rgb(94 94 94) 5px 5px 10px;
     padding: 15px 20px;
     border-radius: 15px;
@@ -405,12 +422,6 @@ h5 {
     font-weight: 700;
 }
 
-.card-column-title{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
 .long-card{
     flex-direction: column;
     padding: 0;
@@ -418,7 +429,7 @@ h5 {
     box-shadow: none;
     border-radius: 15px;
     min-width: 200px;
-    margin: 20px 10vw;
+    margin: 20px 3vw;
     flex-grow: 1;
 }
 
@@ -426,7 +437,7 @@ h5 {
     color: rgb(255 255 255);
     padding: 0 20px;
     width: calc(100% - 40px);
-    height: 80px;
+    height: 60px;
     font-size: 20px;
     background: linear-gradient(0deg, #2b5dbb, #14a24d);
     display: flex;
@@ -434,40 +445,88 @@ h5 {
     justify-content: space-around;
     align-items: center;
     font-size: 20px;
+    border-radius: 5px;
+}
+
+.the-table{
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+}
+
+.table-container{
+    width: 100%;
+    min-width: 280px;
+    height: 100%;
+    overflow-x: auto;
+    padding-bottom: 17px;
+    box-sizing: content-box;
+    overflow-y: hidden;
 }
 
 
-
-.card-container{
-    height: 200px;
-    background: #fff;
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    display: inline-block;
     overflow-y: auto;
+    height: 280px;
+    border-radius: 15px;
 }
 
-.absence{
-    height: 50px;
+.table-header{
+    width: 100%;
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    height: 40px;
+    background: #fcfcfc;
+}
+
+tr{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+td img{
+    color: #000;
+    width: 20px;
+    height: 20px;
+}
+
+td, th {
+    width: calc(100% - 60px);
+    padding: 0 20px;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 15px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    font-weight: 800;
-    color: #fff;
-    background: #c9c6c6;
-    position: relative;
-    transition: all ease .4s;
-
+    flex-wrap: nowrap;
+    justify-content: space-between;
 }
 
-.absence:hover{
+.table-row{
+    background: #fff;
+    height: 50px;
+    width: 100%;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    color: rgb(61, 61, 61);
+    position: relative;
+}
+
+.table-row:hover{
     box-shadow: 3px 3px 8px rgb(94, 94, 94);
+    border-radius: 0px;
     background: rgba(0, 0, 0, 0.1);
     transition: all ease .4s;
 }
 
-.absence:hover::before{
+.table-row:hover::before{
     position: absolute;
     content: '';
     background: linear-gradient(0deg, #2b5dbb, #14a24d);
@@ -477,46 +536,56 @@ h5 {
     transition: all ease .4s;
 }
 
-.absence img{
-    width: auto;
-    height: 20px;
-}
-
-.teacher img{
-    color: #000;
-    width: 20px;
-    height: auto;
-}
-
-.mail-icon{
-    color: #000;
-    font-size: 40px;
-}
-
-.teacher{
-    height: 50px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    margin: 10px 0;
-    background: #c9c6c6;
-    padding: 8px 0;
-    color: #fff;
-    font-weight: 800;
-
-}
-
-.teacher:hover{
-    box-shadow: 3px 3px 8px rgb(94, 94, 94);
-    border-radius: 0px;
-    background: rgba(0, 0, 0, 0.1);
-    transition: all ease .4s;
-}
-
-.teacher span{
+td span{
     color: gray;
     font-weight: 900;
     font-size: 13px;
+}
+
+.unjustified{
+    width: 83px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #9D2A22;
+    padding: 5px;
+    background: #F1A4A4;
+    border-radius: 5px;
+}
+
+.justified{
+    width: 83px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #8045B9;
+    padding: 5px;
+    background: #D8B4FE;
+    border-radius: 5px;
+}
+
+.accepted{
+    width: 83px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3D7A47;
+    padding: 5px;
+    background: #86EFAC;
+    border-radius: 5px;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:visited{
+    text-decoration: none;
+}
+
+@media (max-width: 1000px) {
+    .head{
+        display: none;
+    }
 }
 </style>

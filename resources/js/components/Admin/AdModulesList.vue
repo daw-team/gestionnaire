@@ -233,7 +233,10 @@ export default {
 
 
 .modules-list{
-    margin: 10px 5vw;
+    padding: 20px 2vw;
+    margin: 20px;
+    background: #ffffff;
+    border-radius: 15px;
 }
 
 .container {
@@ -241,30 +244,33 @@ export default {
 }
 
 .img-src{
-    margin-right: 4vw;
     width: auto;
-    height: 130px;
+    height: 100px;;
 }
 
 .img-src img{
-    width: 130px;
-    height: 130px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
 }
 
 .title {
-    height: 155px;
     display: flex;
+    margin: 20px;
+    padding: 20px 0;
+    border-radius: 15px;
+    width: calc(100% - 40px);
+    background: #ffffff;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-left: 8vw;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin: 0 6vw;
 }
 
 .title h1{
@@ -347,11 +353,11 @@ td img{
 }
 
 .module{
-    margin: auto;
     height: 70px;
-    background-color: rgb(201, 201, 201);
-    color: #fff;
+    background-color: #f8fdfb;
+    color: #595959;
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
 .add {

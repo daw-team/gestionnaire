@@ -5,24 +5,23 @@
             <div>
                 <h1>Abcenses</h1>
                 <p>You can find all your abcenses on this list </p>
+            <div class="drawer">
+                <ul
+                >
+                    <li
+                        v-for="(item , index) in drawerList"
+                        :key="index"
+                        @click="switchContent(index)"
+                        :class="{'list-active': item.active}"
+                    >
+                        {{ item.title }}
+                    </li>
+                </ul>
+            </div>
             </div>
             <div class="img-src">
                     <img :src="getImageUrl(user.imgSrc)" alt="">
             </div>
-        </div>
-
-        <div class="drawer">
-            <ul
-            >
-                <li
-                    v-for="(item , index) in drawerList"
-                    :key="index"
-                    @click="switchContent(index)"
-                    :class="{'list-active': item.active}"
-                >
-                    {{ item.title }}
-                </li>
-            </ul>
         </div>
 
         <component :is="compToRender"></component>
@@ -117,29 +116,32 @@ h2{
 }
 
 .img-src{
-    margin-right: 4vw;
     width: auto;
-    height: 130px;
+    height: 100px;;
 }
 
 .img-src img{
-    width: 130px;
-    height: 130px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
 }
 
 .title {
     display: flex;
+    margin: 20px;
+    padding: 20px 0;
+    border-radius: 15px;
+    width: calc(100% - 40px);
+    background: #ffffff;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    margin-left: 10vw;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin: 0 6vw;
 }
 
 .title h1{
@@ -161,7 +163,7 @@ ul{
 .drawer{
     display: flex;
     flex-direction: row;
-    margin: 20px 10vw 10px 10vw;
+    margin: 15px 0 0 0 !important;
 }
 
 .list-active{

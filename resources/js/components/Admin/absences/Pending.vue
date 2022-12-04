@@ -132,8 +132,10 @@ export default {
 
 <style scoped>
 .abs-container{
-    padding-top: 10px;
-    margin: 0 5vw;
+    padding: 20px 2vw;
+    margin: 20px;
+    background: #ffffff;
+    border-radius: 15px;
 }
 
 .abs-container > input{
@@ -185,7 +187,8 @@ td ,th{
     position: sticky;
     top: 0;
     height: 40px;
-    background: #fff;
+    background: linear-gradient(180deg, #499564, #2a719e);
+    color: #fff;
 }
 
 tr{
@@ -204,9 +207,10 @@ td img{
 .absence{
     margin: auto;
     height: 70px;
-    background-color: rgb(201, 201, 201);
-    color: #fff;
+    background-color: #f8fdfb;
+    color: #595959;
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
 a p{

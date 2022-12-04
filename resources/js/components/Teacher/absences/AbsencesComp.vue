@@ -19,7 +19,7 @@
 
             <div class="comps">
                 <label for="">Select Absence type:</label>
-                <select v-model="compToRender" @change="dateChanged">
+                <select v-model="absenceType" @change="dateChanged">
                     <option
                         v-for="(item , index) in compsList"
                         :key="index"
@@ -46,11 +46,18 @@
                         </th>
                         <th
                             style="width: 40%; cursor:pointer;"
-                            v-if="compToRender === 'PenAbsencesEns' || compToRender === 'acceptedAbsences' "
+                            v-if="absenceType === 'PenAbsencesEns' || absenceType === 'acceptedAbsences' "
                         >
                             justification
                         </th>
-                        <th style="width: 40%; cursor:pointer;">
+                        <th
+                            style="width: 40%; cursor:pointer;"
+                            v-if="absenceType === 'PenAbsencesEns'"
+                        ></th>
+                        <th
+                            style="width: 40%; cursor:pointer;"
+                            v-if="absenceType === 'NonJusAbsences'"
+                        >
                             Delete
                         </th>
                     </tr>
@@ -76,10 +83,31 @@
                             <p>{{ absence.Hour_Abs }}</p>
                         </td>
 
-                        <td v-if="compToRender === 'PenAbsencesEns' || compToRender === 'acceptedAbsences' ">
-                            <a :href="`/teacher=${$route.params.id}/dashboard/absences/justification=${absence.Num_Abs}`"><p>View Justification</p></a>
+                        <td v-if="absenceType === 'PenAbsencesEns' || absenceType === 'acceptedAbsences' ">
+                            <p
+                                @click="showJustification(absence.Num_Abs)"
+                                class="justify"
+                            >View Justification</p>
                         </td>
-                        <td>
+
+                        <td v-if="absenceType === 'PenAbsencesEns'">
+                            <div>
+                                <img
+                                    src="../../../assets/reject.png"
+                                    class="edit-img"
+                                    name="checkmark-done-circle-outline"
+                                    @click="acceptJustification(absence.Num_Abs)"
+                                >&nbsp;&nbsp;&nbsp;&nbsp;
+                                <img
+                                    src="../../../assets/reject.png"
+                                    class="edit-img"
+                                    name="close-circle-outline"
+                                    @click="refuseJustification(absence.Num_Abs)"
+                                >
+                                </div>
+                        </td>
+
+                        <td v-if="absenceType === 'NonJusAbsences'">
                             <img src="../../../assets/delete.png" alt="" @click="deleteAbsence(absence.Num_Abs)">
                         </td>
 
@@ -88,24 +116,32 @@
             </div>
         </div>
 
+        <component
+            :is="compActive"
+            :compToActive="compActive"
+            :idAbs="absenceId"
+            @compDesactive="compActive = $event"
+        ></component>
+
     </div>
 </template>
 
 
 
 <script>
-
+import justificationComp from '../TcViewJustification.vue'
 
 export default {
 
     components:{
+        justificationComp
     },
 
     data() {
         let sortOrders = {};
         let columns = [
-            {label: 'Family name', name: 'Prenom_Etud', type: 'string'  },
-            {label: 'First name', name: 'Nom_Etud', type: 'string'},
+            {label: 'First name', name: 'Prenom_Etud', type: 'string'  },
+            {label: 'Family name', name: 'Nom_Etud', type: 'string'},
             {label: 'Date', name: 'Date_Abs', type: 'date'},
             {label: 'Time', name: 'Hour_Abs', type: 'number'},
         ];
@@ -116,16 +152,18 @@ export default {
             absences:[],
             dates: [],
             dateSelected: 'all time',
-            compToRender: 'NonJusAbsences',
+            absenceType: 'NonJusAbsences',
             compsList: [
                 {title: 'Unjustified', comp: 'NonJusAbsences'},
                 {title: 'Pending', comp: 'PenAbsencesEns'},
                 {title: 'Accepted', comp: 'acceptedAbsences'},
             ],
+            compActive: '',
+            absenceId: null,
+
             columns: columns,
             sortKey: 'Date_Abs',
             sortOrders: sortOrders,
-            length: 10,
             search: '',
             tableShow: {
                 showdata: true,
@@ -146,12 +184,12 @@ export default {
         dateChanged(){
             if(this.dateSelected === 'all time'){
             axios
-                .post('http://localhost:8000/api/getAll' + this.compToRender, { id: this.$route.params.id } )
+                .post('http://localhost:8000/api/getAll' + this.absenceType, { id: this.$route.params.id } )
                 .then(response => this.absences = response.data )
         }
         else{
             axios
-                .post('http://localhost:8000/api/get' + this.compToRender , { id: this.$route.params.id, date: this.dateSelected})
+                .post('http://localhost:8000/api/get' + this.absenceType , { id: this.$route.params.id, date: this.dateSelected})
                 .then(response => this.absences = response.data )
         }
         },
@@ -181,6 +219,72 @@ export default {
                     })
                 }
             })
+        },
+
+        showJustification(id){
+            this.absenceId = id
+            this.compActive = 'justificationComp'
+        },
+
+        acceptJustification(id){
+            this.$swal.fire({
+                title: 'Are you sure you want to accept this absence?',
+                text: "You won't be able to revert this!",
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, accept it!'
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .post('http://localhost:8000/api/acceptJust', { id: id })
+                        .then( res => {
+                            if(res.data.msg === 'absence accepted'){
+                                this.$swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Absence accepted successfully',
+                                showConfirmButton: false,
+                                timer: 2500
+                                })
+                                this.$router.go(-1);
+                            }
+                        })
+                }
+            })
+        },
+
+        refuseJustification(id){
+            this.$swal.fire({
+                title: 'Are you sure you want to refuse this absence?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, refuse it!'
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .post('http://localhost:8000/api/rejectJust', { id: id })
+                        .then( res => {
+                            if(res.data.msg === 'absence rejected'){
+                                this.$swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Absence accepted successfully',
+                                showConfirmButton: false,
+                                timer: 2500
+                                })
+                                this.$router.go(-1);
+                            }
+                        })
+                }
+            })
+
         },
 
         sortBy(key) {
@@ -229,8 +333,10 @@ export default {
 
 <style scoped>
 .abs-container{
-    padding-top: 10px;
-    margin: 0 5vw;
+    padding: 20px 2vw;
+    margin: 20px;
+    background: #ffffff;
+    border-radius: 15px;
 }
 
 .selects{
@@ -264,7 +370,6 @@ select{
     border: #0000003c solid 1px;
     border-radius: 8px;
     font-size: 14px;
-    margin-bottom: 20px;
 }
 
 
@@ -296,21 +401,23 @@ table {
 }
 
 td ,th{
-    text-align: center;
     width: 100%;
+    padding-left: 30px;
 }
 
 .table-header{
     position: sticky;
     top: 0;
     height: 40px;
-    background: #fff;
+    background: linear-gradient(180deg, #499564, #2a719e);
+    color: #fff;
 }
 
 tr{
     width: 100%;
     display: flex;
     align-items: center;
+    text-align: left;
 }
 
 td img{
@@ -319,12 +426,25 @@ td img{
     cursor: pointer;
 }
 
+.edit-img{
+    width: 35px;
+}
+
+.accept{
+    color: #499372;
+}
+
+.refuse{
+    color: crimson;
+}
+
 .absence{
     margin: auto;
     height: 70px;
-    background-color: rgb(201, 201, 201);
-    color: #fff;
+    background-color: #f8fdfb;
+    color: #595959;
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
 input[ type = 'text']{
@@ -338,26 +458,18 @@ input[ type = 'text']{
     margin-bottom: 20px;
 }
 
-a{
-    text-decoration: none;
-}
-
-a p{
+.justify{
     background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
     -webkit-background-clip: text;
     color: transparent;
     font-weight: 700;
+    cursor: pointer;
 }
 
-a p:hover{
+.justify:hover{
     background-image: linear-gradient(180deg, #0d7336, #1d4081);
     -webkit-background-clip: text;
     color: transparent;
-}
-
-a:visited{
-    text-decoration: none;
-
 }
 
 @media (max-width: 1425px) {
@@ -369,17 +481,17 @@ a:visited{
 .sorting {
     background-image: url('../../../assets/sort_both.png');
     background-repeat: no-repeat;
-    background-position: center right;
+    background-position: center left;
 }
 .sorting_asc {
     background-image: url('../../../assets/sort_asc.png');
     background-repeat: no-repeat;
-    background-position: center right;
+    background-position: center left;
 }
 .sorting_desc {
     background-image: url('../../../assets/sort_desc.png');
     background-repeat: no-repeat;
-    background-position: center right;
+    background-position: center left;
 }
 
 </style>

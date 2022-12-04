@@ -7,9 +7,6 @@
             <div class="table-container">
                 <table>
                     <tr class="table-header">
-                        <!-- <th>Module</th>
-                        <th>Date</th>
-                        <th>Time</th> -->
                         <th
                             v-for="column in columns" :key="column.name" @click="sortBy(column.name)"
                             :class="sortKey === column.name ? (sortOrders[column.name] > 0 ? 'sorting_asc' : 'sorting_desc') : 'sorting'"
@@ -132,7 +129,10 @@ export default {
 <style scoped>
 
 .abs-container{
-    padding-top: 50px;
+    padding: 20px 2vw;
+    margin: 20px;
+    background: #ffffff;
+    border-radius: 15px;
 }
 
 .abs-container > input{
@@ -149,7 +149,7 @@ export default {
 
 .the-table{
     width: 100%;
-    height: 300px;
+    height: 380px;
     overflow: hidden;
 }
 
@@ -170,7 +170,7 @@ table {
     border-spacing: 0 10px;
     display: inline-block;
     overflow-y: auto;
-    height: 300px;
+    height: 380px;
     border-radius: 15px;
 }
 
@@ -183,7 +183,8 @@ td ,th{
     position: sticky;
     top: 0;
     height: 40px;
-    background: #fff;
+    background: linear-gradient(180deg, #499564, #2a719e);
+    color: #fff;
 }
 
 tr{
@@ -202,9 +203,10 @@ td img{
 .absence{
     margin: auto;
     height: 70px;
-    background-color: rgb(201, 201, 201);
-    color: #fff;
+    background-color: #f8fdfb;
+    color: #595959;
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
 button{
@@ -215,29 +217,13 @@ button{
     border: none;
     padding: 5px 20px;
     cursor: pointer;
+    border: rgb(185, 185, 185) 1px solid;
     border-radius: 5px;
     background-image: linear-gradient(180deg, #0c602e, #1a3972);
     -webkit-background-clip: text;
     color: transparent;
     position: relative;
     transition: all ease .3s;
-}
-
-button::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 5px;
-  border: 1px solid transparent;
-  background: linear-gradient(0deg, #2b5dbb, #14a24d);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) padding-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
 }
 
 button:hover{

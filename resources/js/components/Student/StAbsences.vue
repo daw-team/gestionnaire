@@ -110,9 +110,6 @@ export default {
 
 
 <style scoped>
-.student-absences{
-    margin: 0 5vw;
-}
 
 
 h2{
@@ -120,23 +117,32 @@ h2{
 }
 
 .img-src{
-    margin-right: 4vw;
     width: auto;
-    height: 130px;
+    height: 100px;;
 }
 
 .img-src img{
-    width: 130px;
-    height: 130px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
 }
 
 .title {
     display: flex;
+    margin: 20px;
+    padding: 20px 0;
+    border-radius: 15px;
+    width: calc(100% - 40px);
+    background: #ffffff;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    margin-left: 8vw;
+}
+
+.title div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 0 10vw;
 }
 
 .title h1{
@@ -147,28 +153,8 @@ h2{
     font-size: 50px;
 }
 
-.title div{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
 .title p{
     margin-bottom: auto;
-}
-
-.title div input{
-    margin-bottom: auto;
-}
-
-.title input{
-    width: 280px;
-    height: 20px;
-    padding: 10px 20px;
-    border: #00000079 solid 1px;
-    border-radius: 20px;
-    background-color: rgb(201 201 201 / 29%);
-    font-size: 14px;
 }
 
 ul{

@@ -164,6 +164,7 @@ export default {
                 .post('http://localhost:8000/api/ChangeAdminInfo', formData)
                 .then( res => {
                     this.EditModeActive = false
+                    this.changePasswordActive = false
                     this.updated = true
                     this.currentPassword = ''
                     this.msg = res.data.msg
@@ -212,7 +213,7 @@ export default {
 
 <style scoped>
 .student-profile-container{
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
 }
 
@@ -372,6 +373,7 @@ input[ type="file" ]{
     border-bottom: solid #121212 1px;
     font-size: 14px;
     font-size: 20px;
+    background: transparent;
     transition: all ease .3s;
 
 }
@@ -381,7 +383,6 @@ input[ type="file" ]{
     border: #818181 solid 1px;
     border-radius: 20px;
     opacity: 0.5;
-    z-index: -1;
     transition: all ease .3s;
 }
 

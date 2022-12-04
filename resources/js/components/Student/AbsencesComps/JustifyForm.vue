@@ -120,7 +120,9 @@ form {
 .form-title{
     font-size: 60px;
     margin: 40px 0 60px 0;
-    color: rgb(126, 125, 125)
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 textarea{
@@ -130,7 +132,6 @@ textarea{
     padding: 10px;
     border: 1px solid;
     outline: none;
-    /* border-bottom: solid #121212 1px; */
     margin: 40px 0 10px 0;
     font-size: 14px;
     border-radius: 20px;
@@ -169,10 +170,10 @@ input[ type="file" ]{
 }
 
 input[type = submit] {
-    width: 100px;
+    width: 140px;
     height: 40px;
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 600;
     background: linear-gradient(0deg, #14a24d, #2b5dbb);
     border: 1px solid;
     border-radius: 20px;

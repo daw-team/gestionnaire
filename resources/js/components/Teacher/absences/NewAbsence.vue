@@ -1,5 +1,6 @@
 <template>
     <div class="new-container">
+        <h3>Select students and absence informations:</h3>
         <div class="groups">
             <label for="">Select group:</label>
             <select name="" id="" v-model="groupSelected" @change="groupChanged">
@@ -55,7 +56,6 @@
             action=""
             method="POST"
             >
-                <h3>New absence informations:</h3>
                 <div class="date" :class="{'add-desabled': newAbsence.ids.length == 0}">
                     <label for="">Date:</label>
                     <input type="date" v-model="newAbsence.date" >
@@ -79,20 +79,7 @@
                     @click.prevent="create"
                 >
 
-                <p>{{ msg }}</p>
-
             </form>
-
-            <!-- <div
-
-                :class="{'add-desabled': ids.length == 0}"
-                @click="goToAddPage"
-            >
-                <ion-icon name="add-outline"></ion-icon>
-                <transition name="appear">
-                    <h3>New teacher</h3>
-                </transition>
-            </div> -->
 
 
     </div>
@@ -110,7 +97,6 @@ export default {
             students: [],
             timeFrom: '',
             timeTo: '',
-            msg: '',
             newAbsence: {
                 num_ens: this.$route.params.id,
                 num_module: '',
@@ -165,11 +151,10 @@ export default {
                 })
             }
             else{
-                console.log(this.newAbsence);
                 axios
                     .post('http://localhost:8000/api/createAbs', this.newAbsence)
                     .then( res => {
-                        if( res.data.msg === 'information inserted successfuly' ) {
+                        if( res.data.msg.includes('information inserted successfuly') ) {
                         this.$swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -216,8 +201,10 @@ export default {
 
 <style scoped>
 .new-container{
-    margin: 0 5vw;
-    transition: all ease .5s;
+    padding: 20px 2vw;
+    margin: 20px;
+    background: #ffffff;
+    border-radius: 15px;
 }
 
 .groups{
@@ -270,34 +257,37 @@ table {
 }
 
 .check{
-    width: 280px;
+    width: 310px;
     text-align: left;
     padding-left: 20px;
 }
 
 td ,th{
-    text-align: center;
     width: 100%;
+    padding-left: 30px;
 }
 
 .table-header{
     position: sticky;
     top: 0;
     height: 40px;
-    background: #fff;
+    background: linear-gradient(180deg, #499564, #2a719e);
+    color: #fff;
 }
 
 tr{
     width: 100%;
     display: flex;
     align-items: center;
+    text-align: left;
 }
 .student{
     margin: auto;
     height: 70px;
-    background-color: rgb(201, 201, 201);
-    color: #fff;
+    background-color: #f8fdfb;
+    color: #595959;
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
 .add-desabled{
@@ -323,6 +313,7 @@ form{
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    margin-top: 20px;
 }
 
 form p{
@@ -336,9 +327,9 @@ form p{
     transition: all ease .3s;
 }
 
-form  h3{
-    width: 100%;
-    margin: 20px 0 10px 0 !important;
+h3{
+    float: left;
+    margin: 10px 0 20px 0 ;
 }
 
 form > * {

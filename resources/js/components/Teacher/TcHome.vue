@@ -5,12 +5,12 @@
         <div class="container-right">
             <div class="account-container card">
                 <p>TEACHER</p>
+
                 <img :src="getImageUrl(user.imgSrc)" alt="" @click="showProfileCard = !showProfileCard">
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
-                <p>{{ user.username }}</p>
-                <a :href="`/teacher=${$route.params.id}/dashboard/profile`"   class="view-profile">
-                    <button>View profile</button>
-                </a>
+                <p></p>
+
+                <button @click="goToProfile">View profile</button>
 
                 <a href="/logout" class="logout">
                     <button>Log out</button>
@@ -30,7 +30,7 @@
                             <h5>TOTAL GROUPS</h5>
                             <span>{{ homeInfo.groups }}</span>
                         </div>
-                        <img src="../../assets/pending.png" alt="">
+                        <img src="../../assets/GroupsNumber.png" alt="">
                 </div>
 
                 <div class="card">
@@ -46,7 +46,7 @@
                             <h5>EXCLUDED STUDENTS</h5>
                             <span>{{ homeInfo.excluded }}</span>
                         </div>
-                        <img src="../../assets/module.png" alt="">
+                        <img src="../../assets/excluded.png" alt="">
                 </div>
 
             </div>
@@ -54,26 +54,51 @@
 
             <div class="container-left">
 
-                <HeaderComp></HeaderComp>
+                <HeaderComp class="head"></HeaderComp>
 
                 <div class="absences long-card">
                         <h5>RECENT ABSENCES:</h5>
-                    <div class="card-column-title">
-                        <p>Module</p>
-                        <p>Date</p>
-                        <p>Time</p>
-                        <p>justification</p>
-                    </div>
-                    <div  class="card-container">
-                        <div class="absence"
-                        v-for="(item, index) in absences"
-                        :key="index"
-                        >
-                            <p>{{ item.module }}</p>
-                            <p>{{ item.date }}</p>
-                            <p>{{ item.time }}</p>
-                            <img v-if="item.accepted" src="../../assets/Yellowdot.png" alt="">
-                            <img v-if="!item.accepted" src="../../assets/reddot.png" alt="">
+                        <div class="the-table">
+                        <div class="table-container">
+                            <table>
+                                <tr class="table-header">
+                                    <th>Student</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Stat</th>
+                                </tr>
+
+                                <tr
+                                    v-for="(absence, index) in absences"
+                                    :key="index"
+                                    class="table-row"
+                                >
+                                    <td>
+                                        <p>{{ absence.Nom_Etud }} {{ absence.Prenom_Etud }}</p>
+                                    </td>
+
+                                    <td>
+                                        <p>{{ absence.Date_Abs }}</p>
+                                    </td>
+
+                                    <td>
+                                        <p>{{ absence.Hour_Abs }}</p>
+                                    </td>
+
+                                    <td>
+                                        <div class="unjustified" v-if="absence.Just_Abs == null && absence.Type_Abs === 'nonJustifié'">
+                                            <p>UNJUSTIFIED</p>
+                                        </div>
+                                        <div class="justified" v-if="absence.Just_Abs != null  && absence.Type_Abs === 'nonJustifié'">
+                                            <p>PENDING</p>
+                                        </div>
+                                        <div class="accepted" v-if="absence.Type_Abs === 'justifié'">
+                                            <p>ACCEPTED</p>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -88,18 +113,17 @@
                                     v-for="(contact, index) in contacts"
                                     :key="index"
                                 >
-                                    <tr>
+                                    <tr class="table-row">
                                         <td>
                                             <p>{{ contact.Nom_Etud }} {{ contact.Prenom_Etud }}</p>
                                         </td>
 
                                         <td>
                                             <p>{{ contact.UserName_Etud }}</p>
+                                            <img src="../../assets/mailSend.png" alt="">
+
                                         </td>
 
-                                        <td>
-                                            <img src="../../assets/mailSend.png" alt="">
-                                        </td>
                                     </tr>
                                 </a>
                             </table>
@@ -127,18 +151,13 @@ export default {
     data() {
         return {
             showProfileCard: false,
-            absences:[
-                {module: 'daw', date: '14/21/2021'},
-                {module: 'daw', date: '14/21/2021'},
-                {module: 'daw', date: '14/21/2021'},
-                {module: 'daw', date: '14/21/2021'}
-            ],
+            absences:[],
             contacts:[],
             user: {
                 nom:'',
                 prenom: '',
                 username: '',
-                imgSrc: '../../assets/AdminProfil.png'
+                imgSrc: '../../assets/teacherProfil.png'
             },
             homeInfo:{
                 students: 0, absences: 0, excluded: 0, groups: 0
@@ -161,7 +180,7 @@ export default {
             .get( 'http://localhost:8000/api/studentsList' )
             .then( res => this.contacts = res.data)
 
-            axios
+        axios
             .post('http://localhost:8000/api/exludedStudents', { id: this.$route.params.id })
             .then( res => this.homeInfo.excluded = res.data )
 
@@ -176,6 +195,17 @@ export default {
         axios
             .get('http://localhost:8000/api/TotalStudentsNbr')
             .then( res => this.homeInfo.students = res.data )
+
+        axios
+            .post('http://localhost:8000/api/getTeacherRecentAbs', { id: this.$route.params.id })
+            .then( res => this.absences = res.data )
+
+    },
+
+    methods: {
+        goToProfile(){
+                this.$router.push(`/student=${this.$route.params.id}/dashboard/profile`)
+            }
     },
 
     setup() {
@@ -191,14 +221,17 @@ export default {
 
 
 <style scoped>
-.home{
-    width: 100%;
-    min-height: 300px;
-    padding-bottom: 40px;
-    overflow: hidden;
-    background: #fff;
+a{
+    text-decoration: none;
 }
 
+a:visited{
+    text-decoration: none;
+}
+
+.home{
+    width: 100%;
+}
 
 .home-container{
     display: flex;
@@ -225,26 +258,6 @@ export default {
     flex-grow: 1;
 }
 
-.header{
-    padding: 0 20px !important;
-    width: calc(98% - 40px) !important;
-    align-items: center;
-    height: 60px !important;
-    box-shadow: none !important;
-    margin: 7px 20px 40px 20px!important;
-}
-
-
-.header :nth-child(1){
-    width: 55px;
-    height: auto ;
-}
-
-.header :nth-child(3){
-    width: 35px ;
-    height: auto;
-}
-
 input{
     width: 280px;
     height: 20px;
@@ -253,7 +266,17 @@ input{
     color: #e8e8e8;
     border-radius: 20px;
     font-size: 14px;
-    background: linear-gradient(0deg, #2b5dbb64, #14a24d5c);
+    background: linear-gradient(6deg, #1f378233, #02722438);
+}
+
+.background{
+    width: calc(100% + 50px);
+    margin-left: -50px;
+    height: 150px;
+    background: linear-gradient(70deg, #2c4eb4, #305748);
+    left: 0;
+    z-index: 0;
+
 }
 
 .account-container {
@@ -269,6 +292,11 @@ input{
 .account-container::after{
     content: none !important;
 }
+
+.account-container img{
+    border-radius: 50%;
+}
+
 
 .account-container :nth-child(4){
     margin-bottom: auto;
@@ -286,25 +314,11 @@ input{
     font-size: 13px;
 }
 
-.account-container .logout{
-    margin-top: auto;
-    margin-bottom: 10px;
-    font-size: 18px;
-    color: gray;
-    font-weight: 900;
-    font-size: 13px;
-}
+
 
 .account-container button{
     height: 40px;
-    width: 100%;
-    background: transparent;
-    border: none;
-}
-
-.view-profile button{
-    margin-bottom: 0 !important;
-    color: #fff !important;
+    margin: 5px auto;
 }
 
 .account-container :nth-child(5) {
@@ -321,27 +335,30 @@ input{
 }
 
 
-.account-container .logout {
+.account-container a {
     width: 70%;
     font-weight: 500;
+    background: linear-gradient#fff;
 }
 
-.account-container .logout button{
+.account-container a button{
     width: 100%;
     border-radius: 10px;
     border: none;
 }
 
-.account-container .logout button:hover{
+.account-container a button:hover{
     box-shadow: #000 1px 1px 5px;
     transition: all ease .4s;
 }
+
+
 
 .card{
     min-width: 200px;
     width: calc(100% - 40px);
     height: 80px;
-    background-color: #fcfcfc;
+    background-color: #ffffff;
     box-shadow: rgb(94 94 94) 5px 5px 10px;
     padding: 15px 20px;
     border-radius: 15px;
@@ -361,12 +378,13 @@ input{
   bottom: 0;
   border-radius: 15px;
   border: 2px solid transparent;
-  background: linear-gradient(0deg, #2b5dbb, #14a24d);
+  background: linear-gradient(-70deg, #1f3782, #027224);
   -webkit-mask:
     linear-gradient(#fff 0 0) padding-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
+
 }
 
 .card-info{
@@ -385,7 +403,7 @@ input{
 
 .card img {
     height: 70px;
-    width: auto;
+    width: 70px;
 }
 
 h5 {
@@ -400,13 +418,6 @@ h5 {
     font-weight: 700;
 }
 
-.card-column-title{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin: 10px 25px;
-}
-
 .long-card{
     flex-direction: column;
     padding: 0;
@@ -414,9 +425,8 @@ h5 {
     box-shadow: none;
     border-radius: 15px;
     min-width: 200px;
-    margin: 20px 6vw;
+    margin: 20px 3vw;
     flex-grow: 1;
-    overflow-x: visible;
 }
 
 .long-card h5{
@@ -431,72 +441,18 @@ h5 {
     justify-content: space-around;
     align-items: center;
     font-size: 20px;
-}
-
-
-
-.card-container{
-    height: 200px;
-    background: #fff;
-    overflow-y: auto;
-    overflow-x: visible;
-}
-
-.card-container {
-    background: #fff;
-}
-
-.absence{
-    height: 50px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 15px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    font-weight: 800;
-    color: #fff;
-    background: #c9c6c6;
-    position: relative;
-}
-
-.absence:hover{
-    box-shadow: 3px 3px 8px rgb(94, 94, 94);
-    border-radius: 0px;
-    background: rgba(0, 0, 0, 0.1);
-    transition: all ease .4s;
-}
-
-.absence:hover::before{
-    position: absolute;
-    content: '';
-    background: linear-gradient(0deg, #2b5dbb, #14a24d);
-    width: 10px;
-    height: 100%;
-    left: 0;
-    transition: all ease .4s;
-}
-
-.absence img{
-    width: auto;
-    height: 20px;
-}
-
-.mail-icon{
-    color: #000;
-    font-size: 40px;
+    border-radius: 5px;
 }
 
 .the-table{
     width: 100%;
-    height: 300px;
+    height: 280px;
     overflow: hidden;
 }
 
 .table-container{
     width: 100%;
-    min-width: 300px;
+    min-width: 280px;
     height: 100%;
     overflow-x: auto;
     padding-bottom: 17px;
@@ -511,47 +467,62 @@ table {
     border-spacing: 0 10px;
     display: inline-block;
     overflow-y: auto;
-    height: 300px;
+    height: 280px;
     border-radius: 15px;
+}
+
+.table-header{
+    width: 100%;
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    height: 40px;
+    background: #fcfcfc;
+}
+
+tr{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    margin-bottom: 5px;
 }
 
 td img{
     color: #000;
     width: 20px;
-    height: auto;
+    height: 20px;
 }
 
-.mail-icon{
-    color: #000;
-    font-size: 40px;
-}
-
-tr{
-    height: 50px;
+td, th {
+    width: calc(100% - 40px);
+    padding: 0 10px;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    margin: 10px 0;
-    background: #c9c6c6;
-    padding: 8px 0;
-    color: #fff;
-    font-weight: 800;
+    flex-wrap: nowrap;
+    justify-content: space-between;
 }
 
-td{
-    text-align: center;
+.table-row{
+    background: #fff;
+    height: 50px;
     width: 100%;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    color: rgb(61, 61, 61);
+    position: relative;
 }
 
-tr:hover{
+.table-row:hover{
     box-shadow: 3px 3px 8px rgb(94, 94, 94);
     border-radius: 0px;
     background: rgba(0, 0, 0, 0.1);
     transition: all ease .4s;
 }
 
-tr:hover::before{
+.table-row:hover::before{
     position: absolute;
     content: '';
     background: linear-gradient(0deg, #2b5dbb, #14a24d);
@@ -567,6 +538,38 @@ td span{
     font-size: 13px;
 }
 
+.unjustified{
+    width: 83px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #9D2A22;
+    padding: 5px;
+    background: #F1A4A4;
+    border-radius: 5px;
+}
+
+.justified{
+    width: 83px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #8045B9;
+    padding: 5px;
+    background: #D8B4FE;
+    border-radius: 5px;
+}
+
+.accepted{
+    width: 83px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3D7A47;
+    padding: 5px;
+    background: #86EFAC;
+    border-radius: 5px;
+}
 
 a{
     text-decoration: none;
@@ -574,5 +577,11 @@ a{
 
 a:visited{
     text-decoration: none;
+}
+
+@media (max-width: 1200px) {
+    .head{
+        display: none;
+    }
 }
 </style>

@@ -426,6 +426,7 @@ input[ type="file" ]{
     border-bottom: solid #121212 1px;
     font-size: 14px;
     font-size: 20px;
+    background: transparent;
     transition: all ease .3s;
 
 }
@@ -435,7 +436,6 @@ input[ type="file" ]{
     border: #818181 solid 1px;
     border-radius: 20px;
     opacity: 0.5;
-    z-index: -1;
     transition: all ease .3s;
 }
 

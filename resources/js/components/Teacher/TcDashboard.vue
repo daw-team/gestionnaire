@@ -45,10 +45,10 @@ export default {
 .dashboard{
     width: calc(100% - 70px) ! important;
     padding-left: 70px;
-    min-height: 300px;
-    padding-bottom: 40px;
+    min-height: 100vh;
     overflow: hidden;
     transition: all ease .4s;
+    background: #F6F7F6;
 }
 
 .small {

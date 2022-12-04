@@ -115,13 +115,11 @@
                                         </div>
                                     </td>
 
-                                    <td>
+                                    <td class="mail">
                                         <p>{{ contact.UserName_Ens }}</p>
-                                    </td>
-
-                                    <td>
                                         <img src="../../assets/mailSend.png" alt="">
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -371,7 +369,7 @@ input{
     min-width: 200px;
     width: calc(100% - 40px);
     height: 80px;
-    background-color: #fcfcfc;
+    background-color: #fff;
     box-shadow: rgb(94 94 94) 5px 5px 10px;
     padding: 15px 20px;
     border-radius: 15px;
@@ -437,7 +435,7 @@ h5 {
 .card-2{
     min-width: 300px;
     height: 120px;
-    background-color: #fcfcfc;
+    background-color: #fff;
     padding: 15px 20px;
     border-radius: 15px;
     margin-left: auto;
@@ -470,7 +468,6 @@ h5 {
     background: #fff;
     position: relative;
     border-radius: 15px;
-    z-index: 99;
     cursor: pointer;
     transition: all ease .4s ;
 
@@ -566,16 +563,24 @@ tr{
     align-items: center;
     justify-content: space-around;
     margin: 10px 0;
-    background: #c9c6c6;
+    background: #ffffff;
     padding: 8px 0;
-    color: #fff;
-    font-weight: 800;
+    color: rgb(61, 61, 61);
+    font-weight: 500;
     position: relative;
 }
 
 td{
-    text-align: center;
+    text-align: left;
+    margin: 0 30px;
     width: 100%;
+}
+
+.mail{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 tr:hover{

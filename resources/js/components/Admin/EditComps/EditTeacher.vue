@@ -121,7 +121,7 @@ export default {
         checkForEmptyFields(){
             let check = false;
             Object.keys(this.teacher).forEach( element => {
-                if( !this.changePasswordActive && this.student[element] === '' ) {
+                if( !this.changePasswordActive && this.teacher[element] === '' ) {
                     if(element !== 'password'){
                         check = true
                     }

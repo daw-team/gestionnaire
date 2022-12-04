@@ -47,8 +47,9 @@ export default {
 <style scoped>
 
 .dashboard{
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
+    background: #F6F7F6;
 }
 
 .dashboard-view{

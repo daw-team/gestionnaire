@@ -2,10 +2,6 @@
     <div class="background" @click="goBack($event)">
         <div class="image-container">
             <img :src="getImageUrl(imgSrc)" alt="">
-            <div class="two">
-                <button class="refuse"  @click="refuseJustification">Refuse</button>
-                <button class="accept"  @click="acceptJustification">Accept</button>
-            </div>
         </div>
     </div>
 
@@ -13,11 +9,15 @@
 
 <script>
 export default {
+    props:{
+        'compToActive': String,
+        'idAbs': Number
+    },
     data() {
         return {
             box: null,
             imgSrc: '',
-            id: this.$route.params.JsNum
+            id: this.idAbs
         }
     },
 
@@ -32,28 +32,29 @@ export default {
     methods: {
         goBack(e) {
             if(!this.box.contains(e.target)){
-                this.$router.go(-1)
+                this.$emit('compDesactive', '')
             }
         },
 
         acceptJustification(){
             axios
-                .post('/acceptJust', { id: this.$route.params.JsNum })
+                .post('http://localhost:8000/api/acceptJust', { id: this.$route.params.JsNum })
                 .then( res => {
-                    if(res.msg === 'informations updated successfully'){
-                        this.$swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Absence accepted successfully',
-                        showConfirmButton: false,
-                        timer: 2500
-                        })
-                        this.$router.go(-1);
-                }
+                    console.log(res.data);
+                    // if(res.data.msg === 'informations updated successfully'){
+                    //     this.$swal.fire({
+                    //     position: 'top-end',
+                    //     icon: 'success',
+                    //     title: 'Absence accepted successfully',
+                    //     showConfirmButton: false,
+                    //     timer: 2500
+                    //     })
+                        // this.$router.go(-1);
+                // }
                 })
         },
 
-        acceptJustification(){
+        refuseJustification(){
 
         }
 
@@ -96,13 +97,15 @@ export default {
     position: absolute;
     animation: slideIn .7s ease-in;
     opacity: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .image-container{
     width: 60%;
     min-width: 400px;
     height: 70%;
-    transform: translateY(10%);
+    transform: translateY(5%);
     margin: auto;
     background: #fff;
     display: flex;
@@ -123,21 +126,21 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
 }
 
 .refuse{
-    width: 100px;
-    height: 40px;
+    width: 240px;
+    height: 60px;
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 600;
     background: #757575;
     border: 1px solid;
-    border-radius: 20px;
+    border-radius: 15px;
     color: #fff;
     box-shadow: 5px 5px 10px black;
-    margin: 10px auto;
+    margin: 50px 0;
     transition: all ease .5s;
 }
 
@@ -147,22 +150,22 @@ export default {
     border-radius: 20px;
     color: #fff;
     box-shadow: none;
-    margin: 10px auto;
+    margin: 10px 0;
     transition: all ease .5s;
 }
 
 
 .accept {
-    width: 100px;
-    height: 40px;
+    width: 240px;
+    height: 60px;
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 600;
     background: linear-gradient(0deg, #14a24d, #2b5dbb);
     border: 1px solid;
-    border-radius: 20px;
+    border-radius: 15px;
     color: #fff;
     box-shadow: 5px 5px 10px black;
-    margin: 10px auto;
+    margin: 50px 0;
     transition: all ease-out .2s;
 }
 

@@ -56,6 +56,8 @@ export default {
 
 .dashboard{
     width: 100%;
+    min-height: 100vh;
+    background: #F6F7F6;
 }
 
 .container-router{

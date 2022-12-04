@@ -128,7 +128,7 @@ export default {
 
 
 .login {
-    width: 700px;
+    max-width: 700px;
     height: 70%;
     display: flex;
     flex-direction: row;
@@ -188,12 +188,15 @@ form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin: auto;
 }
 
 .form-title{
     font-size: 60px;
     margin: 40px 0 60px 0;
-    color: rgb(126, 125, 125)
+    background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 input{
@@ -238,6 +241,12 @@ form p {
     color: #ff0000;
     text-align: center;
     margin: auto;
+}
+
+@media (max-width: 700px) {
+    .login-img{
+        display: none;
+    }
 }
 
 

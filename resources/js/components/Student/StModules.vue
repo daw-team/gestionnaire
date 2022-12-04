@@ -6,7 +6,6 @@
             <div>
                 <h1>Modules</h1>
                 <p>You can find all your abcenses on this list </p>
-                <input type="text"  placeholder="Search for a student">
             </div>
             <div class="img-src">
                     <img :src="getProfileUrl(user.imgSrc)" alt="">
@@ -132,25 +131,33 @@ export default {
     height: 130px;
 }
 
+.img-src{
+    width: auto;
+    height: 100px;;
+}
+
 .img-src img{
-    width: 130px;
-    height: 130px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
 }
 
 .title {
-    height: 155px;
     display: flex;
+    margin: 20px;
+    padding: 20px 0;
+    border-radius: 15px;
+    width: calc(100% - 40px);
+    background: #ffffff;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    margin-left: 8vw;
 }
 
 .title div{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin: 0 10vw;
 }
 
 .title h1{
@@ -173,9 +180,9 @@ export default {
     width: 280px;
     height: 20px;
     padding: 10px 20px;
-    border: #00000079 solid 1px;
-    border-radius: 20px;
-    background-color: rgb(201 201 201 / 29%);
+    border: #cfcfcf solid 1px;
+    border-radius: 15px;
+    background-color: rgb(252 252 252);
     font-size: 14px;
 }
 
@@ -192,7 +199,7 @@ export default {
 .card{
     width: calc(100% - 40px);
     height: 300px;
-    background-color: #fcfcfc;
+    background-color: #fff;
     box-shadow: rgb(94 94 94) 5px 5px 10px;
     padding: 15px 20px;
     border-radius: 15px;
