@@ -4,7 +4,6 @@
             <div class="title">
                 <div>
                     <h1>Abcenses</h1>
-                    <!-- <p>You can find all your abcenses on this list </p> -->
                     <div class="drawer">
                         <ul>
                             <li

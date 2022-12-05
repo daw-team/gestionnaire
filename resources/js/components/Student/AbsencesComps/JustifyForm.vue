@@ -59,7 +59,7 @@ export default {
                     this.$swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'absence justified!',
+                    title: 'Justification sent!',
                     showConfirmButton: false,
                     timer: 2500
                     })

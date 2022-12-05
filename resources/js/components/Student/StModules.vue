@@ -80,27 +80,6 @@ export default {
             }
         })
 
-        // axios
-        //     .post('http://localhost:8000/api/AllModulesAbsences', {id:this.$route.params.id})
-        //     .then( res => {
-        //         // this.modules.forEach(module => {
-        //         //     console.log(res.data);
-        //         //     res.data.forEach(element => {
-        //         //         if(element.Num_Mod === module.Num_Mod){
-        //         //             module.unjustified = element.unjustified
-        //         //             module.justified = element.justified
-        //         //             module.total = element.total
-        //         //         }else{
-        //         //             module.unjustified = 0
-        //         //             module.justified = 0
-        //         //             module.total = 0
-        //         //         }
-
-        //         //     });
-        //         // });
-        //         console.log(res.data);
-        //         this.modules = res.data
-        //     })
     },
 
     setup() {

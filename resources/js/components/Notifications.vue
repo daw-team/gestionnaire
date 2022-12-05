@@ -20,6 +20,11 @@
                         <div class="notif-img" v-if="insertImg(notif.Text_Not, 3)">
                             <img src="../assets/module.png">
                         </div>
+
+                        <div class="notif-img" v-if="insertImg(notif.Text_Not, 4)">
+                            <img src="../assets/pending.png">
+                        </div>
+
                         <p>{{ notif.Text_Not }}</p>
 
                     </li>
@@ -35,7 +40,7 @@ export default {
     data() {
         return {
             notifications:[],
-            picsArray: [ 'accepted', 'unjustified', 'rejected', 'exluded'],
+            picsArray: [ 'accepted', 'unjustified', 'rejected', 'exluded', 'unchecked'],
         }
     },
 

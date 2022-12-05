@@ -18,11 +18,21 @@
                 </div>
             </div>
 
-            <div class="module">
-                <label for="">Module:</label>
-                <select name="" id="" v-model="teacher.module_abriviation">
-                    <option v-for="(module, index) in modules" :key="index" :value="module.Abrv_Mod">{{ module.Abrv_Mod }}</option>
-                </select>
+            <div class="two">
+                <div class="session">
+                    <label for="">Session:</label>
+                    <select name="" id="" v-model="teacher.type_ens">
+                        <option value="ALL">All</option>
+                        <option value="TD">TD</option>
+                        <option value="TP">TP</option>
+                    </select>
+                </div>
+                <div class="module">
+                    <label for="">Module:</label>
+                    <select name="" id="" v-model="teacher.module_abriviation">
+                        <option v-for="(module, index) in modules" :key="index" :value="module.Abrv_Mod">{{ module.Abrv_Mod }}</option>
+                    </select>
+                </div>
             </div>
 
             <div class="email">
@@ -76,7 +86,8 @@ export default {
                 lastname: '',
                 email: '',
                 password: '',
-                module_abriviation: ''
+                module_abriviation: '',
+                type_ens: ''
             },
             confirmPassword: '',
             changePasswordActive: false,
@@ -105,6 +116,7 @@ export default {
                     if( element.Num_Mod === res.data[0].Num_Mod) {
                         this.teacher.module_abriviation = element.Abrv_Mod
                     }
+                this.teacher.type_ens = res.data[0].Type_Ens
                 })
 
             })
@@ -224,7 +236,7 @@ label{
 .form-title{
     font-size: 40px;
     font-weight: 900;
-    margin: 40px 0 60px 0;
+    margin: 30px 0 30px 0;
     background-image: linear-gradient(180deg, #14a24d, #2b5dbb);
     -webkit-background-clip: text;
     color: transparent;
@@ -235,7 +247,7 @@ label{
     min-width: 200px;
 }
 
-.module{
+.module, .session{
     display: flex;
     flex-direction: column;
 }

@@ -70,6 +70,18 @@
                     <label for="">To:</label>
                     <input type="time" v-model="timeTo">
                 </div>
+                <div>
+
+                </div>
+
+                <div class="" :class="{'add-desabled': newAbsence.ids.length == 0}">
+                    <label for="">Session</label>
+                    <select class="session" v-model="newAbsence.type_ens">
+                        <option value="TD">TD</option>
+                        <option value="TP">TP</option>
+                    </select>
+                </div>
+
 
                 <input
                     type="submit"
@@ -102,7 +114,8 @@ export default {
                 num_module: '',
                 "ids": [],
                 date: '',
-                hour: ''
+                hour: '',
+                type_ens: 'TD'
             }
 
         }
@@ -327,13 +340,17 @@ form p{
     transition: all ease .3s;
 }
 
+.session{
+    margin: 0px !important;
+}
+
 h3{
     float: left;
     margin: 10px 0 20px 0 ;
 }
 
 form > * {
-    margin: 0 10px 10px 10px;
+    margin: 0 10px 10px 10px !important;
 }
 
 input[ type = 'date']{

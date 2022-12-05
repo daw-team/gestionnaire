@@ -8,7 +8,7 @@
 
                 <img :src="getImageUrl(user.imgSrc)" alt="" @click="showProfileCard = !showProfileCard">
                 <h3>{{ user.prenom}} {{ user.nom}}</h3>
-                <p></p>
+                <p>{{ user.username }}</p>
 
                 <button @click="goToProfile">View profile</button>
 
@@ -207,7 +207,7 @@ export default {
 
     methods: {
         goToProfile(){
-                this.$router.push(`/student=${this.$route.params.id}/dashboard/profile`)
+                this.$router.push(`/teacher=${this.$route.params.id}/dashboard/profile`)
             }
     },
 

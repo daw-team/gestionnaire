@@ -15,6 +15,7 @@
                         >
                             {{column.label}}
                         </th>
+                        <th style="width: 40%; cursor:pointer;">Session</th>
                     </tr>
                     <tr
                         v-for="(absence, index) in filteredUsers"
@@ -31,6 +32,10 @@
 
                         <td>
                             <p>{{ absence.Hour_Abs }}</p>
+                        </td>
+
+                        <td>
+                            <p>{{ absence.Type_Ens }}</p>
                         </td>
                     </tr>
                 </table>

@@ -40,8 +40,8 @@
 
                 <div class="card">
                         <div>
-                            <h5>EXCLUDED MODEL</h5>
-                            <span>DAW</span>
+                            <h5>EXCLUDED MODULES</h5>
+                            <span>{{ absencesInfo.excludedMod }}</span>
                         </div>
                         <img src="../../assets/module.png" alt="">
                 </div>
@@ -159,7 +159,7 @@ export default {
                 imgSrc: '../../assets/user.png'
             },
             absencesInfo: {
-                totalAbsences: 0, pendingAbsences: 0, justifiedAbsences: 0
+                totalAbsences: 0, pendingAbsences: 0, justifiedAbsences: 0, excludedMod: 0
             }
         }
     },
@@ -190,6 +190,12 @@ export default {
 
         axios
             .post('http://localhost:8000/api/totalNonJustAbsNbr', {id:this.$route.params.id})
+            .then( res => {
+                this.absencesInfo.pendingAbsences = res.data
+            })
+
+        axios
+            .post('http://localhost:8000/api/getNbrExcludedMod', {id:this.$route.params.id})
             .then( res => {
                 this.absencesInfo.pendingAbsences = res.data
             })

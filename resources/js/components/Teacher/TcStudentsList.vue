@@ -25,11 +25,25 @@
                             >
                             {{column.label}}
                             </th>
-                            <th>Unj/Abs TD</th>
-                            <th>Just/Abs TD</th>
-                            <th>Unj/Abs TP</th>
-                            <th>Just/Abs TP</th>
-                            <th style="width: 40%; cursor:pointer;">Email</th>
+                            <th
+                                v-if="user.type === 'TD' || user.type === 'ALL'"
+                                style="width: 40%; cursor:pointer;"
+                            >Unj/Abs TD</th>
+                            <th
+                                v-if="user.type === 'TD' || user.type === 'ALL'"
+                                style="width: 40%; cursor:pointer;"
+                            >Just/Abs TD</th>
+                            <th
+                                v-if="user.type === 'TP' || user.type === 'ALL'"
+                                style="width: 40%; cursor:pointer;"
+                            >Unj/Abs TP</th>
+                            <th
+                                v-if="user.type === 'TP' || user.type === 'ALL'"
+                                style="width: 40%; cursor:pointer;"
+                            >Just/Abs TP</th>
+                            <th
+                                style="width: 40%; cursor:pointer;"
+                            >Email</th>
                         </tr>
                         <tr
                             v-for="(student, index) in filteredUsers"
@@ -88,10 +102,6 @@ export default {
         let columns = [
             {label: 'Student', name: 'Nom_Etud', type: 'string' },
             {label: 'Groupe', name: 'Group_Etud', type: 'number'},
-            // {label: 'Unj/Abs TD', name: 'unjustifiedTD', type: 'number'},
-            // {label: 'just/Abs TD', name: 'justifiedTD', type: 'number'},
-            // {label: 'Unj/Abs TP', name: 'unjustifiedTP', type: 'number'},
-            // {label: 'Just/Abs TP', name: 'justifiedTP', type: 'number'},
         ];
         columns.forEach((column) => {
             sortOrders[column.name] = 1;

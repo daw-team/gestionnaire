@@ -14,6 +14,7 @@
                         >
                             {{column.label}}
                         </th>
+                        <th style="width: 40%; cursor:pointer;">Session</th>
                         <th style="width: 40%; cursor:pointer;" >Upload</th>
                     </tr>
                     <tr
@@ -31,6 +32,10 @@
 
                         <td>
                             <p>{{ absence.Hour_Abs }}</p>
+                        </td>
+
+                        <td>
+                            <p>{{ absence.Type_Ens }}</p>
                         </td>
 
                         <td><button @click="showForm(absence.Num_Abs)">Justification</button></td>
