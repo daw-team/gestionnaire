@@ -3,11 +3,9 @@
         <div class="container">
             <div class="welcome">
                 <h1><span>Welcome</span> {{ user.prenom }}</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-                    tempora quibusdam voluptatibus laborum, veritatis eaque veniam modi,
-                    natus rerum aliquam laudantium praesentium perferendis,
-                    reiciendis nulla officia laboriosam molestiae minima dolorum.
-                </p>
+                <p>Dear student welcome to your page, here you can check all your informations and stay in touch with
+                    your teacher.
+                    let's get started !</p>
                 <button class="get-started" @click="goToDashboard">Get started</button>
             </div>
             <div class="container-img">

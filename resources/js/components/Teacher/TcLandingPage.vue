@@ -2,7 +2,7 @@
     <div    class="teacher">
         <div class="container">
             <div class="welcome">
-                <h1>Welcome Mr {{ user.prenom }}</h1>
+                <h1><span>Welcome Mr</span> {{ user.prenom }}</h1>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
                     tempora quibusdam voluptatibus laborum, veritatis eaque veniam modi,
                     natus rerum aliquam laudantium praesentium perferendis,
@@ -67,8 +67,7 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
     width: 100%;
-    height: 75vh;
-    margin-top: 7vw;
+    height: 100vh;
 }
 
 .welcome {
@@ -84,22 +83,36 @@ export default {
 }
 
 .welcome h1 {
-    font-size: 40px;
-    margin-left: 20px;
+    font-size: 90px;
+    position: relative;
+    margin-top: auto;
+}
+.welcome span{
+    font-weight: 400;
+    font-size: 50px;
+    margin-top: -38px;
+    position: absolute;
+}
+
+.welcome p{
+    margin-bottom: auto;
+    font-size: 20px;
 }
 
 .get-started{
-  margin-left: 20px;
-  width: 200px;
-  height: 50px;
-  font-size: 20px;
-  font-weight: 700;
-  background: linear-gradient(-90deg, #2c4eb477, #00882982) ;
-  border: 1px solid;
-  border-radius: 30px;
-  color: #fff;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.476);
-  transition: all ease .7s;
+    margin-left: 20px;
+    width: 200px;
+    margin-top: -110px;
+    height: 50px;
+    margin-bottom: auto;
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(-90deg, #2c4eb477, #00882982);
+    border: 1px solid;
+    border-radius: 30px;
+    color: #fff;
+    box-shadow: 5px 5px 10px rgb(0 0 0 / 48%);
+    transition: all ease .7s;
 }
 
 .get-started:hover {

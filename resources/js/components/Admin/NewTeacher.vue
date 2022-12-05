@@ -106,7 +106,7 @@ export default {
                 this.$swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Student created successfully',
+                    title: 'Teacher created successfully',
                     showConfirmButton: false,
                     timer: 2000
                 })

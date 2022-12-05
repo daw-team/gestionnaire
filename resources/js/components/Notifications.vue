@@ -36,31 +36,17 @@ export default {
         return {
             notifications:[],
             picsArray: [ 'accepted', 'unjustified', 'rejected', 'exluded'],
-            new: 0,
         }
     },
 
     mounted() {
         if( this.$route.fullPath.includes('student=') ) {
             axios
-                .post('http://localhost:8000/api/unseenStudentNotifNbr',{ id: this.$route.params.id })
-                .then( res => {
-                    res.data = this.new
-                    this.$emit('newNotif', this.new )
-                })
-
-            axios
                 .post('http://localhost:8000/api/getStudentNotif', { id: this.$route.params.id })
                 .then( res =>{
                     this.notifications = res.data
-                    // this.notifications.forEach(element => {
-                    //     if(element.Is_Seen === 0){
-                    //         this.new = true
-                    //     }
-                    // });
-                    // this.$emit('newNotif', this.new )
                 })
-        }else if( this.$route.fullPath.includes('admin=') ) {
+        }else if( this.$route.fullPath.includes('teacher=') ) {
             axios
                 .post('http://localhost:8000/api/unseenTeacherNotifNbr',{ id: this.$route.params.id })
                 .then( res => {

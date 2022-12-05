@@ -83,7 +83,7 @@ export default {
                 this.$swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Student created successfully',
+                    title: 'Module created successfully',
                     showConfirmButton: false,
                     timer: 2000
                 })

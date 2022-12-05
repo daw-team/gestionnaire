@@ -93,7 +93,7 @@
                         <td v-if="absenceType === 'PenAbsencesEns'">
                             <div>
                                 <img
-                                    src="../../../assets/reject.png"
+                                    src="../../../assets/accept.png"
                                     class="edit-img"
                                     name="checkmark-done-circle-outline"
                                     @click="acceptJustification(absence.Num_Abs)"

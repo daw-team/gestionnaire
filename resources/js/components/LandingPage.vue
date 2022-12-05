@@ -11,7 +11,7 @@
       <h3>IFA - TI</h3>
     </div>
 
-    <h1 class="title">Gestionnare des absences</h1>
+    <h1 class="title">Gestionnaire des absences</h1>
     <!-- <p>
       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum similique laborum, aperiam dolore aliquam animi velit, necessitatibus autem, aut accusamus maiores. Vitae alias repellat
     </p> -->
