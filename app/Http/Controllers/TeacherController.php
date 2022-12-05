@@ -135,7 +135,8 @@ public function groupsList(request $request) {
 }
 $allAbsences = Absence::select('Num_Abs')
 		->where('Num_Etud','=',$id)
-		->where('Num_Ens','=',$request->num_ens)
+		->where('Num_Mod','=',$request->num_module)
+		->where('Type_Ens','=',$request->type_ens)
             	->count();
             	if($allAbsences >= 5){
             		Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $id,'Text_Not' => 'you are excluded from '.$abrv .' ']);
@@ -143,7 +144,8 @@ $allAbsences = Absence::select('Num_Abs')
             	
             	$unjustifiedAbs = Absence::select('Num_Abs')
 		->where('Num_Etud','=',$id)
-		->where('Num_Ens','=',$request->num_ens)
+		->where('Num_Mod','=',$request->num_module)
+		->where('Type_Ens','=',$request->type_ens)
             	->where('Type_Abs','=','nonJustifié')
             	->count();
             	if($unjustifiedAbs >= 3){
