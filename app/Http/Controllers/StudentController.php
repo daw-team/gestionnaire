@@ -177,8 +177,6 @@ public function getJustifiedAbsNbr(request $request) {
                         ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                         ->where('ABSENCE.Just_Abs', '!=',NULL )
                         ->orderby('ABSENCE.Date_Abs' , 'DESC')
-
-
                         ->get();
     }
 
