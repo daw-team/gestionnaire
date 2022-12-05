@@ -25,13 +25,17 @@
                             >
                             {{column.label}}
                             </th>
+                            <th>Unj/Abs TD</th>
+                            <th>Just/Abs TD</th>
+                            <th>Unj/Abs TP</th>
+                            <th>Just/Abs TP</th>
                             <th style="width: 40%; cursor:pointer;">Email</th>
                         </tr>
                         <tr
                             v-for="(student, index) in filteredUsers"
                             :key="index"
                             class="student"
-                            :class="{'excluded': checkExcluded }"
+                            :class="{'excluded': checkExcluded(student.unjusfifiedTD, student.unjusfifiedTP, student.justifiedTD, student.justifiedTP) }"
                         >
                             <td>
                                 <p>{{ student.Nom_Etud }} {{ student.Prenom_Etud }}</p>
@@ -41,12 +45,20 @@
                                 <p>{{ student.Group_Etud }}</p>
                             </td>
 
-                            <td>
-                                <p>{{ student.unjustified }}</p>
+                            <td v-if="user.type === 'TD' || user.type === 'ALL'">
+                                <p>{{ student.unjustifiedTD }}</p>
                             </td>
 
-                            <td>
-                                <p>{{ student.justified }}</p>
+                            <td v-if="user.type === 'TD' || user.type === 'ALL'">
+                                <p>{{ student.justifiedTD }}</p>
+                            </td>
+
+                            <td v-if="user.type === 'TP' || user.type === 'ALL'">
+                                <p>{{ student.unjustifiedTP }}</p>
+                            </td>
+
+                            <td v-if="user.type === 'TP' || user.type === 'ALL'">
+                                <p>{{ student.justifiedTP }}</p>
                             </td>
 
                             <td>
@@ -76,8 +88,10 @@ export default {
         let columns = [
             {label: 'Student', name: 'Nom_Etud', type: 'string' },
             {label: 'Groupe', name: 'Group_Etud', type: 'number'},
-            {label: 'N° Unj/Abs', name: 'unjustified', type: 'number'},
-            {label: 'N° Jus/Abs', name: 'justified', type: 'number'},
+            // {label: 'Unj/Abs TD', name: 'unjustifiedTD', type: 'number'},
+            // {label: 'just/Abs TD', name: 'justifiedTD', type: 'number'},
+            // {label: 'Unj/Abs TP', name: 'unjustifiedTP', type: 'number'},
+            // {label: 'Just/Abs TP', name: 'justifiedTP', type: 'number'},
         ];
         columns.forEach((column) => {
             sortOrders[column.name] = 1;
@@ -91,6 +105,7 @@ export default {
                 currentPassword: '',
                 imgSrc: '../../assets/teacherProfil.png',
                 moduleId: '',
+                type: ''
 
             },
             students:[],
@@ -109,6 +124,7 @@ export default {
         axios
             .post('http://localhost:8000/api/TeacherInfo', {id:this.$route.params.id})
             .then( res => {
+                console.log(res.data);
                 this.user.nom = res.data[0].Nom_Ens
                 this.user.prenom = res.data[0].Prenom_Ens
                 this.user.username = res.data[0].UserName_Ens
@@ -116,20 +132,23 @@ export default {
                     this.user.imgSrc = res.data[0].Photo_Ens
                 }
                 this.user.moduleId = res.data[0].Num_Mod
+                this.user.type = res.data[0].Type_Ens
+            })
+            .then(() => {
+                axios
+                    .post('http://localhost:8000/api/AllStudents', {id: this.user.moduleId})
+                    .then( res => this.students = res.data )
             })
 
 
-        axios
-            .post('http://localhost:8000/api/AllStudents', {id: this.user.moduleId})
-            .then( res => this.students = res.data )
     },
 
     methods:{
-        checkExcluded(){
-            const unjusTd = parseInt(student.unjustifiedTD)
-            const unjusTp = parseInt(student.unjustifiedTP)
-            const jusTd = parseInt(student.justifiedTD)
-            const jusTp = parseInt(student.justifiedTP)
+        checkExcluded(unjusTd, unjusTp, jusTd, jusTp){
+            unjusTd = parseInt(unjusTd)
+            unjusTp = parseInt(unjusTp)
+            jusTd = parseInt(jusTd)
+            jusTp = parseInt(jusTp)
 
             if( (unjusTd || unjusTp) >= 3 || (( jusTd + unjusTd ) || ( jusTp + unjusTp )) >= 5){
                 return true
