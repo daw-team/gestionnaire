@@ -4,7 +4,7 @@
         <div class="selects">
 
             <div class="dates">
-                <label for="">Select date:</label>
+                <label for="">Date:</label>
                 <select name="" id="" v-model="dateSelected" @change="dateChanged">
                     <option value="all time">all time</option>
                     <option
@@ -18,7 +18,7 @@
             </div>
 
             <div class="comps">
-                <label for="">Select Absence type:</label>
+                <label for="">Absence type:</label>
                 <select v-model="absenceType" @change="dateChanged">
                     <option
                         v-for="(item , index) in compsList"
@@ -30,10 +30,23 @@
                 </select>
             </div>
 
+            <div class="session">
+                <label for="">Session:</label>
+                <select v-model="sessionType" @change="dateChanged">
+                    <option
+                        v-for="(session , index) in sessionList"
+                        :key="index"
+                        :value="session.type"
+                    >
+                        {{ session.title }}
+                    </option>
+                </select>
+            </div>
+
             <input type="text" v-model="search" placeholder="Search for a student">
 
         </div>
-        <div class="the-table" v-if="absences.length !== 0">
+        <div class="the-table">
             <div class="table-container">
                 <table>
                     <tr class="table-header">
@@ -50,10 +63,6 @@
                         >
                             justification
                         </th>
-                        <th
-                            style="width: 40%; cursor:pointer;"
-                            v-if="absenceType === 'PenAbsencesEns'"
-                        ></th>
                         <th
                             style="width: 40%; cursor:pointer;"
                             v-if="absenceType === 'NonJusAbsences'"
@@ -73,6 +82,10 @@
 
                         <td>
                             <p>{{ absence.Nom_Etud }}</p>
+                        </td>
+
+                        <td>
+                            <p>{{ absence.Type_Ens }}</p>
                         </td>
 
                         <td>
@@ -142,6 +155,7 @@ export default {
         let columns = [
             {label: 'First name', name: 'Prenom_Etud', type: 'string'  },
             {label: 'Family name', name: 'Nom_Etud', type: 'string'},
+            {label: 'Session', name: 'Type_Ens', type: 'string'},
             {label: 'Date', name: 'Date_Abs', type: 'date'},
             {label: 'Time', name: 'Hour_Abs', type: 'number'},
         ];
@@ -160,6 +174,13 @@ export default {
             ],
             compActive: '',
             absenceId: null,
+
+            sessionType: 'all',
+            sessionList: [
+                {title: 'All', type: 'all'},
+                {title: 'TD', type: 'td'},
+                {title: 'TP', type: 'tp'},
+            ],
 
             columns: columns,
             sortKey: 'Date_Abs',
@@ -182,16 +203,26 @@ export default {
     methods: {
 
         dateChanged(){
-            if(this.dateSelected === 'all time'){
+            if(this.dateSelected === 'all time' && this.sessionType === 'all'){
+                axios
+                    .post('http://localhost:8000/api/getAll' + this.absenceType, { id: this.$route.params.id } )
+                    .then(response => this.absences = response.data )
+            }
+            else if(this.dateSelected === 'all time' && this.sessionType !== 'all'){
             axios
-                .post('http://localhost:8000/api/getAll' + this.absenceType, { id: this.$route.params.id } )
+                .post('http://localhost:8000/api/getAll' + this.absenceType + 'Type', { id: this.$route.params.id, type_ens: this.sessionType } )
                 .then(response => this.absences = response.data )
-        }
-        else{
-            axios
-                .post('http://localhost:8000/api/get' + this.absenceType , { id: this.$route.params.id, date: this.dateSelected})
-                .then(response => this.absences = response.data )
-        }
+            }
+            else if(this.dateSelected !== 'all time' && this.sessionType === 'all') {
+                axios
+                    .post('http://localhost:8000/api/get' + this.absenceType , { id: this.$route.params.id, date: this.dateSelected})
+                    .then(response => this.absences = response.data )
+            }
+            else if ( this.dateSelected !== 'all time' && this.sessionType !== 'all'){
+                axios
+                    .post('http://localhost:8000/api/get' + this.absenceType + 'Type' , { id: this.$route.params.id, date: this.dateSelected, type_ens: this.sessionType })
+                    .then(response => this.absences = response.data )
+            }
         },
 
         deleteAbsence(id){

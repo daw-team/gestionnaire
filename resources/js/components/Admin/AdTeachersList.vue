@@ -154,7 +154,7 @@ export default {
 
         deleteTeacher(id){
             this.$swal.fire({
-                title: 'Are you sure you want to delete this student?',
+                title: 'Are you sure you want to delete this teacher?',
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -171,7 +171,7 @@ export default {
                     this.$swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Student Deleted!',
+                    title: 'Teacher Deleted!',
                     showConfirmButton: false,
                     timer: 2500
                     })

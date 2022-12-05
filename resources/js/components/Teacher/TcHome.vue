@@ -157,7 +157,9 @@ export default {
                 nom:'',
                 prenom: '',
                 username: '',
-                imgSrc: '../../assets/teacherProfil.png'
+                imgSrc: '../../assets/teacherProfil.png',
+                moduleId: '',
+
             },
             homeInfo:{
                 students: 0, absences: 0, excluded: 0, groups: 0
@@ -175,6 +177,7 @@ export default {
                 if(res.data[0].Photo_Ens !== null ){
                     this.user.imgSrc = res.data[0].Photo_Ens
                 }
+                this.user.moduleId = res.data[0].Num_Mod
             })
         axios
             .get( 'http://localhost:8000/api/studentsList' )

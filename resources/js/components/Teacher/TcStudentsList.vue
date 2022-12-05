@@ -31,7 +31,7 @@
                             v-for="(student, index) in filteredUsers"
                             :key="index"
                             class="student"
-                            :class="{'excluded': parseInt(student.unjustified) >= 3 || parseInt(student.unjustified) + parseInt(student.justified) >= 5 }"
+                            :class="{'excluded': checkExcluded }"
                         >
                             <td>
                                 <p>{{ student.Nom_Etud }} {{ student.Prenom_Etud }}</p>
@@ -89,7 +89,9 @@ export default {
                 prenom: '',
                 username: '',
                 currentPassword: '',
-                imgSrc: '../../assets/teacherProfil.png'
+                imgSrc: '../../assets/teacherProfil.png',
+                moduleId: '',
+
             },
             students:[],
 
@@ -113,15 +115,29 @@ export default {
                 if(res.data[0].Photo_Ens !== null ){
                     this.user.imgSrc = res.data[0].Photo_Ens
                 }
+                this.user.moduleId = res.data[0].Num_Mod
             })
 
 
         axios
-            .post('http://localhost:8000/api/AllStudents', {id:this.$route.params.id})
+            .post('http://localhost:8000/api/AllStudents', {id: this.user.moduleId})
             .then( res => this.students = res.data )
     },
 
     methods:{
+        checkExcluded(){
+            const unjusTd = parseInt(student.unjustifiedTD)
+            const unjusTp = parseInt(student.unjustifiedTP)
+            const jusTd = parseInt(student.justifiedTD)
+            const jusTp = parseInt(student.justifiedTP)
+
+            if( (unjusTd || unjusTp) >= 3 || (( jusTd + unjusTd ) || ( jusTp + unjusTp )) >= 5){
+                return true
+            }else {
+                return false
+            }
+        },
+
         sortBy(key) {
             this.sortKey = key;
             this.sortOrders[key] = this.sortOrders[key] * -1;
