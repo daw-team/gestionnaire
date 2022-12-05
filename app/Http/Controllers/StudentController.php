@@ -330,33 +330,24 @@ public function getStudentInfo(request $request) {
 
         
             // get the excluded modules
-    public function getExcludedModules(request $request){
-        return DB::table('ABSENCE')
-        ->join('MODULE', 'ABSENCE.Num_Mod', '=', 'MODULE.Num_Mod'   )
-         ->select(
-         'MODULE.Abrv_Mod'
-        //  DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
-        //  DB::raw('COUNT(Type_Abs) AS total')
-        ) 
-        ->where('ABSENCE.Num_Etud', '=' , $request->id)
-        ->having( DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END)'), '>=', 3 )
-        ->orHaving(DB::raw('COUNT(Type_Abs)'), '>=', 5)
-       ->groupby( 'Module.Abrv_Mod' )
-         ->get();
-        
     
-        }
 
         public function getNbrExcludedMod(request $request){
-
+        
             $result = absence::select(
                                     'Num_Mod',
-                                    DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
-                                    DB::raw('COUNT(Type_Abs) AS total')
-                                )
+                                    DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" AND Type_Ens = "TD" THEN 1 ELSE 0 END) AS unjustifiedTD'),
+                                     DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" AND Type_Ens = "TP"  THEN 1 ELSE 0 END) AS unjustifiedTP'),
+                                DB::raw('SUM(CASE WHEN Type_Ens = "TD"  THEN 1 ELSE 0 END) AS totalTD'),
+                                DB::raw('SUM(CASE WHEN Type_Ens = "TP"  THEN 1 ELSE 0 END) AS totalTP')
+                            )
+                                    
+                                
                                 ->where( 'Num_Etud', $request->id )
-                                ->having( 'unjustified', '>=', 3 )
-                                ->orHaving('total', '>=', 5)
+                                ->having( 'unjustifiedTD', '>=', 3 )
+                            ->orhaving( 'unjustifiedTP', '>=', 3 )
+                            ->orHaving('totalTD', '>=', 5)
+                            ->orHaving('totalTP', '>=', 5)
                                 ->groupby( 'Num_Mod' )
                                 ->count();
             return $result;
