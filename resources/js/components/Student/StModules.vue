@@ -105,7 +105,7 @@ export default {
 
     setup() {
     const getImageUrl = (name) => {
-        name = `../../assets/` + name + ".png"
+        name = `../../assets/` + name.toLowerCase() + ".png"
         return new URL(name, import.meta.url).href
     }
 
