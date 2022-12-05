@@ -30,6 +30,10 @@
                         </td>
 
                         <td>
+                            <p>{{ absence.Type_Ens }}</p>
+                        </td>
+
+                        <td>
                             <p>{{ absence.Date_Abs }}</p>
                         </td>
 
@@ -54,6 +58,7 @@ export default {
         let columns = [
             {label: 'Student', name: 'Prenom_Etud', type: 'string'  },
             {label: 'Module', name: 'Abrv_Mod', type: 'string'},
+            {label: 'Session', name: 'Type_Ens', type: 'string'},
             {label: 'Date', name: 'Date_Abs', type: 'date'},
             {label: 'Time', name: 'Hour_Abs', type: 'number'},
         ];

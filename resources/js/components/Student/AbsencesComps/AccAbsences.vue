@@ -1,6 +1,9 @@
 <template>
     <div class="abs-container">
 
+        <input type="text"  placeholder="Search for a student" v-model="search">
+
+
         <div class="the-table">
             <div class="table-container">
                 <table>
