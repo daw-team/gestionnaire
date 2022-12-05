@@ -272,7 +272,7 @@ export default {
                     axios
                         .post('http://localhost:8000/api/acceptJust', { id: id })
                         .then( res => {
-                            if(res.data.msg === 'absence accepted'){
+                            if(res.data.msg === "informations updated successfully"){
                                 this.$swal.fire({
                                 position: 'top-end',
                                 icon: 'success',
@@ -302,7 +302,8 @@ export default {
                     axios
                         .post('http://localhost:8000/api/rejectJust', { id: id })
                         .then( res => {
-                            if(res.data.msg === 'absence rejected'){
+                            console.log(res.data);
+                            if(res.data.msg === "informations updated successfully"){
                                 this.$swal.fire({
                                 position: 'top-end',
                                 icon: 'success',

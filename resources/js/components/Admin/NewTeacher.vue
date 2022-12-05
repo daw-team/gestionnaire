@@ -18,12 +18,24 @@
                     </div>
                 </div>
 
-                <div class="module">
-                    <label for="">Module:</label>
-                    <select name="" id="" v-model="newTeacher.module_abriviation">
-                        <option v-for="(module, index) in modules" :key="index" :value="module.Abrv_Mod">{{ module.Abrv_Mod }}</option>
+                <div class="two">
+                    <div class="module">
+                        <label for="">Module:</label>
+                        <select name="" id="" v-model="newTeacher.module_abriviation">
+                            <option v-for="(module, index) in modules" :key="index" :value="module.Abrv_Mod">{{ module.Abrv_Mod }}</option>
+                        </select>
+                    </div>
+
+                    <div class="session">
+                    <label for="">Session:</label>
+                    <select name="" id="" v-model="newTeacher.type_ens">
+                        <option value="ALL">All</option>
+                        <option value="TD">TD</option>
+                        <option value="TP">TP</option>
                     </select>
+                    </div>
                 </div>
+
                 <div class="email">
                     <label for="">Email:</label>
                     <input type="text" v-model="newTeacher.email">
@@ -39,7 +51,7 @@
                         <input type="password" v-model="confirmPassword">
                     </div>
                 </div>
-
+                <p>{{ msg }}</p>
                 <input type="submit"    name="submit"    value="Submit"  @click.prevent="create">
             </form>
     </div>
@@ -56,8 +68,10 @@ export default {
                 lastname: '',
                 email: '',
                 password: '',
-                module_abriviation: ''
+                module_abriviation: '',
+                type_ens: ''
             },
+            msg: '',
             confirmPassword: '',
             modules: []
         }
@@ -91,7 +105,6 @@ export default {
         },
 
         create(){
-            console.log(this.newTeacher);
             if(this.checkForEmptyFields()){
                 this.msg = `You can't leave empty fields`
             }
@@ -165,6 +178,10 @@ form {
     border-radius: 15px;
 }
 
+form p{
+    color: red;
+}
+
 label {
     margin: 0 10px;
 }
@@ -174,7 +191,7 @@ label {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
 }
 
@@ -192,7 +209,7 @@ label {
     min-width: 200px;
 }
 
-.module{
+.module, .session{
     display: flex;
     flex-direction: column;
 }

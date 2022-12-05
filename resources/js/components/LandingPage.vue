@@ -12,9 +12,10 @@
     </div>
 
     <h1 class="title">Gestionnaire des absences</h1>
-    <!-- <p>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum similique laborum, aperiam dolore aliquam animi velit, necessitatibus autem, aut accusamus maiores. Vitae alias repellat
-    </p> -->
+    <p>
+        this is the official website of The Faculty of Information and Communication Technology of
+        ABDELHAMID MEHRI Constantine 2 university to manage students absences
+    </p>
 
     <button
       class="login"
@@ -70,6 +71,13 @@
 
 }
 
+.landing-page p{
+    margin: 0 16vw;
+    color: #d2d8e5;
+    font-size: 18px;
+    font-weight: 500;
+}
+
 .logo :nth-child(n){
   margin-top: 15px;
   color: #fff;
@@ -85,7 +93,7 @@
   margin: 30px;
   font-size: 7vw;
   color: #fff;
-
+  font-family: 'Roboto', sans-serif;
 }
 
 button {

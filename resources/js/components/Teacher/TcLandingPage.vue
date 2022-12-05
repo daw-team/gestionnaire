@@ -3,10 +3,8 @@
         <div class="container">
             <div class="welcome">
                 <h1><span>Welcome Mr</span> {{ user.prenom }}</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-                    tempora quibusdam voluptatibus laborum, veritatis eaque veniam modi,
-                    natus rerum aliquam laudantium praesentium perferendis,
-                    reiciendis nulla officia laboriosam molestiae minima dolorum.
+                <p>Welcome to your page, here you can check your student's information and manage their absences.
+                    Let's get started
                 </p>
                 <button class="get-started" @click="goToDashboard">Get started</button>
             </div>

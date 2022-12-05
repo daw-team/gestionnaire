@@ -448,6 +448,8 @@ h5 {
     color: transparent;
     font-weight: 900;
     font-size: 30px;
+    font-family: 'Source Sans Pro', sans-serif;
+
 }
 
 .card2-info{

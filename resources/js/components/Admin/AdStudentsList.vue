@@ -88,8 +88,8 @@ export default {
     data() {
         let sortOrders = {};
         let columns = [
-            {label: 'Teacher', name: 'Prenom_Etud', type: 'string'  },
-            {label: 'Module', name: 'Group_Etud', type: 'number'},
+            {label: 'Student', name: 'Prenom_Etud', type: 'string'  },
+            {label: 'Groupe', name: 'Group_Etud', type: 'number'},
         ];
         columns.forEach((column) => {
             sortOrders[column.name] = 1;

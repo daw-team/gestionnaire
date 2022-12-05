@@ -26,6 +26,7 @@
                         >
                         {{column.label}}
                         </th>
+                            <th style="width: 40%; cursor:pointer;" >Session</th>
                             <th style="width: 40%; cursor:pointer;" >Edit/Delete</th>
                             <th style="width: 40%; cursor:pointer;" >Email</th>
                         </tr>
@@ -40,6 +41,10 @@
 
                             <td>
                                 <p>{{ teacher.Abrv_mod }}</p>
+                            </td>
+
+                            <td>
+                                <p>{{ teacher.Type_Ens }}</p>
                             </td>
 
                             <td>

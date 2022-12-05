@@ -49,7 +49,7 @@
                             v-for="(student, index) in filteredUsers"
                             :key="index"
                             class="student"
-                            :class="{'excluded': checkExcluded(student.unjusfifiedTD, student.unjusfifiedTP, student.justifiedTD, student.justifiedTP) }"
+                            :class="{'excluded': checkExcluded(student.unjustifiedTD, student.unjustifiedTP, student.justifiedTD, student.justifiedTP) }"
                         >
                             <td>
                                 <p>{{ student.Nom_Etud }} {{ student.Prenom_Etud }}</p>
@@ -134,7 +134,6 @@ export default {
         axios
             .post('http://localhost:8000/api/TeacherInfo', {id:this.$route.params.id})
             .then( res => {
-                console.log(res.data);
                 this.user.nom = res.data[0].Nom_Ens
                 this.user.prenom = res.data[0].Prenom_Ens
                 this.user.username = res.data[0].UserName_Ens
@@ -155,12 +154,14 @@ export default {
 
     methods:{
         checkExcluded(unjusTd, unjusTp, jusTd, jusTp){
+
             unjusTd = parseInt(unjusTd)
             unjusTp = parseInt(unjusTp)
             jusTd = parseInt(jusTd)
             jusTp = parseInt(jusTp)
 
-            if( (unjusTd || unjusTp) >= 3 || (( jusTd + unjusTd ) || ( jusTp + unjusTp )) >= 5){
+            if(unjusTd >= 3 || unjusTp >= 3 || ( jusTd + unjusTd ) >= 5 || ( jusTp + unjusTp ) >= 5 ){
+
                 return true
             }else {
                 return false
@@ -220,7 +221,8 @@ export default {
 <style scoped>
 
 .excluded{
-    background: #ff7575 !important;
+    background: #9d2a221f !important;
+    border: 1px solid #9d2a2205;
 }
 
 .appear-enter{
