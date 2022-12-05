@@ -149,4 +149,11 @@ Route::post('/getTeacherNotif', [TeacherController::class, 'getTeacherNotif']); 
 Route::post('/unseenTeacherNotifNbr', [TeacherController::class, 'unseenTeacherNotifNbr']);  //  id: teacher id
 Route::post('/seeTeacherNotif', [TeacherController::class, 'seeTeacherNotif']);  //  id: teacher id
 
+Route::post('/getacceptedAbsencesType', [TeacherController::class, 'getacceptedAbsencesType']);  //  id: teacher id ,  date , type_ens
+Route::post('/getPenAbsencesEnsType', [TeacherController::class, 'getPenAbsencesEnsType']);     //  id: teacher id ,   date , type_ens
+Route::post('/getNonJusAbsencesType', [TeacherController::class, 'getNonJusAbsencesType']);    //  id: teacher id ,  date , type_ens
+Route::post('/getAllacceptedAbsencesType', [TeacherController::class, 'getAllacceptedAbsencesType']);    //  id: teacher id  , type_ens
+Route::post('/getAllPenAbsencesEnsType', [TeacherController::class, 'getAllPenAbsencesEnsType']);    	//  id: teacher id  , type_ens
+Route::post('/getAllNonJusAbsencesType', [TeacherController::class, 'getAllNonJusAbsencesType']);	 //  id: teacher id  , type_ens
+
 

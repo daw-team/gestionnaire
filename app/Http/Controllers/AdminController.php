@@ -175,7 +175,7 @@ public function updateTeacherInfo(request $request){
                 ->update(['PassWord_Ens' => $request->password]);
         }
     Enseignant::where('Num_Ens',$request->id)
-            ->update(['Nom_Ens' => $request->firstname ,'Prenom_Ens' => $request->lastname,'UserName_Ens' => $request->email,'Num_Mod'=>$num_mod]);
+            ->update(['Nom_Ens' => $request->firstname ,'Prenom_Ens' => $request->lastname,'Type_Ens' => $request->type_ens,'UserName_Ens' => $request->email,'Num_Mod'=>$num_mod]);
     return response()->json([
             'msg' => 'information updated successfuly',
         ]);
@@ -208,7 +208,7 @@ public function CreateTeacher(request $request){
             ->select('Num_Mod')
             ->where('MODULE.Abrv_Mod','=',$request->module_abriviation)
             ->get()->value('Num_Mod');
-     Enseignant::insert(['Nom_Ens' => $request->lastname ,'Prenom_Ens' => $request->firstname,'UserName_Ens' => $request->email,'PassWord_Ens'=>$request->password,'Num_Mod'=> $num_mod]);
+     Enseignant::insert(['Nom_Ens' => $request->lastname ,'Prenom_Ens' => $request->firstname,'Type_Ens' => $request->type_ens,'UserName_Ens' => $request->email,'PassWord_Ens'=>$request->password,'Num_Mod'=> $num_mod]);
      return response()->json([
                 'msg' => 'information inserted successfuly',
          ]);
@@ -221,7 +221,6 @@ public function CreateStudent(Request $request) {
     'msg' => 'information inserted successfuly',
         ]);
 }
-
 public function CreateModule(Request $request) {
     Module::insert(['Nom_Mod' => $request->name ,'Abrv_Mod' => $request->abriviation,'Coeff_Mod' => $request->coefficient,'Credit_Mod'=>$request->credit]);
     return response()->json([
@@ -235,6 +234,7 @@ public function getAbsenceInfo(request $request) {
 }
 public function getAdminNotif(request $request){
             return Notification::where('Des_Id', '=',$request->id)
+             ->orderby('Created_At' , 'DESC')
              ->get();
         }    
         public function unseenAdminNotifNbr(request $request){

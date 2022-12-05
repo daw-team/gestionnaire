@@ -378,6 +378,7 @@ public function getStudentInfo(request $request) {
         }
       public function getStudentNotif(request $request){
             return Notification::where('Des_Id', '=',$request->id)
+             ->orderby('Created_At' , 'DESC')
              ->get();
         }    
         public function unseenStudentNotifNbr(request $request){

@@ -42,13 +42,17 @@ public function getAllStudents(request $request){
                         ->leftJoin('ABSENCE', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud'   )
                         ->select(
                             'ETUDIANT.Nom_Etud','ETUDIANT.Prenom_Etud', 'ETUDIANT.Num_Etud', 'ETUDIANT.Group_Etud',
-                            DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" AND Num_Ens = ' . $request->id . ' THEN 1 ELSE 0 END) AS unjustified'),
-                            DB::raw('SUM(CASE WHEN Type_Abs = "Justifié" AND Num_Ens = ' . $request->id . ' THEN 1 ELSE 0 END) AS justified'),
+                            DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" AND Type_Ens = "TD" AND Num_Mod = ' . $request->id . ' THEN 1 ELSE 0 END) AS unjustifiedTD'),
+                             DB::raw('SUM(CASE WHEN Type_Abs = "justifié" AND Type_Ens = "TD" AND Num_Mod = ' . $request->id . ' THEN 1 ELSE 0 END) AS justifiedTD'),
+                                DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" AND Type_Ens = "TP" AND Num_Mod = ' . $request->id . ' THEN 1 ELSE 0 END) AS unjustifiedTP'),
+                                 DB::raw('SUM(CASE WHEN Type_Abs = "justifié" AND Type_Ens = "TP" AND Num_Mod = ' . $request->id . ' THEN 1 ELSE 0 END) AS justifiedTP')
                             )
                             ->groupby( 'ETUDIANT.Nom_Etud' , 'ETUDIANT.Prenom_Etud' , 'ETUDIANT.Num_Etud' , 'ETUDIANT.Group_Etud'   )
                         ->get();
 }
 
+ 
+                            
 public function changeTeacherInfo(request $request) {
     $Ens = enseignant::where('Num_Ens', $request->id)->get();
         if($request->currentPassword === $Ens[0]['PassWord_Ens']){
@@ -117,7 +121,7 @@ public function groupsList(request $request) {
             ->select('Abrv_Mod')
             ->where('MODULE.Num_Mod','=',$request->num_module)
             ->get()->value('Abrv_Mod');
-        $queryState = absence::insert(['Date_Abs' => $request->date ,'Hour_Abs' => $request->hour,'Num_Mod' => $request->num_module,'Num_Ens'=>$request->num_ens, 'Num_Etud'=>$id]);
+        $queryState = absence::insert(['Date_Abs' => $request->date ,'Hour_Abs' => $request->hour,'Num_Mod' => $request->num_module,'Num_Ens'=>$request->num_ens,'Type_Ens'=>$request->type_ens, 'Num_Etud'=>$id]);
       if(!$queryState) {
     return response()->json([
                 'msg' => 'operation failed (inserting absence)',
@@ -134,7 +138,7 @@ $allAbsences = Absence::select('Num_Abs')
 		->where('Num_Ens','=',$request->num_ens)
             	->count();
             	if($allAbsences >= 5){
-            		Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $id,'Text_Not' => 'you are exluded from '.$abrv .' ']);
+            		Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $id,'Text_Not' => 'you are excluded from '.$abrv .' ']);
             	}else {
             	
             	$unjustifiedAbs = Absence::select('Num_Abs')
@@ -143,7 +147,7 @@ $allAbsences = Absence::select('Num_Abs')
             	->where('Type_Abs','=','nonJustifié')
             	->count();
             	if($unjustifiedAbs >= 3){
-            		Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $id,'Text_Not' => 'you are exluded from '.$abrv .' ']);
+            		Notification::insert(['Des_Type' => 'Etudiant','Des_Id' => $id,'Text_Not' => 'you are excluded from '.$abrv .' ']);
             	
             	}
 
@@ -264,13 +268,33 @@ $justPath = storage_path()."/app/public/justifications/$justPath";
                         ->where('ABSENCE.Just_Abs', '=',NULL )
                         ->get();
         }
-
+public function getNonJusAbsencesType(request $request) {
+             return DB::table('ABSENCE')
+                        ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+            		    ->where('Num_Ens', '=',$request->id )
+               		    ->where('Date_Abs', '=',$request->date )
+               		->where('ABSENCE.Type_Ens', '=',$request->type_ens )
+                        ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                        ->where('ABSENCE.Just_Abs', '=',NULL )
+                        ->get();
+        }
 
     public function getPenAbsencesEns(request $request) {
         return DB::table('ABSENCE')
                 ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
         	    ->where('Num_Ens', '=',$request->id )
                 ->where('Date_Abs', '=',$request->date )
+                ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                ->where('ABSENCE.Just_Abs', '!=',NULL )
+                ->get();
+                }
+                
+                public function getPenAbsencesEnsType(request $request) {
+        return DB::table('ABSENCE')
+                ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+        	    ->where('Num_Ens', '=',$request->id )
+                ->where('Date_Abs', '=',$request->date )
+                ->where('ABSENCE.Type_Ens', '=',$request->type_ens )
                 ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                 ->where('ABSENCE.Just_Abs', '!=',NULL )
                 ->get();
@@ -285,17 +309,31 @@ $justPath = storage_path()."/app/public/justifications/$justPath";
 		->where('ABSENCE.Just_Abs', '!=',NULL )
 		->get();
         }
+        public function getacceptedAbsencesType(request $request) {
+        return DB::table('ABSENCE')
+        ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud'   )
+		->where('Num_Ens', '=',$request->id )
+		->where('Date_Abs', '=',$request->date )
+                ->where('ABSENCE.Type_Ens', '=',$request->type_ens )
+		->where('ABSENCE.Type_Abs', '=','justifié' )
+		->where('ABSENCE.Just_Abs', '!=',NULL )
+		->get();
+        }
 
    public function exludedStudents(request $request){
 
         $result = absence::select(
                                 'Num_Etud',
-                                DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" THEN 1 ELSE 0 END) AS unjustified'),
-                                DB::raw('COUNT(Type_Abs) AS total')
+                                DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" AND Type_Ens = "TD" AND Num_Mod = ' . $request->id . ' THEN 1 ELSE 0 END) AS unjustifiedTD'),
+                                DB::raw('SUM(CASE WHEN Type_Abs = "nonJustifié" AND Type_Ens = "TP" AND Num_Mod = ' . $request->id . ' THEN 1 ELSE 0 END) AS unjustifiedTP'),
+                                DB::raw('SUM(CASE WHEN Type_Ens = "TD" AND Num_Mod = ' . $request->id . ' THEN 1 ELSE 0 END) AS totalTD'),
+                                DB::raw('SUM(CASE WHEN Type_Ens = "TP" AND Num_Mod = ' . $request->id . ' THEN 1 ELSE 0 END) AS totalTP')
                             )
-                            ->where( 'Num_Ens', $request->id )
-                            ->having( 'unjustified', '>=', 3 )
-                            ->orHaving('total', '>=', 5)
+                            ->where( 'Num_Mod', $request->id )
+                            ->having( 'unjustifiedTD', '>=', 3 )
+                            ->orhaving( 'unjustifiedTP', '>=', 3 )
+                            ->orHaving('totalTD', '>=', 5)
+                            ->orHaving('totalTP', '>=', 5)
                             ->groupby( 'Num_Etud' )
                             ->count();
         return $result;
@@ -316,11 +354,30 @@ $justPath = storage_path()."/app/public/justifications/$justPath";
                     ->where('ABSENCE.Just_Abs', '=',NULL )
                     ->get();
     }
+    public function getAllNonJusAbsencesType(request $request) {
+        return DB::table('ABSENCE')
+                    ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+                    ->where('Num_Ens', '=',$request->id )
+                    ->where('ABSENCE.Type_Ens', '=',$request->type_ens )
+                    ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                    ->where('ABSENCE.Just_Abs', '=',NULL )
+                    ->get();
+    }
 
+                
     public function getAllPenAbsencesEns(request $request) {
         return DB::table('ABSENCE')
                 ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
         	    ->where('Num_Ens', '=',$request->id )
+                ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
+                ->where('ABSENCE.Just_Abs', '!=',NULL )
+                ->get();
+    }
+    public function getAllPenAbsencesEnsType(request $request) {
+        return DB::table('ABSENCE')
+                ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+        	    ->where('Num_Ens', '=',$request->id )
+                    ->where('ABSENCE.Type_Ens', '=',$request->type_ens )
                 ->where('ABSENCE.Type_Abs', '=','nonJustifié' )
                 ->where('ABSENCE.Just_Abs', '!=',NULL )
                 ->get();
@@ -331,6 +388,14 @@ $justPath = storage_path()."/app/public/justifications/$justPath";
         ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
 		->where('Num_Ens', '=',$request->id )
 		->where('ABSENCE.Type_Abs', '=','justifié' )
+		->get();
+    }
+    public function getAllacceptedAbsencesType(request $request) {
+        return DB::table('ABSENCE')
+        ->join('ETUDIANT', 'ABSENCE.Num_Etud', '=', 'ETUDIANT.Num_Etud')
+		->where('Num_Ens', '=',$request->id )
+		->where('ABSENCE.Type_Abs', '=','justifié' )
+                ->where('ABSENCE.Type_Ens', '=',$request->type_ens)
 		->get();
     }
 
@@ -353,6 +418,7 @@ $justPath = storage_path()."/app/public/justifications/$justPath";
         }
         public function getTeacherNotif(request $request){
             return Notification::where('Des_Id', '=',$request->id)
+             ->orderby('Created_At' , 'DESC')
              ->get();
         }    
             public function unseenTeacherNotifNbr(request $request){
