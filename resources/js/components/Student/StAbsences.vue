@@ -26,10 +26,10 @@
                 </ul>
             </div>
 
-            <component :is='compToRender'></component>
+            <component  :is='compToRender'></component>
         </div>
 
-        <router-view></router-view>
+        <router-view class="justify"></router-view>
     </div>
 </template>
 
@@ -215,6 +215,10 @@ li::after {
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
+}
+
+.justify{
+    z-index: 3;
 }
 
 

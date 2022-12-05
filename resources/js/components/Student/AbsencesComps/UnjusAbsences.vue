@@ -190,6 +190,7 @@ td ,th{
     height: 40px;
     background: linear-gradient(180deg, #499564, #2a719e);
     color: #fff;
+    z-index: 2;
 }
 
 tr{

@@ -195,7 +195,7 @@ export default {
             })
 
         axios
-            .post('http://localhost:8000/api/getNbrExcludedMod', {id:this.$route.params.id})
+            .post('http://localhost:8000/api/NbrExcluded', {id:this.$route.params.id})
             .then( res => {
                 this.absencesInfo.pendingAbsences = res.data
             })
