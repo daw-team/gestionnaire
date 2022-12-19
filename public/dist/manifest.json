@@ -1,0 +1,156 @@
+{
+  "resources/js/assets/pending.png": {
+    "file": "assets/pending.eb680d1d.png",
+    "src": "resources/js/assets/pending.png"
+  },
+  "resources/js/assets/absences.png": {
+    "file": "assets/absences.d316c1fb.png",
+    "src": "resources/js/assets/absences.png"
+  },
+  "resources/js/assets/module.png": {
+    "file": "assets/module.f9d827f2.png",
+    "src": "resources/js/assets/module.png"
+  },
+  "resources/js/assets/accepted.png": {
+    "file": "assets/accepted.340dfc83.png",
+    "src": "resources/js/assets/accepted.png"
+  },
+  "resources/js/assets/mailSend.png": {
+    "file": "assets/mailSend.16e6c012.png",
+    "src": "resources/js/assets/mailSend.png"
+  },
+  "resources/js/assets/GroupsNumber.png": {
+    "file": "assets/GroupsNumber.f9499aeb.png",
+    "src": "resources/js/assets/GroupsNumber.png"
+  },
+  "resources/js/assets/totalstud.png": {
+    "file": "assets/totalstud.e3ce11fd.png",
+    "src": "resources/js/assets/totalstud.png"
+  },
+  "resources/js/assets/excluded.png": {
+    "file": "assets/excluded.1cc45564.png",
+    "src": "resources/js/assets/excluded.png"
+  },
+  "resources/js/assets/totalabs.png": {
+    "file": "assets/totalabs.491e3386.png",
+    "src": "resources/js/assets/totalabs.png"
+  },
+  "resources/js/assets/logo.png": {
+    "file": "assets/logo.b49ae587.png",
+    "src": "resources/js/assets/logo.png"
+  },
+  "resources/js/assets/totalteach.png": {
+    "file": "assets/totalteach.179909f5.png",
+    "src": "resources/js/assets/totalteach.png"
+  },
+  "resources/js/assets/totalmod.png": {
+    "file": "assets/totalmod.b0b752eb.png",
+    "src": "resources/js/assets/totalmod.png"
+  },
+  "resources/js/assets/edit.png": {
+    "file": "assets/edit.76f0787b.png",
+    "src": "resources/js/assets/edit.png"
+  },
+  "resources/js/assets/delete.png": {
+    "file": "assets/delete.ebdc92b3.png",
+    "src": "resources/js/assets/delete.png"
+  },
+  "resources/js/assets/accept.png": {
+    "file": "assets/accept.4da11a0e.png",
+    "src": "resources/js/assets/accept.png"
+  },
+  "resources/js/assets/reject.png": {
+    "file": "assets/reject.b4008106.png",
+    "src": "resources/js/assets/reject.png"
+  },
+  "resources/js/assets/notif.png": {
+    "file": "assets/notif.8adcf0f7.png",
+    "src": "resources/js/assets/notif.png"
+  },
+  "resources/js/assets/login-background.png": {
+    "file": "assets/login-background.9f793017.png",
+    "src": "resources/js/assets/login-background.png"
+  },
+  "resources/js/assets/student.png": {
+    "file": "assets/student.912e1590.png",
+    "src": "resources/js/assets/student.png"
+  },
+  "resources/js/assets/teacher.png": {
+    "file": "assets/teacher.997037bd.png",
+    "src": "resources/js/assets/teacher.png"
+  },
+  "resources/js/assets/Admin.png": {
+    "file": "assets/Admin.b27b3485.png",
+    "src": "resources/js/assets/Admin.png"
+  },
+  "resources/js/assets/sort_desc.png": {
+    "file": "assets/sort_desc.97b6b61f.png",
+    "src": "resources/js/assets/sort_desc.png"
+  },
+  "resources/js/assets/sort_both.png": {
+    "file": "assets/sort_both.cdb4bdab.png",
+    "src": "resources/js/assets/sort_both.png"
+  },
+  "resources/js/assets/sort_asc.png": {
+    "file": "assets/sort_asc.b9d9a82a.png",
+    "src": "resources/js/assets/sort_asc.png"
+  },
+  "resources/js/assets/homepage-background.jpg": {
+    "file": "assets/homepage-background.1d2544df.jpg",
+    "src": "resources/js/assets/homepage-background.jpg"
+  },
+  "resources/js/assets/teacher-background.jpg": {
+    "file": "assets/teacher-background.84019e47.jpg",
+    "src": "resources/js/assets/teacher-background.jpg"
+  },
+  "resources/js/assets/student-backgroup.png": {
+    "file": "assets/student-backgroup.c11112f3.png",
+    "src": "resources/js/assets/student-backgroup.png"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app.7c3c19f8.js",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app.a55c99c3.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "assets/app.8796a471.css"
+    ],
+    "assets": [
+      "assets/login-background.9f793017.png",
+      "assets/logo.b49ae587.png",
+      "assets/student.912e1590.png",
+      "assets/accepted.340dfc83.png",
+      "assets/absences.d316c1fb.png",
+      "assets/excluded.1cc45564.png",
+      "assets/module.f9d827f2.png",
+      "assets/pending.eb680d1d.png",
+      "assets/notif.8adcf0f7.png",
+      "assets/mailSend.16e6c012.png",
+      "assets/teacher.997037bd.png",
+      "assets/totalstud.e3ce11fd.png",
+      "assets/GroupsNumber.f9499aeb.png",
+      "assets/totalabs.491e3386.png",
+      "assets/accept.4da11a0e.png",
+      "assets/reject.b4008106.png",
+      "assets/delete.ebdc92b3.png",
+      "assets/Admin.b27b3485.png",
+      "assets/totalteach.179909f5.png",
+      "assets/totalmod.b0b752eb.png",
+      "assets/edit.76f0787b.png",
+      "assets/homepage-background.1d2544df.jpg",
+      "assets/student-backgroup.c11112f3.png",
+      "assets/sort_both.cdb4bdab.png",
+      "assets/sort_asc.b9d9a82a.png",
+      "assets/sort_desc.97b6b61f.png",
+      "assets/teacher-background.84019e47.jpg"
+    ]
+  },
+  "resources/js/app.css": {
+    "file": "assets/app.8796a471.css",
+    "src": "resources/js/app.css"
+  }
+}
